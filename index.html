@@ -167,6 +167,9 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .vh{border:1px solid var(--line);border-radius:10px;padding:9px 11px;margin-bottom:8px;cursor:pointer}.vh.lim{background:#fafafa;cursor:default}
 .stuck{font-size:12px;margin-top:5px;font-weight:600}.stuck .mut{font-weight:400}
 .fol.ln{background:#06c755;border-color:#06c755;color:#fff;text-decoration:none}.fols{display:flex;gap:4px;align-items:center}
+.ucnt{margin:4px 0 8px}.ucnt summary{cursor:pointer;font-size:13px;color:var(--mut);padding:4px 0}.ucg{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;margin-top:6px}
+.ucc{display:flex;flex-direction:column;align-items:stretch;gap:2px;border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 8px;text-align:left;font-size:12.5px}.ucc span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ucc b{font-size:14px}.ucc i{font-style:normal;font-size:10px;color:#b45309}.ucc.zero{color:var(--mut);background:#fafafa}.ucc.on{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.ucn{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ucm{font-size:11.5px;color:var(--mut)}.ucm b{color:var(--ink);font-size:12.5px}.ucm.mid{color:#b45309}.ucm.bad{color:#c8102e;font-weight:600}
 /* auth */
 .auth{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(160deg,#fff 0%,#fdecef 100%)}
 .authbox{background:#fff;border-radius:16px;box-shadow:0 10px 40px rgba(200,16,46,.12);padding:26px;width:min(400px,100%)}
@@ -204,8 +207,24 @@ const CONFIG = {
   SUPABASE_ANON_KEY: 'sb_publishable_RESqSgvp97Bh5thFluhs0w_M1LYS4dk'
 };
 // ===== เวอร์ชัน: อัปเกรดทุกครั้ง ให้เพิ่มเลข + เพิ่มรายการไว้บนสุดของ CHANGELOG =====
-const APP_VERSION = '1.2.1';
+const APP_VERSION = '1.2.9';
 const CHANGELOG = [
+  {v:'1.2.9', d:'2026-11-15', th:['ประวัติ VIN: PS เห็นว่ารถเคยเข้าศูนย์ไหน + วันเข้า/ส่งมอบ (ไม่เห็นรายละเอียดของศูนย์อื่น) เหมือน v1.2.1'],
+                              en:['VIN history: PS see which other dealers the vehicle visited and when (no details), as in v1.2.1']},
+  {v:'1.2.8', d:'2026-11-15', th:['ประวัติ VIN ใช้ได้โดยไม่ต้องรัน SQL (RSM/Admin เห็นทุกศูนย์ · PS เห็นเฉพาะศูนย์ตัวเอง)'],
+                              en:['VIN history works without extra SQL (RSM/Admin see all dealers · PS see their own)']},
+  {v:'1.2.7', d:'2026-11-15', th:['ย้ายการติดตาม "PS ไหนไม่อัปเดตข้อมูล" ไปหน้าภาพรวม (กราฟแท่ง: อัปเดตล่าสุดกี่วันก่อน)','แท็บ ผู้ใช้ & PS เหลือเฉพาะจำนวนผู้ใช้ราย PS'],
+                              en:['Moved "dealers not updating" to the Overview (bar chart of days since last update)','Users & PS tab now shows only users per dealer']},
+  {v:'1.2.6', d:'2026-11-15', th:['เอาตัวเลข "ซ่อมซ้ำ" ออก','หน้า Admin: สรุปราย PS แสดงจำนวนผู้ใช้ · รถค้าง · อัปเดตล่าสุดกี่วันก่อน เรียงได้ (ไม่อัปเดตนานสุด / คนมากสุด / รถค้างมากสุด / ชื่อ) แตะศูนย์เพื่อดูรายชื่อ'],
+                              en:['Removed the "repeat repair" number','Admin: per-dealer summary shows users · open cases · days since last update, sortable; tap a dealer to see its users']},
+  {v:'1.2.5', d:'2026-11-15', th:['หน้า Board: แตะการ์ดตัวเลขสรุปเพื่อดูรายการรถ (ใช้ตัวกรองของ Board)'],
+                              en:['Board: tap a summary number to see the vehicles behind it (uses the board filters)']},
+  {v:'1.2.4', d:'2026-11-15', th:['หน้า Admin: สรุปจำนวนผู้ใช้ราย PS (แตะเพื่อดูรายชื่อ) และเตือนศูนย์ที่ยังไม่มี SVM · dropdown ศูนย์แสดงจำนวนคน'],
+                              en:['Admin: users-per-dealer summary (tap to filter), flags dealers without an SVM · dealer dropdown shows counts']},
+  {v:'1.2.3', d:'2026-11-15', th:['หน้าภาพรวม: ช่องค้นหา SP หรือ VIN (รวมรถที่ส่งมอบแล้ว) แตะเพื่อเปิดรถหรือดูประวัติ VIN'],
+                              en:['Overview: search by SP or VIN (incl. delivered), tap to open the vehicle or its VIN history']},
+  {v:'1.2.2', d:'2026-11-15', th:['หน้า Admin: ค้นหาผู้ใช้จากชื่อ / เบอร์ / อีเมล / LINE / ชื่อศูนย์ · กรองรายศูนย์ · เรียงตามศูนย์ / ชื่อ / สมัครล่าสุด'],
+                              en:['Admin: search users by name / phone / email / LINE / dealer · filter by dealer · group by dealer, sort by name or newest']},
   {v:'1.2.1', d:'2026-11-15', th:['กราฟทุกอันเป็นแท่งแนวตั้ง','กราฟจำนวนรถค้าง / เคส เลือกระดับ RSM / PS / ฝั่ง (แตะฝั่งเพื่อแยกแผนก) เรียง มาก→น้อย / น้อย→มาก','อันดับรถค้างนานสุดเป็นกราฟแท่ง 1 แท่งต่อ SP (Top 10 / 20 / ทั้งหมด)','ตัวกรองวันค้าง ≤7 / 8–15 / 16–30 / 30+ วัน','หน้าภาพรวมของ RSM เปิดมาเป็นทุกศูนย์ กด "PS ของฉัน" สลับได้'],
                               en:['All charts are vertical bars','Open vehicles / cases chart by RSM / PS / side (tap a side for departments), sort high→low / low→high','Longest-open chart: one bar per SP (Top 10 / 20 / all)','Age filter ≤7 / 8–15 / 16–30 / 30+ days','RSM overview opens on all dealers, with a "My PS" switch']},
   {v:'1.2', d:'2026-11-15', th:['หน้า "ภาพรวม" (Dashboard): GWM vs PS %, แยกแผนก, ค้างขั้นไหน, อายุรถค้าง, อันดับ PS, อันดับวันค้าง, ปัญหาที่เจอบ่อย — แตะกราฟเพื่อดูรายการ','กราฟเคลียรถออก ราย วัน / สัปดาห์ / เดือน / ปี ทั้งภาพรวมและราย Partner','ใช้ค่ากลาง (Median) และ 90% แทนค่าเฉลี่ย','ประวัติ VIN: เคยเข้าศูนย์ไหนบ้าง (PS เห็นชื่อศูนย์อื่นแต่ไม่เห็นรายละเอียด)','การ์ดขึ้น "ติดที่: แผนก" · RSM กด 💬 SVM / 📞 ได้ตรงจากการ์ด','Admin ลบผู้ใช้ถาวรได้','ข้อความ error ภาษาไทยเมื่อระบบรับคำขอเยอะเกิน'],
@@ -420,8 +439,13 @@ function supaApi(){
       return ok(await sb.from('profiles').select('*').eq('user_id',u.id).maybeSingle()); },
     async dealers(){ return ok(await sb.from('dealers').select('*').order('zone').order('name')); },
     async cases(){ return ok(await sb.from('vor_cases').select('*').order('arrival_date')); },
-    async vinHistory(vin){ return ok(await sb.rpc('vin_history',{p_vin:vin})) || []; },
-    async deleteUser(uid){ ok(await sb.rpc('admin_delete_user',{uid})); },
+    async vinHistory(vin){ // ใช้ฟังก์ชันในฐานข้อมูล (PS เห็นชื่อศูนย์อื่น + วันที่ ไม่เห็นรายละเอียด) · ถ้ายังไม่มีฟังก์ชัน ใช้ข้อมูลที่เห็นอยู่แทน
+      const r=await sb.rpc('vin_history',{p_vin:vin}); if(!r.error) return r.data||[];
+      const v=vin.trim().toUpperCase();
+      return S.cases.filter(c=>(c.vin||'').trim().toUpperCase()===v).map(c=>({id:c.id,dealer_id:c.dealer_id,dealer_name:dName(c.dealer_id),sp:c.sp,arrival_date:c.arrival_date,delivered_date:c.delivered_date,problem_cat:c.problem_cat,symptom:c.symptom,detail:true})); },
+    async deleteUser(uid){ const r=await sb.rpc('admin_delete_user',{uid});
+      if(r.error && /admin_delete_user|function|schema cache/i.test(r.error.message||'')) throw {message:L('ยังลบในแอปไม่ได้ — ลบที่ Supabase → Authentication → Users → ⋮ → Delete user','Delete isn\'t set up in the app yet — use Supabase → Authentication → Users → ⋮ → Delete user')};
+      ok(r); },
     async steps(){ return ok(await sb.from('vor_steps').select('*').order('round').order('created_at')); },
     async logs(caseId){ return ok(await sb.from('vor_log').select('*').eq('case_id',caseId).order('id',{ascending:false})); },
     async saveCase(c){
@@ -777,13 +801,14 @@ function viewBoard(){
   const list=filtered(), T=today(), open=list.filter(c=>!c._t.done);
   const avg=open.length?Math.round(open.reduce((s,c)=>s+c._t.total,0)/open.length):0;
   const stats=[[L('รถค้างซ่อม','Open vehicles'),open.length,''],[L('จอด','Parked'),open.filter(c=>c.parked).length,''],[L('ค้างที่ GWM','Waiting on GWM'),open.filter(c=>c._t.cur.o==='G').length,'g'],
-    [L('ค้างที่ Partner','Waiting on Partner'),open.filter(c=>c._t.cur.o==='P').length,'p'],[L('มีรถใช้ระหว่างซ่อม','Loaner cars out'),open.filter(c=>c.loaner).length,''],[L('ค่ากลางวันค้าง','Median days open'),qtl(open.map(c=>c._t.total),.5),''],[L('ซ่อมซ้ำ (รอบ 2+)','Repeat repair (round 2+)'),open.filter(c=>c._t.round>1).length,''],[L('ข้อมูลยังไม่ครบ','Incomplete info'),open.filter(c=>(c._todo||[]).length).length,'']];
+    [L('ค้างที่ Partner','Waiting on Partner'),open.filter(c=>c._t.cur.o==='P').length,'p'],[L('มีรถใช้ระหว่างซ่อม','Loaner cars out'),open.filter(c=>c.loaner).length,''],[L('ค่ากลางวันค้าง','Median days open'),qtl(open.map(c=>c._t.total),.5),''],[L('ข้อมูลยังไม่ครบ','Incomplete info'),open.filter(c=>(c._todo||[]).length).length,'']];
   const cols=COL_ORDER.filter(k=>k!=='done'||S.f.showDone), g={};
   cols.forEach(k=>g[k]=[]);
   list.forEach(c=>{ const k=c._t.cur.k; if(k==='done' && dd(c.delivered_date,T)>30) return; if(g[k]) g[k].push(c); });
   Object.keys(g).forEach(k=> g[k].sort((a,b)=> k==='done' ? b.delivered_date.localeCompare(a.delivered_date) : b._t.curDays-a._t.curDays || b._t.total-a._t.total));
   const hideEmpty = k => k==='decide' && !g[k].length;
-  return `<div class="stats">${stats.map(s=>`<div class="stat ${s[2]}"><div class="v">${s[1]}</div><div class="l">${s[0]}</div></div>`).join('')}</div>
+  const keys=['open','parked','own:G','own:P','loaner','open','alert:todo'];
+  return `<div class="stats">${stats.map((s,i)=>`<button class="stat kp ${s[2]}" data-bdrill="${keys[i]}"><div class="v">${s[1]}</div><div class="l">${s[0]}</div></button>`).join('')}</div>
   <div class="legend">${['P','G'].map(k=>`<span><span class="dot" style="background:${OWN[k].c}"></span> ${OWN[k].n}</span>`).join('')}<span>· ${L('ลากการ์ดไปคอลัมน์ถัดไปเพื่ออัปเดตสถานะ (บนคอมพิวเตอร์) · แตะการ์ดเพื่อแก้ไข','Drag a card to another column to update it (desktop) · tap a card to edit')}</span></div>
   <div class="board">${cols.filter(k=>!hideEmpty(k)).map((k,i)=>{ const o=ST[k].o;
     return `<div class="col ${k==='decide'?'alert':''}" data-col="${k}">
@@ -861,16 +886,15 @@ function viewStats(){
   const dealers=Object.values(dg).sort((a,b)=>b.tot/b.n-a.tot/a.n);
   const rep=list.filter(c=>c._t.round>1).length;
   const grp=keyFn=>{ const m={}; list.forEach(c=>{ const k=keyFn(c)||'—'; const e=m[k]=m[k]||{k,n:0,tot:0,P:0,G:0,rep:0}; e.n++; e.tot+=c._t.total; e.P+=c._t.own.P; e.G+=c._t.own.G; if(c._t.round>1) e.rep++; }); return Object.values(m).sort((a,b)=>b.n-a.n||b.tot/b.n-a.tot/a.n); };
-  const gTable=(title,rows,label)=>`<div class="panel"><h3>${title}</h3><div class="tw" style="max-height:none;border:0"><table><thead><tr><th>${label}</th><th>${L('คัน','Vehicles')}</th><th>${L('เฉลี่ย (วัน)','Avg (days)')}</th><th>Partner</th><th>GWM</th><th>${L('ซ่อมซ้ำ','Repeat')}</th></tr></thead><tbody>
-    ${rows.map(e=>{const t=e.P+e.G;return `<tr><td>${esc(e.k)}</td><td>${e.n}</td><td><b>${(e.tot/e.n).toFixed(1)}</b></td><td style="color:${OWN.P.c}">${pct(e.P,t)}%</td><td style="color:${OWN.G.c}">${pct(e.G,t)}%</td><td>${e.rep||''}</td></tr>`;}).join('')}</tbody></table></div></div>`;
+  const gTable=(title,rows,label)=>`<div class="panel"><h3>${title}</h3><div class="tw" style="max-height:none;border:0"><table><thead><tr><th>${label}</th><th>${L('คัน','Vehicles')}</th><th>${L('เฉลี่ย (วัน)','Avg (days)')}</th><th>Partner</th><th>GWM</th></tr></thead><tbody>
+    ${rows.map(e=>{const t=e.P+e.G;return `<tr><td>${esc(e.k)}</td><td>${e.n}</td><td><b>${(e.tot/e.n).toFixed(1)}</b></td><td style="color:${OWN.P.c}">${pct(e.P,t)}%</td><td style="color:${OWN.G.c}">${pct(e.G,t)}%</td></tr>`;}).join('')}</tbody></table></div></div>`;
   const byProb=grp(c=>c.problem_cat?probName(c.problem_cat):L('ยังไม่ระบุ','Not set'));
   const byRsm=isStaff()?grp(c=>(dealerById(c.dealer_id)||{}).rsm):[];
   return `<div class="stats">
     <div class="stat"><div class="v">${n}</div><div class="l">${L('จำนวนรถ','Vehicles')}</div></div>
     <div class="stat"><div class="v">${(list.reduce((s,c)=>s+c._t.total,0)/n).toFixed(1)}</div><div class="l">${L('เฉลี่ยรวม (วัน/คัน)','Avg total (days/vehicle)')}</div></div>
     <div class="stat p"><div class="v">${avg('P')}</div><div class="l">Partner (${L('วัน/คัน','days/vehicle')})</div></div>
-    <div class="stat g"><div class="v">${avg('G')}</div><div class="l">GWM (${L('วัน/คัน','days/vehicle')})</div></div>
-    <div class="stat"><div class="v">${rep} <span class="mut sm">(${pct(rep,n)}%)</span></div><div class="l">${L('ซ่อมซ้ำ (รอบ 2+)','Repeat repair (round 2+)')}</div></div></div>
+    <div class="stat g"><div class="v">${avg('G')}</div><div class="l">GWM (${L('วัน/คัน','days/vehicle')})</div></div></div>
   <div class="panel"><h3>${L('เวลาทั้งหมดอยู่ฝั่งไหน','Where the time goes')}</h3>
     <div class="dnwrap">${donut([{key:'G',v:own.G,color:OWN.G.c,label:'GWM'},{key:'P',v:own.P,color:OWN.P.c,label:'Partner (PS)'}],tot,pct(own.G,tot)+'%','GWM')}<div class="dnleg">${['G','P'].map(k=>`<div class="dlg"><span class="dot" style="background:${OWN[k].c}"></span><b>${k==='G'?'GWM':'Partner (PS)'}</b><span class="big2">${pct(own[k],tot)}%</span><span class="mut sm">${own[k]} ${L('วัน-คัน','veh-days')}</span></div>`).join('')}</div></div>
     <div class="mut sm">${L('รวม','Total')} ${tot} ${L('วัน-คัน','vehicle-days')} · Partner ${own.P} · GWM ${own.G}</div></div>
@@ -879,9 +903,9 @@ function viewStats(){
       ${vbars(stages.map(s=>({label:stName(s.k),v:s.avg,color:oc(s.o),sub:s.n+' '+L('คัน','veh.')})),{wide:true})}</div>
     <div class="panel"><h3>${L('อายุรถค้าง (วันรวม)','Vehicle age (total days)')}</h3>${vbars(B.map(b=>({label:b.l,v:b.v,color:'#6b7280'})))}</div>
   </div>
-  <div class="panel"><h3>${L('แยกตามศูนย์','By dealer')}</h3><div class="tw" style="max-height:none;border:0"><table><thead><tr><th>${L('ศูนย์','Dealer')}</th><th>${L('คัน','Vehicles')}</th><th>${L('เฉลี่ย (วัน)','Avg (days)')}</th><th>Partner</th><th>GWM</th><th>${L('ซ่อมซ้ำ','Repeat')}</th><th>${L('นานสุด','Longest')}</th></tr></thead><tbody>
+  <div class="panel"><h3>${L('แยกตามศูนย์','By dealer')}</h3><div class="tw" style="max-height:none;border:0"><table><thead><tr><th>${L('ศูนย์','Dealer')}</th><th>${L('คัน','Vehicles')}</th><th>${L('เฉลี่ย (วัน)','Avg (days)')}</th><th>Partner</th><th>GWM</th><th>${L('นานสุด','Longest')}</th></tr></thead><tbody>
     ${dealers.map(e=>{const t=e.P+e.G;return `<tr class="click" data-dealer="${e.id}"><td>${esc(dName(e.id))}</td><td>${e.n}</td><td><b>${(e.tot/e.n).toFixed(1)}</b></td>
-      <td style="color:${OWN.P.c}">${pct(e.P,t)}%</td><td style="color:${OWN.G.c}">${pct(e.G,t)}%</td><td>${e.rep||''}</td><td>${esc(e.max.sp)} · ${days(e.max._t.total)}</td></tr>`;}).join('')}
+      <td style="color:${OWN.P.c}">${pct(e.P,t)}%</td><td style="color:${OWN.G.c}">${pct(e.G,t)}%</td><td>${esc(e.max.sp)} · ${days(e.max._t.total)}</td></tr>`;}).join('')}
   </tbody></table></div></div>
   <div class="grid2">${gTable(L('แยกตามหมวดปัญหา','By problem category'),byProb,L('หมวดปัญหา','Problem'))}${byRsm.length?gTable(L('แยกตาม RSM','By RSM'),byRsm,'RSM'):''}</div>`;
 }
@@ -913,9 +937,20 @@ function dashScope(){ // ตัวกรองของหน้า ภาพร
     return true; });
 }
 const chips = (key,opts,cur,attr='data-dset') => `<div class="segc sm2">${opts.map(o=>`<button ${attr}="${key}" data-v="${o[0]}" class="${String(cur)===String(o[0])?'on':''}">${o[1]}</button>`).join('')}</div>`;
+function dqResults(){ // ผลค้นหา SP / VIN (รวมรถที่ส่งมอบแล้ว)
+  const q=(S.dq||'').trim().toUpperCase().replace(/\s+/g,''); if(q.length<3) return q?`<div class="mut sm" style="margin:-4px 0 10px">${L('พิมพ์อย่างน้อย 3 ตัว','Type at least 3 characters')}</div>`:'';
+  const l=S.cases.filter(c=>(c.sp||'').toUpperCase().includes(q)||(c.vin||'').toUpperCase().includes(q)).sort((a,b)=>(a._t.done-b._t.done)||b.arrival_date.localeCompare(a.arrival_date)).slice(0,30);
+  return `<div class="panel" style="padding:8px 14px"><div class="mut sm">${L('ผลค้นหา','Results')} ${l.length}${l.length===30?'+':''}</div>${l.map(c=>{ const t=c._t;
+    return `<div class="dr"><div class="drm" data-open="${c.id}"><div><b>${esc(c.sp)}</b> ${c.parked?`<span class="tag park" style="margin:0">${L('จอด','Parked')}</span>`:''}</div>
+      <div class="mut sm">${isStaff()?esc(dName(c.dealer_id))+' · ':''}${esc(c.model||'-')}${c.vin?' · '+esc(c.vin):''}</div>
+      <div class="sm">${t.done?`✅ ${L('ส่งมอบ','Delivered')} ${fmt(c.delivered_date)}`:`<span class="dot" style="background:${oc(t.cur.o)}"></span> ${esc(stName(t.cur.k))}`}</div></div>
+      <div class="drr">${t.done?'':ageBadge(t.total)}${c.vin?`<button class="lnk" data-vin="${esc(c.vin)}">VIN ›</button>`:''}</div></div>`; }).join('')||`<div class="mut" style="padding:8px 0">${L('ไม่พบ SP / VIN นี้','No matching SP / VIN')}</div>`}</div>`;
+}
 function dashBar(){
   const staff=isStaff(), f=S.df, rsms=[...new Set(S.dealers.map(d=>d.rsm).filter(Boolean))], ds=S.dealers.filter(d=>!f.rsm||d.rsm===f.rsm);
-  return `<div class="bar">
+  return `<div class="bar"><input type="search" data-dq placeholder="🔍 ${L('ค้นหา SP หรือ VIN','Search SP or VIN')}" value="${esc(S.dq||'')}" style="flex:1 1 100%" autocapitalize="characters"></div>
+  <div id="dqres">${dqResults()}</div>
+  <div class="bar">
     ${staff&&S.myRsm?chips('mine',[['',L('ทั้งหมด','All')],[S.myRsm,L('PS ของฉัน','My PS')]],f.rsm===S.myRsm?S.myRsm:''):''}
     ${staff?`<select data-df="rsm"><option value="">${L('ทุก RSM','All RSMs')}</option>${rsms.map(r=>`<option ${f.rsm===r?'selected':''}>${esc(r)}</option>`).join('')}</select>
     <select data-df="dealer"><option value="">${L('ทุกศูนย์ (PS)','All dealers (PS)')}</option>${ds.map(d=>`<option value="${d.id}" ${String(f.dealer)===String(d.id)?'selected':''}>${esc(d.name)}</option>`).join('')}</select>`:''}
@@ -971,7 +1006,6 @@ function viewDash(){
     ${kpi(Pn.length,L('ค้างที่ Partner','Waiting on Partner'),'p','data-drill="own:P"')}
     ${kpi(qtl(ages,.5),L('ค่ากลางวันค้าง','Median days open'),'','data-drill="open"')}
     ${kpi(qtl(ages,.9),L('90% ค้างไม่เกิน (วัน)','90% open ≤ (days)'),'','data-drill="open"')}
-    ${kpi(rep,L('ซ่อมซ้ำ (รอบ 2+)','Repeat (round 2+)'),'','data-drill="rep"',n?Math.round(rep/n*100)+'%':'')}
     ${kpi(open.filter(c=>c.loaner).length,L('มีรถใช้ระหว่างซ่อม','Loaner cars out'),'','data-drill="loaner"')}</div>`;
   if(!all.length) return dashBar()+head+`<div class="panel mut">${L('ยังไม่มีข้อมูลรถในตัวกรองนี้','No vehicles in this filter yet')}</div>`;
   // แจ้งเตือน
@@ -1027,6 +1061,16 @@ function viewDash(){
   // ปัญหาที่เจอบ่อย
   const pm={}; open.forEach(c=>{ const k=c.problem_cat||'none'; pm[k]=(pm[k]||0)+1; });
   const probP=`<div class="panel"><h3>${L('ปัญหาที่เจอบ่อย','Top problems')}</h3>${vbars(Object.entries(pm).sort((a,b)=>b[1]-a[1]).map(([k,v])=>({label:k==='none'?L('ยังไม่ระบุ','Not set'):probName(k),v,color:'#7c3aed',attr:`data-drill="prob:${k}"`})),{wide:true})}</div>`;
+  // PS ไหนไม่อัปเดตข้อมูล (เฉพาะ RSM / Admin)
+  let actP='';
+  if(staff && !S.df.dealer){ const ds=new Set(S.dealers.filter(d=>!S.df.rsm||d.rsm===S.df.rsm).map(d=>String(d.id)));
+    const act=psActivity(S.profiles||[],'stale').filter(x=>ds.has(String(x.d.id))), hasD=act.filter(x=>x.days!=null), noD=act.filter(x=>x.days==null);
+    if(S.d.asort==='asc') hasD.reverse();
+    actP=`<div class="panel"><h3>${L('PS ไหนไม่อัปเดตข้อมูล','Dealers not updating')}</h3>
+      <div class="ctl">${chips('asort',[['desc',L('นานสุด→ล่าสุด','Oldest→newest')],['asc',L('ล่าสุด→นานสุด','Newest→oldest')]],S.d.asort||'desc')}</div>
+      ${vbars(hasD.map(x=>({label:x.d.name,v:x.days,top:x.days===0?L('วันนี้','today'):x.days,color:x.days>14?'#c8102e':x.days>7?'#ea580c':'#16a34a',attr:`data-dealer-dash="${x.d.id}"`,sub:'🚗 '+x.open,tip:`${x.d.name}: ${L('อัปเดตล่าสุด','last update')} ${x.days} ${L('วันก่อน','days ago')} · ${L('รถค้าง','open')} ${x.open}`})),{wide:true})}
+      <div class="legend" style="margin:6px 0 0"><span>${L('ตัวเลข = อัปเดตล่าสุดกี่วันก่อน · 🚗 = รถค้าง','Number = days since last update · 🚗 = open cases')}</span><span><span class="dot" style="background:#ea580c"></span> &gt;7 ${L('วัน','d')}</span><span><span class="dot" style="background:#c8102e"></span> &gt;14 ${L('วัน','d')}</span></div>
+      ${noD.length?`<div class="mut sm" style="margin-top:8px">⚪ ${L('ยังไม่มีข้อมูลรถ','No vehicle data yet')} (${noD.length}): ${noD.map(x=>esc(x.d.name)).join(' · ')}</div>`:''}</div>`; }
   // เคลียรถออก
   const tp=throughput(all), sel=tp.find(p=>p.key===S.d.bucket);
   const tmax=Math.max(1,...tp.map(p=>Math.max(p.del.length,p.arr.length)));
@@ -1048,7 +1092,7 @@ function viewDash(){
       return h; })()}
     <div class="mut sm" style="margin-top:6px">${L('นับจากข้อมูลที่บันทึกใน VOR Live','Based on data recorded in VOR Live')}</div></div>`;
   const dealerHead=staff&&S.df.dealer?`<div class="msg dh">🏢 <b>${esc(dName(S.df.dealer))}</b> <span class="sp"></span><button class="btn sm" data-dealer-board="${S.df.dealer}">${L('เปิด Board','Open board')}</button><button class="btn sm" data-dealer-dash="">✕ ${L('ทุกศูนย์','All dealers')}</button></div>`:'';
-  return dashBar()+dealerHead+head+alerts+`<div class="grid2">${donutP}${cntP}</div>${topP}<div class="grid2">${stP}${ageP}</div>${probP}${tpP}`;
+  return dashBar()+dealerHead+head+alerts+`<div class="grid2">${donutP}${cntP}</div>${topP}<div class="grid2">${stP}${ageP}</div>${probP}${actP}${tpP}`;
 }
 function alertHit(c,k){ const ss=S.stepsBy[c.id]||[], T=today();
   if(k==='past_due') return c.est_delivery && c.est_delivery<T;
@@ -1063,6 +1107,7 @@ function drillDef(key){ const [a,b,c2]=key.split(':'), T=today();
   if(a==='open') return [L('รถค้างทั้งหมด','All open vehicles'),open];
   if(a==='own') return [L('ค้างที่ ','Waiting on ')+(b==='G'?'GWM':'Partner (PS)'),x=>open(x)&&x._t.cur.o===b];
   if(a==='rep') return [L('ซ่อมซ้ำ (รอบ 2+)','Repeat repair'),x=>open(x)&&x._t.round>1];
+  if(a==='parked') return [L('รถจอด','Parked vehicles'),x=>open(x)&&x.parked];
   if(a==='loaner') return [L('มีรถใช้ระหว่างซ่อม','Loaner cars out'),x=>open(x)&&x.loaner];
   if(a==='st') return [stName(b),x=>open(x)&&x._t.cur.k===b];
   if(a==='dept'){ const ks=(DEPTS[b].find(d=>d[0]===c2)||[0,[]])[1]; return [deptName(b,c2),x=>open(x)&&ks.includes(x._t.cur.k)]; }
@@ -1073,10 +1118,10 @@ function drillDef(key){ const [a,b,c2]=key.split(':'), T=today();
     return [L('ส่งมอบแล้ว ','Delivered ')+(sel?sel.label:''),x=>x.delivered_date&&x.delivered_date>=s&&x.delivered_date<=e,true]; }
   return [key,()=>false];
 }
-function openDrill(key){ S.drill={key,parked:'',prob:''}; renderDrill(); }
+function openDrill(key,src){ S.drill={key,parked:'',prob:'',src:src||'dash'}; renderDrill(); }
 function renderDrill(){
   const D=S.drill; if(!D) return; const [title,fn,isDel]=drillDef(D.key), staff=isStaff();
-  const base=dashScope().filter(fn);
+  const base=(D.src==='board'?filtered():dashScope()).filter(fn);
   const list=base.filter(c=>(!D.parked||(D.parked==='y')===!!c.parked)&&(!D.prob||(c.problem_cat||'none')===D.prob))
     .sort((a,b)=>isDel?b.delivered_date.localeCompare(a.delivered_date):b._t.total-a._t.total);
   const probs=[...new Set(base.map(c=>c.problem_cat||'none'))];
@@ -1345,6 +1390,31 @@ async function saveCase(){
 function dealerOpts(sel){ return `<option value="">${L('— ไม่ระบุ —','— None —')}</option>`+S.dealers.map(d=>`<option value="${d.id}" ${String(sel)===String(d.id)?'selected':''}>${esc(d.name)}</option>`).join(''); }
 function roleOpts(sel){ return [['ps','PS'],['rsm','RSM'],['admin','Admin'],['disabled',L('ระงับ','Disabled')]].map(r=>`<option value="${r[0]}" ${sel===r[0]?'selected':''}>${r[1]}</option>`).join(''); }
 function catOpts(sel,withNone){ return (withNone?`<option value="">—</option>`:'')+Object.keys(CATS).map(k=>`<option value="${k}" ${sel===k?'selected':''}>${esc(CATS[k][S.lang])}</option>`).join(''); }
+S.uf={q:'',dealer:'',sort:'dealer'};
+function psActivity(rest,cs){ // ราย PS: จำนวนผู้ใช้ รถค้าง และวันที่อัปเดตข้อมูลล่าสุด
+  const T=today(), last={};
+  S.cases.forEach(c=>{ const k=c.dealer_id, ts=[c.updated_at,c.created_at,c.arrival_date,...(S.stepsBy[c.id]||[]).map(x=>x.updated_at||x.created_at)].filter(Boolean).map(x=>String(x).slice(0,10)).sort().pop(); if(ts && (!last[k]||ts>last[k])) last[k]=ts; });
+  const rows=S.dealers.map(d=>{ const u=rest.filter(p=>String(p.dealer_id)===String(d.id));
+    return {d,users:u.length,svm:u.some(p=>p.category==='owner_svm'),open:S.cases.filter(c=>String(c.dealer_id)===String(d.id)&&!c._t.done).length,days:last[d.id]?Math.max(0,dd(last[d.id],T)):null}; });
+  return rows.sort((a,b)=> cs==='users'?b.users-a.users||a.d.name.localeCompare(b.d.name)
+    : cs==='few'?a.users-b.users||a.d.name.localeCompare(b.d.name)
+    : cs==='open'?b.open-a.open||a.d.name.localeCompare(b.d.name)
+    : cs==='name'?a.d.name.localeCompare(b.d.name)
+    : ((b.days==null?1e9:b.days)-(a.days==null?1e9:a.days)) || b.users-a.users || a.d.name.localeCompare(b.d.name));
+}
+function userList(rest,urow){ // ค้นหา / กรอง / เรียง รายชื่อผู้ใช้ในหน้า Admin
+  const q=S.uf.q.trim().toLowerCase(), qd=q.replace(/[^0-9]/g,'');
+  let l=rest.filter(p=>{ if(S.uf.dealer==='none'&&p.dealer_id) return false; if(S.uf.dealer&&S.uf.dealer!=='none'&&String(p.dealer_id)!==String(S.uf.dealer)) return false;
+    if(!q) return true; const ph=(p.phone||'').replace(/[^0-9]/g,'');
+    return [p.full_name,p.display_name,p.email,p.line_id,p.phone,p.dealer_id?dName(p.dealer_id):'',catName(p.category),p.role].join(' ').toLowerCase().includes(q) || (qd.length>=3&&ph.includes(qd)); });
+  const nm=p=>(p.full_name||p.display_name||p.email||'').toLowerCase();
+  if(S.uf.sort==='new') l.sort((a,b)=>String(b.created_at||'').localeCompare(String(a.created_at||'')));
+  else l.sort((a,b)=>nm(a).localeCompare(nm(b)));
+  if(!l.length) return `<div class="mut" style="padding:10px 0">${L('ไม่พบผู้ใช้','No users found')}</div>`;
+  if(S.uf.sort!=='dealer') return `<div class="mut sm">${l.length} ${L('คน','users')}</div>`+l.map(p=>urow(p,false)).join('');
+  const g={}; l.forEach(p=>{ const k=p.dealer_id?dName(p.dealer_id):'~'+L('RSM / Admin / ไม่มีศูนย์','RSM / Admin / no dealer'); (g[k]=g[k]||[]).push(p); });
+  return Object.keys(g).sort().map(k=>`<div class="poshead" style="margin-top:14px">🏢 ${esc(k.replace(/^~/,''))} <span class="mut">(${g[k].length})</span></div>`+g[k].map(p=>urow(p,false)).join('')).join('');
+}
 function viewAdmin(){
   const pend=S.profiles.filter(p=>p.role==='pending'), rest=S.profiles.filter(p=>p.role!=='pending');
   const urow=(p,isP)=>`<div class="urow"><div class="who"><b>${esc(p.full_name||p.display_name||'-')}</b><div class="mut sm">${esc(p.email||'')}${isP?` · ${L('ขอเป็น','requested')} ${esc(catName(p.category||p.requested_role))}`:''}${p.line_id?' · LINE '+esc(p.line_id):''}${p.phone?' · '+esc(p.phone):''}</div></div>
@@ -1372,7 +1442,16 @@ function viewAdmin(){
       <div class="hint" style="margin:8px 0">${L('บรรทัดละ 1 คน: อีเมล, ชื่อจริง, ตำแหน่ง (SVM / SA / ช่าง / อะไหล่ / Warranty / CR / RSM), ชื่อศูนย์หรือรหัสศูนย์','One per line: email, full name, position (SVM / SA / Foreman / Parts / Warranty / CR / RSM), dealer name or code')}</div>
       <textarea id="bulkAl" rows="5" style="width:100%" placeholder="somchai@chanroad.com, สมชาย ใจดี, SVM, GWM Bangkok Chan Road"></textarea>
       <button class="btn sm" data-act="bulkallowed" style="margin-top:6px">${L('นำเข้า','Import')}</button></details></div>
-  <div class="panel"><h3>${L('ผู้ใช้ทั้งหมด','All users')} (${rest.length})</h3>${rest.map(p=>urow(p,false)).join('')}</div>
+  <div class="panel"><h3>${L('ผู้ใช้ทั้งหมด','All users')} (${rest.length})</h3>
+    <div class="bar" style="margin-bottom:6px"><input type="search" data-uq placeholder="${L('ค้นหา ชื่อ / เบอร์ / อีเมล / LINE / ศูนย์','Search name / phone / email / LINE / dealer')}" value="${esc(S.uf.q)}" style="flex:1 1 220px">
+      <select data-uf="dealer"><option value="">${L('ทุกศูนย์','All dealers')}</option><option value="none" ${S.uf.dealer==='none'?'selected':''}>${L('ไม่มีศูนย์ (RSM / Admin)','No dealer (RSM / Admin)')} (${rest.filter(p=>!p.dealer_id).length})</option>${S.dealers.map(d=>`<option value="${d.id}" ${String(S.uf.dealer)===String(d.id)?'selected':''}>${esc(d.name)} (${rest.filter(p=>String(p.dealer_id)===String(d.id)).length})</option>`).join('')}</select>
+      <select data-uf="sort"><option value="dealer" ${S.uf.sort==='dealer'?'selected':''}>${L('เรียงตามศูนย์','Group by dealer')}</option><option value="name" ${S.uf.sort==='name'?'selected':''}>${L('เรียงตามชื่อ','By name')}</option><option value="new" ${S.uf.sort==='new'?'selected':''}>${L('สมัครล่าสุด','Newest first')}</option></select></div>
+    <details class="ucnt" ${S.uf.open?'open':''}><summary>${L('จำนวนผู้ใช้ราย PS','Users per dealer')} · ${new Set(rest.filter(p=>p.dealer_id).map(p=>p.dealer_id)).size}/${S.dealers.length} ${L('ศูนย์มีคนสมัครแล้ว','dealers signed up')}</summary>
+      <div class="ctl" style="margin:8px 0 6px">${chips('csort',[['users',L('คนมากสุด','Most users')],['few',L('คนน้อยสุด','Fewest users')],['name',L('ชื่อ ก–ฮ','Name')]],S.uf.csort||'users','data-ucs')}</div>
+      <div class="ucg">${psActivity(rest,S.uf.csort||'users').map(x=>`<button class="ucc ${x.users?'':'zero'} ${String(S.uf.dealer)===String(x.d.id)?'on':''}" data-ufd="${x.d.id}">
+        <span class="ucn">${esc(x.d.name)}</span>
+        <span class="ucm">👤 <b>${x.users}</b> ${L('คน','users')}${x.users&&!x.svm?` · <i>⚠ ${L('ยังไม่มี SVM','no SVM yet')}</i>`:''}${!x.users?` · ${L('ยังไม่มีคนสมัคร','no sign-ups yet')}`:''}</span></button>`).join('')}</div></details>
+    <div id="ulist">${(S._ul=()=>userList(rest,urow))()}</div></div>
   <div class="panel"><h3>${L('รายชื่อศูนย์บริการ','Service centers')} (${S.dealers.length})</h3>
     <div class="tw" style="max-height:420px"><table><thead><tr><th>${L('รหัส','Code')}</th><th>${L('ชื่อศูนย์','Name')}</th><th>${L('โซน','Zone')}</th><th>RSM</th><th>${L('ใช้งาน','Active')}</th><th></th></tr></thead><tbody>
     ${[...S.dealers,{id:'new',name:'',code:'',zone:'',rsm:'',active:true}].map(d=>`<tr>
@@ -1473,16 +1552,19 @@ function tempPw(){ const a='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz2345
 /* ===================== Events ===================== */
 document.addEventListener('click', async e=>{
   if(e.target.closest('[data-stop]')) return;
-  const t=e.target.closest('[data-lvlrsm],[data-side2],[data-drill],[data-dside],[data-dset],[data-bucket],[data-dealer-dash],[data-dealer-board],[data-drf],[data-vin],[data-deluser],[data-follow],[data-copy],[data-copytext],[data-deldealer],[data-svm],[data-temppw],[data-delallowed],[data-clear],[data-toggle],[data-tab],[data-act],[data-open],[data-today],[data-rmstep],[data-addstep],[data-auth],[data-dealer],[data-saveuser],[data-reject],[data-savedealer],[data-demo],[data-lang]');
+  const t=e.target.closest('[data-ucs],[data-bdrill],[data-ufd],[data-lvlrsm],[data-side2],[data-drill],[data-dside],[data-dset],[data-bucket],[data-dealer-dash],[data-dealer-board],[data-drf],[data-vin],[data-deluser],[data-follow],[data-copy],[data-copytext],[data-deldealer],[data-svm],[data-temppw],[data-delallowed],[data-clear],[data-toggle],[data-tab],[data-act],[data-open],[data-today],[data-rmstep],[data-addstep],[data-auth],[data-dealer],[data-saveuser],[data-reject],[data-savedealer],[data-demo],[data-lang]');
   if(!t) return;
   const d=t.dataset;
   if(d.drill){ openDrill(d.drill); return; }
+  if(d.bdrill){ openDrill(d.bdrill,'board'); return; }
   if(d.dside){ S.d.side=S.d.side===d.dside?null:d.dside; renderMain(); return; }
   if(d.dset){ const k=d.dset, v=d.v;
     if(k==='parked'||k==='age') S.df[k]=v;
     else if(k==='mine'){ S.df.rsm=v; S.df.dealer=''; }
     else { S.d[k]=(k==='topN')?+v:v; if(k==='per') S.d.bucket=null; if(k==='lvl') S.d.side2=null; }
     renderMain(); return; }
+  if(d.ucs){ S.uf.csort=d.v; S.uf.open=true; renderMain(); return; }
+  if(d.ufd){ S.uf.dealer=String(S.uf.dealer)===d.ufd?'':d.ufd; S.uf.open=true; renderMain(); return; }
   if(d.lvlrsm!==undefined){ S.df.rsm=d.lvlrsm==='—'?'':d.lvlrsm; S.df.dealer=''; S.d.lvl='ps'; renderMain(); return; }
   if(d.side2!==undefined){ S.d.side2=d.side2||null; renderMain(); return; }
   if(d.bucket!==undefined){ S.d.bucket=S.d.bucket===d.bucket?null:d.bucket; renderMain(); return; }
@@ -1594,6 +1676,7 @@ function confirmDel(){ // กดลบ 2 ครั้งภายใน 3 วิ
 }
 document.addEventListener('change', e=>{
   const el=e.target;
+  if(el.dataset.uf){ S.uf[el.dataset.uf]=el.value; renderMain(); return; }
   if(el.dataset.df){ S.df[el.dataset.df]=el.value; if(el.dataset.df==='rsm') S.df.dealer=''; renderMain(); return; }
   if(el.dataset.drsel){ S.drill[el.dataset.drsel]=el.value; renderDrill(); return; }
   if(el.closest('#modal')){ if(!S.edit) return; // ช่องที่เปลี่ยนหน้าตาฟอร์ม → วาดใหม่, ที่เหลือแค่อัปเดตตัวอย่างสถานะ
@@ -1610,6 +1693,8 @@ document.addEventListener('input', e=>{
   if(el.closest('#modal')){ if(!S.edit) return; if(el.type==='date'){ const st=el.dataset.s!=null&&S.edit.steps[+el.dataset.s];
       if(st&&st.kind==='test'&&el.value&&!st.result){ const r=$(`#modal input[name="tr_${el.dataset.s}"][value="testing"]`); if(r) r.checked=true; } const c=el.parentElement.querySelector('.clr'); if(c) c.classList.toggle('hidden',!el.value); updatePreview(); } return; }
   if(el.dataset.f==='q'){ S.f.q=el.value; renderView(); }
+  if(el.dataset.dq!==undefined){ S.dq=el.value; const r=$('#dqres'); if(r) r.innerHTML=dqResults(); }
+  if(el.dataset.uq!==undefined){ S.uf.q=el.value; const u=$('#ulist'); if(u&&S._ul) u.innerHTML=S._ul(); }
 });
 document.addEventListener('submit', async e=>{
   e.preventDefault(); const f=e.target, fd=new FormData(f), btn=f.querySelector('button.pri'); btn.disabled=true;
