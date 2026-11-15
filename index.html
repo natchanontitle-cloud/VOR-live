@@ -126,6 +126,18 @@ a.sm{color:var(--red);text-decoration:none}
 .credit{text-align:center;font-size:11px;color:#9ca3af;padding:14px 0 22px;letter-spacing:.2px}.credit a,.ver{color:inherit;text-decoration:none}
 .ver{font-size:11px;color:#9ca3af;margin-left:-4px;align-self:flex-end;padding-bottom:3px}
 .auth{flex-direction:column}.auth .credit{padding-top:16px}
+.prob{font-size:11.5px;margin-top:5px;font-weight:600;color:#7c3aed;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.prob .mut{font-weight:400}
+.lastup{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:7px;font-size:11px;color:var(--mut);border-top:1px dashed var(--line);padding-top:6px}
+.fol{border:1px solid #bbf7d0;background:#f0fdf4;color:#15803d;border-radius:99px;font-size:11px;padding:2px 9px;font-weight:600}
+.btn.line{background:#06c755;border-color:#06c755;color:#fff;font-weight:600;text-decoration:none}.btn.sm.line{display:inline-flex;align-items:center}
+a.btn{text-decoration:none;display:inline-flex;align-items:center}
+.msgbox{white-space:pre-wrap;font-family:inherit;font-size:13px;background:#f8f9fb;border:1px solid var(--line);border-radius:10px;padding:10px;margin:0}
+.crow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}.crow .who{flex:1 1 180px}.cbtn{display:flex;gap:6px}
+.ctag{font-size:10.5px;background:#ecfdf5;color:#047857;border-radius:99px;padding:1px 7px;font-weight:600}
+.poshead{font-size:12px;font-weight:700;color:var(--mut);margin:10px 0 0;text-transform:none}.warnmsg{background:#fef3c7;color:#92400e;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.todo{font-size:11px;color:#1d4ed8;background:#eff6ff;border-radius:6px;padding:3px 7px;margin-top:6px}.todo.inl{display:inline-block;margin:2px 0}
+.cic{display:inline-flex;gap:4px;margin-left:4px;vertical-align:middle}.cic a{font-size:11px;text-decoration:none;border:1px solid var(--line);border-radius:99px;padding:1px 7px;background:#fff;color:var(--ink)}
+.cic a.ln{background:#06c755;border-color:#06c755;color:#fff;font-weight:700}.lastup a.tel{text-decoration:none;margin-left:4px}
 /* auth */
 .auth{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(160deg,#fff 0%,#fdecef 100%)}
 .authbox{background:#fff;border-radius:16px;box-shadow:0 10px 40px rgba(200,16,46,.12);padding:26px;width:min(400px,100%)}
@@ -163,8 +175,15 @@ const CONFIG = {
   SUPABASE_ANON_KEY: 'sb_publishable_RESqSgvp97Bh5thFluhs0w_M1LYS4dk'
 };
 // ===== เวอร์ชัน: อัปเกรดทุกครั้ง ให้เพิ่มเลข + เพิ่มรายการไว้บนสุดของ CHANGELOG =====
-const APP_VERSION = '1.0';
+const APP_VERSION = '1.1.3';
 const CHANGELOG = [
+  {v:'1.1.3', d:'2026-11-15', th:['ทุกขั้นตอนที่มีชื่อคนบันทึก กดโทร / ส่ง LINE / เปิดแชท หาคนนั้นได้ทันที (ในเคสและประวัติการบันทึก)','การ์ดมีปุ่ม 📞 โทรหาคนอัปเดตล่าสุด'],
+                              en:['Every step stamp has call / LINE / chat buttons for the person who entered it (in the case and its history)','Cards show 📞 to call the last updater']},
+  {v:'1.1.2', d:'2026-11-15', th:['บันทึกได้แม้ยังไม่มีเลข JS / YS / PO / BO / ETA หรือวันที่ยังไม่ครบ — ขึ้นป้าย "ยังขาด" ให้กลับมาเติม','ห้ามบันทึกเฉพาะ: ไม่มีศูนย์ / SP / วันที่รถมาถึง หรือใส่วันส่งมอบทั้งที่ทดสอบไม่ผ่าน'],
+                              en:['Save without JS / YS / PO / BO / ETA numbers or missing dates — a "to fill" note shows on the card','Only blocked: no dealer / SP / arrival date, or delivery while the latest test failed']},
+  {v:'1.1.1', d:'2026-11-15', th:['ใส่วันทดสอบแต่ยังไม่เลือกผล → ตั้งเป็น "อยู่ระหว่างทดสอบ" ให้อัตโนมัติ (ไม่ติดบันทึก)'], en:['Test date without a result now defaults to "Testing" instead of blocking save']},
+  {v:'1.1', d:'2026-11-15', th:['ตามงานทาง LINE: เห็นคนอัปเดตล่าสุด กดส่ง LINE / เปิดแชท / โทรได้จากการ์ด','ส่งสรุปรถค้างของศูนย์ทาง LINE ในข้อความเดียว','ระบุปัญหา: หมวดปัญหา อาการ สาเหตุ + วิเคราะห์ตามหมวดปัญหา','ดูราย RSM (หน้าแรกกรอง PS ของตัวเอง) + ตารางแยกตาม RSM','บัญชีของฉัน: ใส่ LINE ID / เบอร์โทร','Admin: เลขแดงคำขอรออนุมัติ, ลบศูนย์ที่ยังว่าง'],
+                            en:['LINE follow-up: see who updated last, send LINE / open chat / call from the card','Send a dealer\'s open-case summary to LINE in one message','Problem: category, symptom, cause + analysis by problem category','Per-RSM view (defaults to your own PS) + by-RSM table','My account: LINE ID / phone','Admin: pending-request badge, delete empty dealers']},
   {v:'1.0', d:'2026-11-15', th:['เปิดใช้งานครั้งแรก: Board 9 สถานะ, รอบการซ่อม, สิทธิ์ตามตำแหน่ง, ทีมงานศูนย์ (SVM), TH/EN'],
                             en:['First release: 9-status board, repair rounds, position-based access, SVM team management, TH/EN']}
 ];
@@ -204,7 +223,7 @@ const langBtn = () => `<button class="btn sm lang" data-lang="${S.lang==='en'?'t
 /* ===================== ค่าคงที่ ===================== */
 const DEMO = !CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY;
 const CASE_DATES = ['arrival_date','est_delivery','analysis_date','customer_contact_date','delivered_date'];
-const CASE_FIELDS = ['id','dealer_id','sp','vin','model','parked','loaner','cost_band','remark',...CASE_DATES];
+const CASE_FIELDS = ['id','dealer_id','sp','vin','model','parked','loaner','cost_band','remark','problem_cat','symptom','cause',...CASE_DATES];
 const STEP_FIELDS = ['id','round','kind','ref_no','d1','d2','d3','result','parts_type','note'];
 
 /* ===================== utils ===================== */
@@ -316,8 +335,15 @@ const CATS = {
   warranty: {th:'Warranty',             en:'Warranty'},
   cr:       {th:'CR (ติดตามลูกค้า)',     en:'CR (Customer relations)'}
 };
+const PROBLEMS = {
+  engine:{th:'เครื่องยนต์',en:'Engine'}, electrical:{th:'ระบบไฟฟ้า',en:'Electrical'}, hv:{th:'แบตเตอรี่ / ระบบ HEV-PHEV-EV',en:'HV battery / hybrid-EV system'},
+  transmission:{th:'เกียร์ / ระบบส่งกำลัง',en:'Transmission / drivetrain'}, chassis:{th:'ช่วงล่าง / พวงมาลัย',en:'Suspension / steering'}, brakes:{th:'เบรก',en:'Brakes'},
+  ac:{th:'แอร์',en:'A/C'}, software:{th:'ซอฟต์แวร์ / จอ / ADAS',en:'Software / display / ADAS'}, body:{th:'ตัวถัง / อุปกรณ์ภายใน',en:'Body / trim'}, other:{th:'อื่นๆ',en:'Other'}
+};
+const probName = k => PROBLEMS[k] ? PROBLEMS[k][S.lang] : (k||'');
+const FOLLOW_CATS = { diag:['foreman'], js_wait:['foreman'], js_close:['foreman'], ys_open:['warranty'], ys_wait:['warranty'], parts_order:['parts'], eta:['parts'], test:['foreman'], follow:['cr','sa'], decide:['owner_svm','sa'], done:['cr'] };
 const catName = k => CATS[k] ? CATS[k][S.lang] : (k==='rsm'?'RSM':k==='admin'?'Admin':(k||''));
-const CASE_EDIT = { foreman:['analysis_date','parked'], warranty:['cost_band'], parts:[], cr:['parked','loaner','est_delivery','customer_contact_date','delivered_date'] };
+const CASE_EDIT = { foreman:['analysis_date','parked','problem_cat','symptom','cause'], warranty:['cost_band'], parts:[], cr:['parked','loaner','est_delivery','customer_contact_date','delivered_date'] };
 const STEP_EDIT = { foreman:['js','assemble','test'], warranty:['ys'], parts:['parts'], cr:[] };
 const FULL = () => isStaff() || ['owner_svm','sa'].includes(S.me && S.me.category);
 const canField = f => FULL() || f==='remark' || (CASE_EDIT[S.me.category]||[]).includes(f);
@@ -334,12 +360,16 @@ const meName = () => S.me.full_name || S.me.display_name || S.me.email || '';
 const meTag = () => S.me.role==='ps' ? 'PS · '+catName(S.me.category) : S.me.role.toUpperCase();
 const FIELD_L = { created:['เปิดเคส','opened case'], sp:['SP','SP'], vin:['VIN','VIN'], model:['รุ่น','model'], arrival_date:['วันที่มาถึง','arrival'], parked:['จอด/ไม่จอด','parked'],
   loaner:['รถใช้ระหว่างซ่อม','loaner'], est_delivery:['นัดส่งมอบ','est. delivery'], analysis_date:['ช่างวิเคราะห์','diagnosis'], cost_band:['ค่าซ่อม','cost band'],
-  customer_contact_date:['โทรแจ้งลูกค้า','customer contact'], delivered_date:['ส่งมอบ','delivered'], remark:['หมายเหตุ','remark'], dealer_id:['ศูนย์','dealer'],
+  customer_contact_date:['โทรแจ้งลูกค้า','customer contact'], problem_cat:['หมวดปัญหา','problem'], symptom:['อาการ','symptom'], cause:['สาเหตุ','cause'], delivered_date:['ส่งมอบ','delivered'], remark:['หมายเหตุ','remark'], dealer_id:['ศูนย์','dealer'],
   ref_no:['เลขอ้างอิง','ref no.'], d1:['วันที่','date'], d2:['วันที่','date'], d3:['วันที่','date'], result:['ผล','result'], parts_type:['PO/BO','PO/BO'], note:['รายละเอียด','details'], round:['รอบ','round'] };
 const KIND_L = { case:['ข้อมูลรถ','vehicle'], js:['JS','JS'], ys:['YS','YS'], parts:['อะไหล่','parts'], assemble:['ประกอบ','assembly'], test:['ทดสอบ','test'] };
-const SEC_FIELDS = { vehicle:['created','sp','vin','model','arrival_date','parked','loaner','est_delivery','analysis_date','cost_band','dealer_id'], delivery:['customer_contact_date','delivered_date'], remark:['remark'] };
+const SEC_FIELDS = { problem:['problem_cat','symptom','cause'], vehicle:['created','sp','vin','model','arrival_date','parked','loaner','est_delivery','analysis_date','cost_band','dealer_id'], delivery:['customer_contact_date','delivered_date'], remark:['remark'] };
 const fmtTs = ts => { const d=new Date(ts); return pad(d.getDate())+'/'+pad(d.getMonth()+1)+' '+pad(d.getHours())+':'+pad(d.getMinutes()); };
-const stampHtml = lg => lg ? `✎ ${esc(lg.actor_name||'?')} <span class="mut">(${esc(catName(lg.actor_cat))})</span> · ${fmtTs(lg.at)}` : '';
+function contactIcons(actorId, caseObj){ // ปุ่มโทร / ส่ง LINE / เปิดแชท ของคนที่บันทึก
+  const p=(S.contacts||[]).find(x=>x.user_id===actorId); if(!p || !S.me || p.user_id===S.me.user_id) return '';
+  const msg=caseObj?caseMsg(caseObj,(p.full_name||'').split(' ')[0]):'';
+  return `<span class="cic">${p.phone?`<a href="tel:${esc(p.phone.replace(/[^0-9+]/g,''))}" title="${L('โทร','Call')} ${esc(p.phone)}" aria-label="${L('โทร','Call')}">📞</a>`:''}${caseObj?`<a href="${lineShare(msg)}" target="_blank" rel="noopener" class="ln" title="${L('ส่ง LINE','Send LINE')}" aria-label="LINE">LINE</a>`:''}${p.line_id&&caseObj?`<a href="${lineChat(p.line_id)}" target="_blank" rel="noopener" data-copy="${esc(msg)}" title="${L('เปิดแชท (copy ข้อความไว้ให้แล้ว)','Open chat (message copied)')}" aria-label="${L('เปิดแชท','Open chat')}">💬</a>`:''}</span>`; }
+const stampHtml = (lg, caseObj) => lg ? `✎ ${esc(lg.actor_name||'?')} <span class="mut">(${esc(catName(lg.actor_cat))})</span> · ${fmtTs(lg.at)} ${contactIcons(lg.actor, caseObj)}` : '';
 
 /* ===================== Data layer: Supabase ===================== */
 function supaApi(){
@@ -374,6 +404,10 @@ function supaApi(){
     async profiles(){ return ok(await sb.from('profiles').select('*').order('created_at',{ascending:false})); },
     async updateProfile(uid,p){ ok(await sb.from('profiles').update(p).eq('user_id',uid)); },
     async setTempPw(uid,pw){ ok(await sb.rpc('admin_set_password',{uid,pw})); },
+    async contacts(){ return ok(await sb.rpc('contacts')) || []; },
+    async lastUpdates(){ return ok(await sb.rpc('last_updates')) || []; },
+    async updateMyContact(line,phone){ ok(await sb.rpc('update_my_contact',{p_line:line,p_phone:phone})); },
+    async deleteDealer(id){ ok(await sb.from('dealers').delete().eq('id',id)); },
     async svmSetMember(uid,role,cat){ ok(await sb.rpc('svm_set_member',{uid,new_role:role,cat:cat||null})); },
     async allowed(){ return ok(await sb.from('allowed_emails').select('*').order('created_at',{ascending:false})); },
     async saveAllowed(rows){ ok(await sb.from('allowed_emails').upsert(rows)); },
@@ -393,12 +427,12 @@ const SEED_DEALERS = [
  ['Anuphas Phuket Kathu','South'],['Chookiat Hatyai','South'],['Chookiat Krabi','South'],['Chookiat Nakhon Si Thammarat','South'],['Chookiat Songkhla','South'],
  ['KT Suratthani','South'],['Origin Chumphon','South'],['Tara Huahin','South'],['YASYALA','South'],['ANN Pattani','South'],['Chookiat Trang','South'],['Sitthiphan Phetchaburi','South']];
 const DEMO_USERS = {
-  admin:   {user_id:'u1',email:'nat@example.com',full_name:'Natchanon C.',role:'admin',category:null,dealer_id:null},
-  owner_svm:{user_id:'u2',email:'svm@chanroad.example',full_name:'สมชาย ใจดี',role:'ps',category:'owner_svm',dealer_id:1},
-  foreman: {user_id:'u4',email:'fm@chanroad.example',full_name:'เอก ช่างใหญ่',role:'ps',category:'foreman',dealer_id:1},
+  admin:   {user_id:'u1',email:'nat@example.com',full_name:'Natchanon C.',role:'admin',category:null,dealer_id:null,line_id:'natchanon.c',phone:'0800000000'},
+  owner_svm:{user_id:'u2',email:'svm@chanroad.example',full_name:'สมชาย ใจดี',role:'ps',category:'owner_svm',dealer_id:1,line_id:'somchai.svm',phone:'0811111111'},
+  foreman: {user_id:'u4',email:'fm@chanroad.example',full_name:'เอก ช่างใหญ่',role:'ps',category:'foreman',dealer_id:1,line_id:'aek.tech',phone:'0822222222'},
   warranty:{user_id:'u5',email:'wty@chanroad.example',full_name:'ฝน วารันตี',role:'ps',category:'warranty',dealer_id:1},
-  parts:   {user_id:'u6',email:'parts@chanroad.example',full_name:'บี อะไหล่',role:'ps',category:'parts',dealer_id:1},
-  cr:      {user_id:'u7',email:'cr@chanroad.example',full_name:'แนน CR',role:'ps',category:'cr',dealer_id:1}
+  parts:   {user_id:'u6',email:'parts@chanroad.example',full_name:'บี อะไหล่',role:'ps',category:'parts',dealer_id:1,line_id:'bee.parts'},
+  cr:      {user_id:'u7',email:'cr@chanroad.example',full_name:'แนน CR',role:'ps',category:'cr',dealer_id:1,phone:'0833333333'}
 };
 function demoApi(){
   let seq=1, lid=1;
@@ -408,7 +442,7 @@ function demoApi(){
       {user_id:'u8',email:'ton.tech@gmail.com',full_name:'ต้น ช่างใหม่',role:'pending',category:'foreman',requested_role:'ps',requested_dealer_id:1}],
     allowed:[{email:'sa2@chanroad.example',full_name:'เบล SA',role:'ps',category:'sa',dealer_id:1},{email:'svm@chanroad.example',full_name:'สมชาย ใจดี',role:'ps',category:'owner_svm',dealer_id:1},{email:'svm@hatyai.example',full_name:'วิชัย',role:'ps',category:'owner_svm',dealer_id:10}] };
   const who={case:DEMO_USERS.owner_svm, js:DEMO_USERS.foreman, assemble:DEMO_USERS.foreman, test:DEMO_USERS.foreman, ys:DEMO_USERS.warranty, parts:DEMO_USERS.parts};
-  const log=(cid,dealer,kind,action,fields,u,step_id,at)=>db.logs.push({id:lid++,case_id:cid,dealer_id:dealer,step_id:step_id||null,kind,action,fields:fields||null,
+  const log=(cid,dealer,kind,action,fields,u,step_id,at)=>db.logs.push({id:lid++,case_id:cid,dealer_id:dealer,step_id:step_id||null,kind,action,fields:fields||null,actor:u.user_id,
     actor_name:u.full_name,actor_cat:u.category||u.role,at:at||new Date().toISOString()});
   const D=n=>n==null?null:dAgo(n);
   const J=(ref,a,b,c,r)=>({kind:'js',ref_no:ref,d1:D(a),d2:D(b),d3:D(c),round:r||1});
@@ -422,21 +456,21 @@ function demoApi(){
     (steps||[]).forEach(s=>{ const st=Object.assign({id:'s'+(seq++),case_id:id,dealer_id},s); db.steps.push(st);
       log(id,dealer_id,s.kind,'insert',null,who[s.kind],st.id,(s.d3||s.d2||s.d1)+'T14:30:00'); }); };
   C(1,'SP2611-0412','Haval H6 HEV','LGWEF6A51RH000412',true,{arrival_date:D(2)});
-  C(2,'SP2611-0388','Tank 300','LGWFF7A59RJ000388',true,{arrival_date:D(12),analysis_date:D(11)},[J('JS-2611021',10)]);
+  C(2,'SP2611-0388','Tank 300','LGWFF7A59RJ000388',true,{problem_cat:'electrical',symptom:'ไฟเตือนระบบไฟฟ้าโชว์ สตาร์ทไม่ติดเป็นบางครั้ง',arrival_date:D(12),analysis_date:D(11)},[J('JS-2611021',10)]);
   C(14,'SP2611-0333','POER','LGWDB2A55RH000333',true,{arrival_date:D(5),analysis_date:D(5)},[J('JS-2611030',4,2)]);
   C(6,'SP2611-0290','Tank 500','LGWFF8A51RJ000290',true,{arrival_date:D(9),analysis_date:D(8),cost_band:'gt10k'},[J('JS-2611018',8,6,5)]);
   C(3,'SP2610-0951','ORA Good Cat','LGWEE2K55RH000951',true,{loaner:true,arrival_date:D(21),analysis_date:D(20),cost_band:'gt10k',est_delivery:D(1)},
     [J('JS-2610118',19,15,14),J('JS-2611004',14,10,9),Y('YS-2611007',8)]);
   C(7,'SP2611-0254','Haval Jolion HEV','LGWEF4A59RH000254',false,{arrival_date:D(6),analysis_date:D(5)});
-  C(4,'SP2610-0877','Haval Jolion','LGWEF4A55RH000877',true,{arrival_date:D(26),analysis_date:D(25)},[P('BO','BO-55821',23,2)]);
+  C(4,'SP2610-0877','Haval Jolion','LGWEF4A55RH000877',true,{problem_cat:'transmission',symptom:'เกียร์กระตุกตอนออกตัว',cause:'ชุดคลัตช์ DCT สึก',arrival_date:D(26),analysis_date:D(25)},[P('BO','BO-55821',23,2)]);
   C(5,'SP2611-0102','Haval H6','LGWEF6A50RH000102',false,{arrival_date:D(15),analysis_date:D(15),est_delivery:D(-6)},[P('PO','PO-66102',13,-3)]);
-  C(10,'SP2611-0170','Haval H6 HEV','LGWEF6A53RH000170',true,{arrival_date:D(18),analysis_date:D(17),cost_band:'gt10k'},[J('JS-2611012',16,14,14),P('BO','BO-55990',10,-5)]);
-  C(1,'SP2611-0399','Tank 500','LGWFF8A58RJ000399',true,{arrival_date:D(9),analysis_date:D(8)},[P('PO','PO-66231',7,3,2)]);
-  C(1,'SP2611-0371','Haval H6','LGWEF6A55RH000371',true,{arrival_date:D(11),analysis_date:D(10),cost_band:'gt10k'},[J('JS-2611016',10,8,8),Y('YS-2611010',7)]);
+  C(10,'SP2611-0170','Haval H6 HEV','LGWEF6A53RH000170',true,{problem_cat:'hv',symptom:'ไฟเตือนระบบไฮบริด วิ่งโหมด EV ไม่ได้',cause:'โมดูลแบตเตอรี่ HV',arrival_date:D(18),analysis_date:D(17),cost_band:'gt10k'},[J('JS-2611012',16,14,14),P('BO','BO-55990',10,-5)]);
+  C(1,'SP2611-0399','Tank 500','LGWFF8A58RJ000399',true,{problem_cat:'ac',symptom:'แอร์ไม่เย็น',cause:'คอมเพรสเซอร์',arrival_date:D(9),analysis_date:D(8)},[P('PO','PO-66231',7,3,2)]);
+  C(1,'SP2611-0371','Haval H6','LGWEF6A55RH000371',true,{problem_cat:'software',symptom:'จอกลางดับเอง',arrival_date:D(11),analysis_date:D(10),cost_band:'gt10k'},[J('JS-2611016',10,8,8),Y('YS-2611010',7)]);
   C(8,'SP2610-0712','Haval H6 PHEV','LGWEF6A57RH000712',true,{loaner:true,arrival_date:D(31),analysis_date:D(30),customer_contact_date:D(2),est_delivery:today()},
     [J('JS-2610077',30,29,29),P('BO','BO-55470',28,10,6),A(4),X(3,'pass')]);
   C(3,'SP2610-0802','Tank 300','LGWFF7A50RJ000802',true,{arrival_date:D(35),analysis_date:D(34),cost_band:'gt10k'},[Y('YS-2610031',30,'rejected',26)]);
-  C(4,'SP2610-0915','Haval H6','LGWEF6A52RH000915',true,{loaner:true,arrival_date:D(28),analysis_date:D(27)},
+  C(4,'SP2610-0915','Haval H6','LGWEF6A52RH000915',true,{problem_cat:'engine',symptom:'เครื่องสั่นรอบเดินเบา',loaner:true,arrival_date:D(28),analysis_date:D(27)},
     [J('JS-2610090',26,24,23),P('PO','PO-65990',22,18,17),A(16),X(15,'fail'),J('JS-2611015',14,12,null,2)]);
   C(2,'SP2610-0655','ORA 07','LGWEE7K52RH000655',true,{arrival_date:D(40),analysis_date:D(39),customer_contact_date:D(10),delivered_date:D(8)},
     [P('PO','PO-65811',37,20,16),A(12),X(11,'pass')]);
@@ -468,6 +502,11 @@ function demoApi(){
     async profiles(){ return cp(S.me.role==='admin'?db.profiles:db.profiles.filter(p=>p.user_id===S.me.user_id||p.dealer_id==S.me.dealer_id||(!p.dealer_id&&p.requested_dealer_id==S.me.dealer_id))); },
     async updateProfile(uid,p){ Object.assign(db.profiles.find(x=>x.user_id===uid),p); },
     async setTempPw(){ },
+    async contacts(){ const me=S.me; return cp(db.profiles.filter(p=>['ps','rsm','admin'].includes(p.role)&&((p.role==='ps'&&(me.role!=='ps'||p.dealer_id==me.dealer_id))||p.role!=='ps'))
+      .map(p=>({user_id:p.user_id,full_name:p.full_name,category:p.category,role:p.role,dealer_id:p.dealer_id,line_id:p.line_id||null,phone:p.phone||null}))); },
+    async lastUpdates(){ const v=vis(), m={}; db.logs.forEach(l=>{ if(v.includes(l.case_id)&&(!m[l.case_id]||l.id>m[l.case_id].id)) m[l.case_id]=l; }); return cp(Object.values(m)); },
+    async updateMyContact(line,phone){ const p=db.profiles.find(x=>x.user_id===S.me.user_id); Object.assign(p,{line_id:line||null,phone:phone||null}); Object.assign(S.me,{line_id:line||null,phone:phone||null}); },
+    async deleteDealer(id){ db.dealers=db.dealers.filter(d=>d.id!=id); },
     async svmSetMember(uid,role,cat){ const p=db.profiles.find(x=>x.user_id===uid);
       if(uid===S.me.user_id) throw {message:'NOT_SELF'};
       if(!p||!['pending','ps','disabled'].includes(p.role)||!(p.dealer_id==S.me.dealer_id||(!p.dealer_id&&p.requested_dealer_id==S.me.dealer_id))) throw {message:'NOT_YOUR_STAFF'};
@@ -490,9 +529,12 @@ async function loadAll(){
   st.forEach(x=>(S.stepsBy[x.case_id]=S.stepsBy[x.case_id]||[]).push(x));
   S.cases=c;
   computeAll();
+  try{ const [ct,lu]=await Promise.all([api.contacts(),api.lastUpdates()]); S.contacts=ct||[]; S.last={}; (lu||[]).forEach(x=>S.last[x.case_id]=x); }catch(e){ S.contacts=[]; S.last={}; }
+  if(!S.rsmInit && isStaff()){ S.rsmInit=true; const first=(S.me.full_name||'').split(/\s+/)[0].toLowerCase();
+    const mine=[...new Set(S.dealers.map(d=>d.rsm).filter(r=>r && first && r.toLowerCase().split(/\s+/)[0]===first))]; if(mine.length===1) S.f.rsm=mine[0]; }
   if(isAdmin()||isSvm()){ const [p,a]=await Promise.all([api.profiles(),api.allowed()]); S.profiles=p; S.allowed=a; }
 }
-function computeAll(){ S.cases.forEach(x=>{ const ss=S.stepsBy[x.id]||[]; x._t=timeline(x,ss); x._f=flags(x,x._t,ss); }); }
+function computeAll(){ S.cases.forEach(x=>{ const ss=S.stepsBy[x.id]||[]; x._t=timeline(x,ss); x._f=flags(x,x._t,ss); x._todo=x._t.done?[]:todoList(x,ss); }); }
 async function reload(){ try{ await loadAll(); renderMain(); }catch(e){ toast(errMsg(e)); } }
 function errMsg(e){
   if(!e) return L('เกิดข้อผิดพลาด','Something went wrong');
@@ -552,6 +594,8 @@ function renderAuth(mode, msg, isErr){
       <label id="suDealer">${L('ศูนย์บริการ *','Service center *')}<select name="dealer">${ds.map(d=>`<option value="${d.id}">${esc(d.name)}</option>`).join('')}</select></label>
       <label>${L('อีเมล *','Email *')}<input type="email" name="email" autocomplete="email" required></label>
       <label>${L('ตั้งรหัสผ่าน (อย่างน้อย 8 ตัว) *','Choose a password (min. 8 characters) *')}<input type="password" name="pw" minlength="8" autocomplete="new-password" required></label>
+      <label>${L('LINE ID (SVM ต้องใส่)','LINE ID (required for SVM)')}<input name="line" autocapitalize="none" placeholder="${L('ให้ทีมทักตามงานได้','so the team can reach you')}"></label>
+      <label>${L('เบอร์โทร (SVM ต้องใส่)','Phone (required for SVM)')}<input name="phone" type="tel"></label>
       <button class="btn pri wide">${L('สมัคร','Sign up')}</button>
       <div class="mut sm">${L('ถ้าอีเมลของคุณอยู่ในรายชื่อที่ RSM ลงไว้ จะเข้าใช้ได้ทันที — ถ้าไม่อยู่ ระบบจะส่งคำขอให้ RSM อนุมัติ แล้วเข้าด้วยรหัสที่ตั้งไว้นี้','If your email is on your RSM\'s list you can start right away — otherwise your request goes to the RSM, then you log in with the password you set here')}</div>
     </form>`;
@@ -587,13 +631,13 @@ function renderPending(){
 function renderApp(){
   computeAll();
   const tabs=[['board','Board'],['list',L('รายการ','List')],['stats',L('วิเคราะห์เวลา','Lead time')]];
-  if(isAdmin()) tabs.push(['admin',L('ผู้ใช้ & PS','Users & PS')]);
+  if(isAdmin()){ const n=(S.profiles||[]).filter(p=>p.role==='pending').length; tabs.push(['admin',L('ผู้ใช้ & PS','Users & PS')+(n?` <span class="badge">${n}</span>`:'')]); }
   if(isSvm()){ const n=(S.profiles||[]).filter(p=>p.role==='pending').length; tabs.push(['team',L('ทีมงานศูนย์','Team')+(n?` <span class="badge">${n}</span>`:'')]); }
   if(!tabs.some(t=>t[0]===S.tab)) S.tab='board';
   const psDealer = S.me.role==='ps' ? dName(S.me.dealer_id) : '';
   app.innerHTML=`${DEMO?demoBanner():''}
   <header class="top"><div class="brand">VOR <span>Live</span></div><a href="#" class="ver" data-act="changelog">v${APP_VERSION}</a><div class="hsub">${psDealer?esc(psDealer):L('GWM-AFS · ทุกศูนย์','GWM-AFS · all dealers')}</div>
-    <div class="user"><span class="hsub">${esc(meName())}</span><span class="role">${esc(meTag())}</span>${langBtn()}<button class="btn sm" data-act="chpw" title="${L('เปลี่ยนรหัสผ่าน','Change password')}">🔑</button>${DEMO?'':`<button class="btn sm" data-act="logout">${L('ออก','Log out')}</button>`}</div></header>
+    <div class="user"><span class="hsub">${esc(meName())}</span><span class="role">${esc(meTag())}</span>${langBtn()}<button class="btn sm" data-act="chpw" title="${L('บัญชีของฉัน','My account')}">👤</button>${DEMO?'':`<button class="btn sm" data-act="logout">${L('ออก','Log out')}</button>`}</div></header>
   <nav class="tabs">${tabs.map(t=>`<button data-tab="${t[0]}" class="${S.tab===t[0]?'on':''}">${t[1]}</button>`).join('')}</nav>
   <main id="main"></main>
   <footer class="credit">VOR Live <a href="#" data-act="changelog">v${APP_VERSION}</a> · ${CREDIT}</footer>`;
@@ -604,11 +648,12 @@ function demoBanner(){
   return `<div class="demo">${L('โหมดตัวอย่าง · ข้อมูลจำลอง ยังไม่ต่อ Supabase','Demo mode · sample data, not connected to Supabase')} <span class="sp"></span>${L('ดูแบบ:','View as:')}
     <select data-demo-sel>${Object.keys(DEMO_USERS).map(k=>`<option value="${k}" ${cur===k?'selected':''}>${k==='admin'?L('RSM (คุณ)','RSM (you)'):'PS Chan Road · '+esc(catName(k))}</option>`).join('')}</select></div>`;
 }
+function contactBanner(){ return S.me.category==='owner_svm' && (!S.me.phone||!S.me.line_id) ? `<div class="msg warnmsg" style="margin-bottom:12px">📞 ${L('Owner / SVM ต้องใส่<b>เบอร์โทรและ LINE ID</b> เพื่อให้ RSM และทีมติดต่อตามงานได้','Owner / SVM must add a <b>phone and LINE ID</b> so the RSM and team can reach you')} <button class="btn sm pri" data-act="chpw">${L('ใส่ตอนนี้','Add now')}</button></div>` : ''; }
 function renderMain(){
   const m=$('#main'); if(!m) return;
-  if(S.tab==='admin'){ m.innerHTML=viewAdmin(); return; }
-  if(S.tab==='team'){ m.innerHTML=viewTeam(); return; }
-  m.innerHTML=filterBar()+'<div id="view"></div>';
+  if(S.tab==='admin'){ m.innerHTML=contactBanner()+viewAdmin(); return; }
+  if(S.tab==='team'){ m.innerHTML=contactBanner()+viewTeam(); return; }
+  m.innerHTML=contactBanner()+filterBar()+'<div id="view"></div>';
   renderView();
 }
 function renderView(){
@@ -630,6 +675,7 @@ function filterBar(){
     ${S.tab==='stats'?`<select data-f="period"><option value="open" ${f.period==='open'?'selected':''}>${L('รถที่ยังค้าง','Open vehicles')}</option><option value="closed90" ${f.period==='closed90'?'selected':''}>${L('ส่งมอบแล้ว 90 วันล่าสุด','Delivered, last 90 days')}</option><option value="all" ${f.period==='all'?'selected':''}>${L('ทั้งหมด','All')}</option></select>`:''}
     <span class="sp"></span>
     ${S.tab==='list'?'<button class="btn" data-act="csv">Export CSV</button>':''}
+    ${S.tab==='board'&&(S.f.dealer||S.me.role==='ps')?`<button class="btn line" data-act="summary">💬 ${L('สรุปส่ง LINE','LINE summary')}</button>`:''}
     <button class="btn" data-act="refresh" title="${L('โหลดใหม่','Reload')}">↻</button>
     ${canCreate()?`<button class="btn pri" data-act="new">${L('+ เพิ่มรถค้างซ่อม','+ Add vehicle')}</button>`:''}
   </div>`;
@@ -644,7 +690,7 @@ function filtered(){
     if(f.loaner==='y' && !c.loaner) return false;
     if(f.loaner==='n' && c.loaner) return false;
     if(q){ const refs=(S.stepsBy[c.id]||[]).map(s=>s.ref_no||'').join(' ');
-      if(![c.sp,c.vin,c.model,refs].join(' ').toLowerCase().includes(q)) return false; }
+      if(![c.sp,c.vin,c.model,refs,c.symptom,c.cause,probName(c.problem_cat)].join(' ').toLowerCase().includes(q)) return false; }
     return true; });
 }
 
@@ -661,17 +707,24 @@ function card(c){
     <div class="tags2">${tog('loaner',c.loaner,'loan','🚗 '+L('มีรถใช้ระหว่างซ่อม','Loaner car'),'🚗 '+L('ไม่มีรถใช้','No loaner'))}</div>
     <div class="mut sm">${esc(c.model||'-')}${c.vin?' · …'+esc(c.vin.slice(-6)):''}</div>
     ${isStaff()?`<div class="mut sm">${esc(dName(c.dealer_id))}</div>`:''}
+    ${c.problem_cat?`<div class="prob">${esc(probName(c.problem_cat))}${c.symptom?' · <span class="mut">'+esc(c.symptom)+'</span>':''}</div>`:''}
     ${t.cur.detail?`<div class="stg"><span class="dot" style="background:${oc(t.cur.o)}"></span>${esc(t.cur.detail)}</div>`:''}
     <div class="nums">${t.done?`<span>${L('ส่งมอบ','Delivered')} ${fmt(c.delivered_date)}</span>`:`<span>${L('ขั้นนี้','In status')} <b>${t.curDays}</b> ${L('วัน','d')}</span>`}<span>${L('รวม','Total')} <b>${t.total}</b> ${L('วัน','d')}</span>${c.est_delivery&&!t.done?`<span>${L('นัด','Due')} ${fmt(c.est_delivery)}</span>`:''}</div>
     ${tlBar(t)}
     ${c._f.map(x=>`<span class="flag">⚠ ${esc(x)}</span>`).join('')}
+    ${(c._todo||[]).length?`<div class="todo">✎ ${L('ยังขาด','to fill')}: ${esc(c._todo.slice(0,3).join(' · '))}${c._todo.length>3?' +'+(c._todo.length-3):''}</div>`:''}
+    ${lastLine(c)}
   </div>`;
 }
+function ago(ts){ const d=dd(ymd(new Date(ts)),today()); return d<=0?L('วันนี้','today'):d===1?L('เมื่อวาน','yesterday'):d+' '+L('วันก่อน','days ago'); }
+function lastLine(c){ const l=S.last&&S.last[c.id];
+  const pc=l&&(S.contacts||[]).find(x=>x.user_id===l.actor&&x.phone&&x.user_id!==S.me.user_id);
+  return `<div class="lastup"><span>${l?`✎ ${esc((l.actor_name||'?').split(' ')[0])} · ${ago(l.at)}`:''}${pc?` <a class="tel" href="tel:${esc(pc.phone.replace(/[^0-9+]/g,''))}" data-stop aria-label="${L('โทร','Call')}">📞</a>`:''}</span>${c._t.done?'':`<button class="fol" data-follow="${c.id}" title="${L('ตามงานทาง LINE','Follow up on LINE')}">💬 ${L('ตามงาน','Follow up')}</button>`}</div>`; }
 function viewBoard(){
   const list=filtered(), T=today(), open=list.filter(c=>!c._t.done);
   const avg=open.length?Math.round(open.reduce((s,c)=>s+c._t.total,0)/open.length):0;
   const stats=[[L('รถค้างซ่อม','Open vehicles'),open.length,''],[L('จอด','Parked'),open.filter(c=>c.parked).length,''],[L('ค้างที่ GWM','Waiting on GWM'),open.filter(c=>c._t.cur.o==='G').length,'g'],
-    [L('ค้างที่ Partner','Waiting on Partner'),open.filter(c=>c._t.cur.o==='P').length,'p'],[L('มีรถใช้ระหว่างซ่อม','Loaner cars out'),open.filter(c=>c.loaner).length,''],[L('อายุเฉลี่ย (วัน)','Avg age (days)'),avg,''],[L('ซ่อมซ้ำ (รอบ 2+)','Repeat repair (round 2+)'),open.filter(c=>c._t.round>1).length,'']];
+    [L('ค้างที่ Partner','Waiting on Partner'),open.filter(c=>c._t.cur.o==='P').length,'p'],[L('มีรถใช้ระหว่างซ่อม','Loaner cars out'),open.filter(c=>c.loaner).length,''],[L('อายุเฉลี่ย (วัน)','Avg age (days)'),avg,''],[L('ซ่อมซ้ำ (รอบ 2+)','Repeat repair (round 2+)'),open.filter(c=>c._t.round>1).length,''],[L('ข้อมูลยังไม่ครบ','Incomplete info'),open.filter(c=>(c._todo||[]).length).length,'']];
   const cols=COL_ORDER.filter(k=>k!=='done'||S.f.showDone), g={};
   cols.forEach(k=>g[k]=[]);
   list.forEach(c=>{ const k=c._t.cur.k; if(k==='done' && dd(c.delivered_date,T)>30) return; if(g[k]) g[k].push(c); });
@@ -712,19 +765,20 @@ function rowsForExport(list){
     put('Partner (วัน)','Partner days',t.own.P); put('GWM (วัน)','GWM days',t.own.G);
     put('JS','JS',refsOf(ss,'js').join(' / ')); put('YS','YS',refsOf(ss,'ys').join(' / ')); put('PO/BO','PO/BO',refsOf(ss,'parts').join(' / '));
     put('ETA (ที่ยังไม่มา)','Open ETA',openEta); put('นัดส่งมอบ','Est. delivery',c.est_delivery||''); put('ส่งมอบ','Delivered',c.delivered_date||'');
-    put('แจ้งเตือน','Alerts',c._f.join(' / ')); put('หมายเหตุ','Remark',c.remark||'');
+    put('หมวดปัญหา','Problem',probName(c.problem_cat)); put('อาการ','Symptom',c.symptom||''); put('สาเหตุ','Cause',c.cause||'');
+    put('ยังขาด','Missing info',(c._todo||[]).join(' / ')); put('อัปเดตล่าสุดโดย','Last updated by',(S.last[c.id]||{}).actor_name||''); put('แจ้งเตือน','Alerts',c._f.join(' / ')); put('หมายเหตุ','Remark',c.remark||'');
     return r; });
 }
 function viewList(){
   const list=filtered().sort((a,b)=>(a._t.done-b._t.done)||b._t.total-a._t.total);
   if(!list.length) return `<div class="panel mut">${L('ไม่มีข้อมูล','No data')}</div>`;
-  return `<div class="tw"><table><thead><tr>${isStaff()?`<th>${L('ศูนย์','Dealer')}</th>`:''}<th>SP</th><th>${L('รุ่น','Model')}</th><th>${L('มาถึง','Arrived')}</th><th></th><th>${L('รอบ','Round')}</th><th>${L('สถานะปัจจุบัน','Current status')}</th><th>${L('ขั้นนี้','In status')}</th><th>${L('รวม','Total')}</th><th>Partner</th><th>GWM</th><th>${L('เลขอ้างอิง','References')}</th><th>${L('นัดส่งมอบ','Est. delivery')}</th><th>${L('แจ้งเตือน','Alerts')}</th></tr></thead><tbody>
+  return `<div class="tw"><table><thead><tr>${isStaff()?`<th>${L('ศูนย์','Dealer')}</th>`:''}<th>SP</th><th>${L('รุ่น','Model')}</th><th>${L('มาถึง','Arrived')}</th><th></th><th>${L('รอบ','Round')}</th><th>${L('สถานะปัจจุบัน','Current status')}</th><th>${L('ปัญหา','Problem')}</th><th>${L('ขั้นนี้','In status')}</th><th>${L('รวม','Total')}</th><th>Partner</th><th>GWM</th><th>${L('เลขอ้างอิง','References')}</th><th>${L('นัดส่งมอบ','Est. delivery')}</th><th>${L('แจ้งเตือน','Alerts')}</th></tr></thead><tbody>
   ${list.map(c=>{const t=c._t,ss=S.stepsBy[c.id]||[];return `<tr class="click" data-open="${c.id}">${isStaff()?`<td>${esc(dName(c.dealer_id))}</td>`:''}
     <td><b>${esc(c.sp)}</b></td><td>${esc(c.model||'')}</td><td>${fmt(c.arrival_date)}</td><td>${c.parked?`<span class="tag park">${L('จอด','Parked')}</span>`:''}${c.loaner?' <span class="tag loan">🚗</span>':''}</td><td>${t.round}</td>
-    <td><span class="dot" style="background:${oc(t.cur.o)}"></span> ${esc(curLabel(t))}</td><td>${t.done?'':t.curDays}</td><td><b>${t.total}</b></td>
+    <td><span class="dot" style="background:${oc(t.cur.o)}"></span> ${esc(curLabel(t))}</td><td class="sm">${esc(probName(c.problem_cat))}</td><td>${t.done?'':t.curDays}</td><td><b>${t.total}</b></td>
     <td style="color:${OWN.P.c}">${t.own.P}</td><td style="color:${OWN.G.c}">${t.own.G}</td>
     <td class="mut sm">${esc([...refsOf(ss,'js'),...refsOf(ss,'ys'),...refsOf(ss,'parts')].join(', '))}</td><td>${fmt(c.est_delivery)}</td>
-    <td>${c._f.map(x=>`<span class="flag">${esc(x)}</span>`).join('')}</td></tr>`;}).join('')}
+    <td>${c._f.map(x=>`<span class="flag">${esc(x)}</span>`).join('')}${(c._todo||[]).length?`<span class="todo inl">✎ ${esc(c._todo.join(' · '))}</span>`:''}</td></tr>`;}).join('')}
   </tbody></table></div>`;
 }
 function exportCSV(){
@@ -753,6 +807,11 @@ function viewStats(){
   const dg={}; list.forEach(c=>{ const e=dg[c.dealer_id]=dg[c.dealer_id]||{id:c.dealer_id,n:0,tot:0,P:0,G:0,rep:0,max:null}; e.n++; e.tot+=c._t.total; e.P+=c._t.own.P; e.G+=c._t.own.G; if(c._t.round>1) e.rep++; if(!e.max||c._t.total>e.max._t.total) e.max=c; });
   const dealers=Object.values(dg).sort((a,b)=>b.tot/b.n-a.tot/a.n);
   const rep=list.filter(c=>c._t.round>1).length;
+  const grp=keyFn=>{ const m={}; list.forEach(c=>{ const k=keyFn(c)||'—'; const e=m[k]=m[k]||{k,n:0,tot:0,P:0,G:0,rep:0}; e.n++; e.tot+=c._t.total; e.P+=c._t.own.P; e.G+=c._t.own.G; if(c._t.round>1) e.rep++; }); return Object.values(m).sort((a,b)=>b.n-a.n||b.tot/b.n-a.tot/a.n); };
+  const gTable=(title,rows,label)=>`<div class="panel"><h3>${title}</h3><div class="tw" style="max-height:none;border:0"><table><thead><tr><th>${label}</th><th>${L('คัน','Vehicles')}</th><th>${L('เฉลี่ย (วัน)','Avg (days)')}</th><th>Partner</th><th>GWM</th><th>${L('ซ่อมซ้ำ','Repeat')}</th></tr></thead><tbody>
+    ${rows.map(e=>{const t=e.P+e.G;return `<tr><td>${esc(e.k)}</td><td>${e.n}</td><td><b>${(e.tot/e.n).toFixed(1)}</b></td><td style="color:${OWN.P.c}">${pct(e.P,t)}%</td><td style="color:${OWN.G.c}">${pct(e.G,t)}%</td><td>${e.rep||''}</td></tr>`;}).join('')}</tbody></table></div></div>`;
+  const byProb=grp(c=>c.problem_cat?probName(c.problem_cat):L('ยังไม่ระบุ','Not set'));
+  const byRsm=isStaff()?grp(c=>(dealerById(c.dealer_id)||{}).rsm):[];
   return `<div class="stats">
     <div class="stat"><div class="v">${n}</div><div class="l">${L('จำนวนรถ','Vehicles')}</div></div>
     <div class="stat"><div class="v">${(list.reduce((s,c)=>s+c._t.total,0)/n).toFixed(1)}</div><div class="l">${L('เฉลี่ยรวม (วัน/คัน)','Avg total (days/vehicle)')}</div></div>
@@ -770,7 +829,8 @@ function viewStats(){
   <div class="panel"><h3>${L('แยกตามศูนย์','By dealer')}</h3><div class="tw" style="max-height:none;border:0"><table><thead><tr><th>${L('ศูนย์','Dealer')}</th><th>${L('คัน','Vehicles')}</th><th>${L('เฉลี่ย (วัน)','Avg (days)')}</th><th>Partner</th><th>GWM</th><th>${L('ซ่อมซ้ำ','Repeat')}</th><th>${L('นานสุด','Longest')}</th></tr></thead><tbody>
     ${dealers.map(e=>{const t=e.P+e.G;return `<tr class="click" data-dealer="${e.id}"><td>${esc(dName(e.id))}</td><td>${e.n}</td><td><b>${(e.tot/e.n).toFixed(1)}</b></td>
       <td style="color:${OWN.P.c}">${pct(e.P,t)}%</td><td style="color:${OWN.G.c}">${pct(e.G,t)}%</td><td>${e.rep||''}</td><td>${esc(e.max.sp)} · ${days(e.max._t.total)}</td></tr>`;}).join('')}
-  </tbody></table></div></div>`;
+  </tbody></table></div></div>
+  <div class="grid2">${gTable(L('แยกตามหมวดปัญหา','By problem category'),byProb,L('หมวดปัญหา','Problem'))}${byRsm.length?gTable(L('แยกตาม RSM','By RSM'),byRsm,'RSM'):''}</div>`;
 }
 
 /* ===================== ฟอร์มเคส ===================== */
@@ -815,14 +875,14 @@ function stepBlock(s,i){
   const rm = canStep(s.kind) ? `<button type="button" class="rm" data-rmstep="${i}" title="${L('ลบ','Delete')}">🗑</button>` : '';
   const st = isNew(s.id) ? '' : `<div class="stamp" data-step="${s.id}"></div>`;
   if(s.kind==='js') return `<div class="srow js">${rm}<div class="rt">${L('JS · ขอสนับสนุนทางเทคนิค','JS · Technical support request')}</div>
-    ${sIn(i,'ref_no',L('เลข JS *','JS no. *'),s.ref_no,'JS-…')}${sDate(i,'d1',L('วันที่ขอ JS *','Request date *'),s.d1)}${sDate(i,'d2',L('วันที่ช่าง (TSS) ตอบ','TSS reply date'),s.d2)}${sDate(i,'d3',L('วันที่ปิด JS (จบเคส)','JS closed date'),s.d3)}${st}</div>`;
+    ${sIn(i,'ref_no',L('เลข JS','JS no.'),s.ref_no,'JS-…')}${sDate(i,'d1',L('วันที่ขอ JS','Request date'),s.d1)}${sDate(i,'d2',L('วันที่ช่าง (TSS) ตอบ','TSS reply date'),s.d2)}${sDate(i,'d3',L('วันที่ปิด JS (จบเคส)','JS closed date'),s.d3)}${st}</div>`;
   if(s.kind==='ys') return `<div class="srow ys">${rm}<div class="rt">${L('YS · ขออนุมัติก่อนซ่อม','YS · Pre-repair warranty approval')}</div>
-    ${sIn(i,'ref_no',L('เลข YS *','YS no. *'),s.ref_no,'YS-…')}${sDate(i,'d1',L('วันที่ขอ YS *','Request date *'),s.d1)}
+    ${sIn(i,'ref_no',L('เลข YS','YS no.'),s.ref_no,'YS-…')}${sDate(i,'d1',L('วันที่ขอ YS','Request date'),s.d1)}
     <label class="drow">${L('ผล Warranty','Warranty result')}<select data-s="${i}" data-sf="result"><option value="">${L('— รอผล —','— Pending —')}</option><option value="approved" ${s.result==='approved'?'selected':''}>${L('อนุมัติ','Approved')}</option><option value="rejected" ${s.result==='rejected'?'selected':''}>Reject</option></select></label>
     ${sDate(i,'d2',L('วันที่ Warranty ตอบ','Warranty reply date'),s.d2)}${st}</div>`;
   if(s.kind==='parts') return `<div class="srow parts">${rm}<div class="rt">${L('อะไหล่ · PS เปิดออเดอร์แล้ว รอ GWM ส่ง','Parts · ordered by PS, awaiting GWM delivery')}</div>
-    <label class="drow">${L('ประเภท *','Type *')}${radio('pt_'+i,`data-s="${i}" data-sf="parts_type"`,[['PO','PO'],['BO','BO']],s.parts_type||'')}</label>
-    ${sIn(i,'ref_no',L('เลข PO / BO *','PO / BO no. *'),s.ref_no,(s.parts_type||'PO')+'-…')}${sDate(i,'d1',L('วันที่สั่ง *','Order date *'),s.d1)}${sDate(i,'d2','ETA',s.d2)}${sDate(i,'d3',L('วันที่อะไหล่มาถึง','Parts arrival date'),s.d3)}${st}</div>`;
+    <label class="drow">${L('ประเภท','Type')}${radio('pt_'+i,`data-s="${i}" data-sf="parts_type"`,[['PO','PO'],['BO','BO']],s.parts_type||'')}</label>
+    ${sIn(i,'ref_no',L('เลข PO / BO','PO / BO no.'),s.ref_no,(s.parts_type||'PO')+'-…')}${sDate(i,'d1',L('วันที่สั่ง','Order date'),s.d1)}${sDate(i,'d2','ETA',s.d2)}${sDate(i,'d3',L('วันที่อะไหล่มาถึง','Parts arrival date'),s.d3)}${st}</div>`;
   return '';
 }
 function renderModal(){
@@ -865,8 +925,15 @@ function renderModal(){
         ${dateRow('est_delivery',L('วันประมาณการส่งมอบ','Estimated delivery'),c.est_delivery)}
         ${dateRow('analysis_date',L('ช่างวิเคราะห์','Diagnosis date'),c.analysis_date)}
       </div>
+      <div style="margin-top:10px">${radio('cost_band','data-c="cost_band"',[['le10k',L('ค่าซ่อมไม่เกิน 10,000 – ทำเรื่องเคลม','Repair ≤ 10,000 THB – claim')],['gt10k',L('เกิน 10,000 – ขออนุมัติก่อนซ่อม (YS)','> 10,000 THB – pre-approval (YS)')]],c.cost_band||'le10k')}</div>
       <div class="stamp" data-sec="vehicle"></div>
-      <div style="margin-top:10px">${radio('cost_band','data-c="cost_band"',[['le10k',L('ค่าซ่อมไม่เกิน 10,000 – ทำเรื่องเคลม','Repair ≤ 10,000 THB – claim')],['gt10k',L('เกิน 10,000 – ขออนุมัติก่อนซ่อม (YS)','> 10,000 THB – pre-approval (YS)')]],c.cost_band||'le10k')}</div></section>
+      </section>
+      <section class="fs"><h4>${L('ปัญหา','Problem')}</h4><div class="fg">
+        <label>${L('หมวดปัญหา','Problem category')}<select data-c="problem_cat"><option value="">${L('— เลือก —','— Select —')}</option>${Object.keys(PROBLEMS).map(k=>`<option value="${k}" ${c.problem_cat===k?'selected':''}>${esc(PROBLEMS[k][S.lang])}</option>`).join('')}</select></label>
+        <label>${L('อาการที่ลูกค้าแจ้ง','Customer complaint')}<textarea data-c="symptom" rows="2">${esc(c.symptom||'')}</textarea></label>
+        <label>${L('สาเหตุที่พบ','Root cause found')}<textarea data-c="cause" rows="2">${esc(c.cause||'')}</textarea></label>
+      </div><div class="stamp" data-sec="problem"></div>
+      </section>
       ${rounds}
       <section class="fs"><h4><span class="no" style="background:${DONE_C}">✓</span>${L('ติดตามลูกค้า / ส่งมอบ','Customer follow-up / delivery')}</h4><div class="fg">${dateRow('customer_contact_date',L('โทรแจ้ง / นัดหมายลูกค้า','Customer contacted / appointment'),c.customer_contact_date)}${dateRow('delivered_date',L('ส่งมอบเสร็จสมบูรณ์','Delivered'),c.delivered_date)}</div><div class="stamp" data-sec="delivery"></div></section>
       <section class="fs"><h4>${L('หมายเหตุ','Remark')}</h4><textarea data-c="remark" rows="2" style="width:100%">${esc(c.remark||'')}</textarea><div class="stamp" data-sec="remark"></div></section>
@@ -881,15 +948,15 @@ function renderModal(){
   updatePreview();
 }
 function renderStamps(){
-  const E=S.edit; if(!E) return; const logs=E.logs||[];
-  document.querySelectorAll('#modal .stamp[data-step]').forEach(el=>{ el.innerHTML=stampHtml(logs.find(l=>l.step_id===el.dataset.step)); });
+  const E=S.edit; if(!E) return; const logs=E.logs||[], co=E.id&&S.cases.find(x=>x.id===E.id);
+  document.querySelectorAll('#modal .stamp[data-step]').forEach(el=>{ el.innerHTML=stampHtml(logs.find(l=>l.step_id===el.dataset.step),co); });
   document.querySelectorAll('#modal .stamp[data-sec]').forEach(el=>{ const fs=SEC_FIELDS[el.dataset.sec];
-    el.innerHTML=stampHtml(logs.find(l=>l.kind==='case'&&(l.fields||[]).some(f=>fs.includes(f)))); });
+    el.innerHTML=stampHtml(logs.find(l=>l.kind==='case'&&(l.fields||[]).some(f=>fs.includes(f))),co); });
   const h=$('#hist'); if(!h) return;
   h.innerHTML = logs.length ? `<details><summary>${L('ประวัติการบันทึก','Edit history')} (${logs.length})</summary>${logs.map(l=>{
       const what=(L(...(KIND_L[l.kind]||[l.kind,l.kind])))+(l.action==='insert'&&l.kind!=='case'?' · '+L('เพิ่ม','added'):l.action==='delete'?' · '+L('ลบ','deleted'):'')
         +(l.fields&&l.kind==='case'||l.action==='update'?' · '+[...new Set((l.fields||[]).map(f=>L(...(FIELD_L[f]||[f,f]))))].join(', '):'');
-      return `<div class="seg-row"><span class="mut sm" style="min-width:74px">${fmtTs(l.at)}</span><span><b>${esc(l.actor_name||'?')}</b> <span class="mut sm">(${esc(catName(l.actor_cat))})</span></span><span class="d" style="font-weight:400">${esc(what)}</span></div>`; }).join('')}</details>` : '';
+      return `<div class="seg-row"><span class="mut sm" style="min-width:74px">${fmtTs(l.at)}</span><span><b>${esc(l.actor_name||'?')}</b> <span class="mut sm">(${esc(catName(l.actor_cat))})</span> ${contactIcons(l.actor,co)}</span><span class="d" style="font-weight:400">${esc(what)}</span></div>`; }).join('')}</details>` : '';
 }
 function applyPerms(){ // ปิดช่องที่ตำแหน่งนี้ไม่มีสิทธิ์กรอก (ฐานข้อมูลก็บังคับซ้ำอีกชั้น)
   if(FULL()) return;
@@ -911,7 +978,7 @@ function readForm(){
 }
 function normCase(src){
   const c={}; CASE_FIELDS.forEach(k=>{ if(src[k]!==undefined) c[k]=src[k]; });
-  ['sp','vin','model','remark'].forEach(k=>{ if(typeof c[k]==='string') c[k]=c[k].trim(); });
+  ['sp','vin','model','remark','symptom','cause'].forEach(k=>{ if(typeof c[k]==='string') c[k]=c[k].trim(); });
   if(c.vin) c.vin=c.vin.toUpperCase(); if(c.sp) c.sp=c.sp.toUpperCase();
   Object.keys(c).forEach(k=>{ if(c[k]==='') c[k]=null; });
   c.parked = !(c.parked===false || c.parked==='0');
@@ -927,6 +994,7 @@ function normSteps(steps){
     if(o.kind==='js') o.ref_no=withPrefix(o.ref_no,'JS-');
     if(o.kind==='ys') o.ref_no=withPrefix(o.ref_no,'YS-');
     if(o.kind==='parts' && o.parts_type) o.ref_no=withPrefix(o.ref_no,o.parts_type+'-');
+    if(o.kind==='test' && o.d1 && !o.result) o.result='testing';   // ใส่วันทดสอบแต่ยังไม่เลือกผล = อยู่ระหว่างทดสอบ
     return o; })
   .filter(s=> s.kind==='js'||s.kind==='ys'||s.kind==='parts' ? (s.ref_no||s.d1||s.d2||s.d3||s.result) : (s.d1||s.result));
 }
@@ -942,44 +1010,41 @@ function updatePreview(){
     ${tlBar(t)}
     <div class="nums"><span>${L('รวม','Total')} <b>${t.total}</b> ${L('วัน','days')}</span><span style="color:${OWN.P.c}">Partner <b style="color:inherit">${t.own.P}</b></span><span style="color:${OWN.G.c}">GWM <b style="color:inherit">${t.own.G}</b></span></div>
     ${f.map(x=>`<span class="flag">⚠ ${esc(x)}</span>`).join('')}
+    ${(()=>{ const td=todoList(c,ss); return td.length?`<div class="todo">✎ ${L('ยังขาด (บันทึกได้ เติมทีหลังได้)','Still missing (you can save and fill later)')}: ${esc(td.join(' · '))}</div>`:''; })()}
     ${t.segs.length?`<details><summary>${L('ดูเวลาแต่ละสถานะ','Time per status')} (${t.segs.length})</summary>${segList(t)}</details>`:''}
   </div>`;
 }
 function closeModal(){ $('#modal').classList.add('hidden'); $('#modal').innerHTML=''; S.edit=null; }
-function validate(c,ss){
+function validate(c,ss){   // ห้ามบันทึกเฉพาะ 3 ช่องหลัก + ส่งมอบทั้งที่ทดสอบไม่ผ่าน (นอกนั้นเป็นแค่ "ยังขาด")
   if(!c.dealer_id) return L('กรุณาเลือกศูนย์บริการ','Please select a dealer');
   if(!c.sp) return L('กรุณากรอก SP','Please enter the SP');
   if(!c.arrival_date) return L('กรุณากรอกวันที่รถมาถึง','Please enter the arrival date');
-  const A=c.arrival_date, before=d=>d&&d<A;
-  if(before(c.analysis_date)||before(c.customer_contact_date)||before(c.delivered_date)) return L('มีวันที่ก่อนวันที่รถมาถึง','A date is before the arrival date');
-  for(const s of ss){ const R=` (${L('รอบ','round')} ${s.round})`, id=s.ref_no;
-    if(s.kind==='js'){ if(!id) return L('กรอกเลข JS','Enter the JS no.')+R; if(!s.d1) return id+': '+L('ใส่วันที่ขอ JS','enter the request date');
-      if(before(s.d1)) return id+': '+L('วันที่ขอก่อนวันที่รถมาถึง','request date is before arrival');
-      if(s.d2&&s.d2<s.d1) return id+': '+L('วันที่ตอบก่อนวันที่ขอ','reply date is before request date');
-      if(s.d3&&s.d3<s.d1) return id+': '+L('วันที่ปิดก่อนวันที่ขอ','closed date is before request date'); }
-    if(s.kind==='ys'){ if(!id) return L('กรอกเลข YS','Enter the YS no.')+R; if(!s.d1) return id+': '+L('ใส่วันที่ขอ YS','enter the request date');
-      if(before(s.d1)) return id+': '+L('วันที่ขอก่อนวันที่รถมาถึง','request date is before arrival');
-      if(s.result&&!s.d2) return id+': '+L('ใส่วันที่ Warranty ตอบ','enter the warranty reply date');
-      if(s.d2&&!s.result) return id+': '+L('เลือกผล อนุมัติ / Reject','choose Approved / Reject');
-      if(s.d2&&s.d2<s.d1) return id+': '+L('วันที่ตอบก่อนวันที่ขอ','reply date is before request date'); }
-    if(s.kind==='parts'){ if(!s.parts_type) return L('เลือก PO หรือ BO','Choose PO or BO')+R; if(!id) return L('กรอกเลข '+s.parts_type,'Enter the '+s.parts_type+' no.')+R;
-      if(!s.d1) return id+': '+L('ใส่วันที่สั่ง','enter the order date');
-      if(before(s.d1)) return id+': '+L('วันที่สั่งก่อนวันที่รถมาถึง','order date is before arrival');
-      if(s.d3&&s.d3<s.d1) return id+': '+L('วันที่มาถึงก่อนวันที่สั่ง','arrival is before order date'); }
-    if(s.kind==='test'){ if(s.d1&&!s.result) return L('เลือกผลทดสอบ','Choose the test result')+R; if(s.result&&!s.d1) return L('ใส่วันที่ทดสอบ','Enter the test date')+R;
-      if(s.result==='other'&&!s.note) return L('ระบุผลทดสอบ "อื่นๆ"','Specify the "Other" test result')+R; }
-    if((s.kind==='assemble'||s.kind==='test')&&before(s.d1)) return L('วันที่ซ่อมก่อนวันที่รถมาถึง','Repair date is before arrival')+R;
-  }
   if(c.delivered_date){
-    const R=Math.max(1,...ss.map(s=>s.round||1));
-    const openJS=ss.find(s=>s.kind==='js'&&!s.d3); if(openJS) return L('ปิด '+openJS.ref_no+' ก่อนส่งมอบ','Close '+openJS.ref_no+' before delivery');
-    const openYS=ss.find(s=>s.kind==='ys'&&!s.result); if(openYS) return openYS.ref_no+': '+L('ยังไม่มีผล Warranty','no warranty result yet');
-    const openP=ss.find(s=>s.kind==='parts'&&!s.d3); if(openP) return openP.ref_no+': '+L('อะไหล่ยังไม่มาถึง','parts not arrived yet');
-    const lt=ss.find(s=>s.kind==='test'&&s.round===R);
-    if(!lt||lt.result!=='pass'&&lt.result!=='fail') return L('รอบล่าสุดยังไม่ได้ผลทดสอบ "ผ่าน" — ยังส่งมอบไม่ได้','Latest round has no "Pass" test result — cannot deliver yet');
-    if(lt.result==='fail') return L('รอบล่าสุดทดสอบไม่ผ่าน — ยังส่งมอบไม่ได้ (กด ✕ ที่ช่องส่งมอบเพื่อล้างวันที่)','Latest test failed — cannot deliver yet (press ✕ on the delivery date to clear it)');
+    const R=Math.max(1,...ss.map(s=>s.round||1)), lt=ss.find(s=>s.kind==='test'&&s.round===R);
+    if(lt&&lt.result==='fail') return L('รอบล่าสุดทดสอบไม่ผ่าน — ยังส่งมอบไม่ได้ (กด ✕ ที่ช่องส่งมอบเพื่อล้างวันที่)','Latest test failed — cannot deliver yet (press ✕ on the delivery date to clear it)');
   }
   return null;
+}
+function todoList(c,ss){   // ข้อมูลที่ยังขาด: บันทึกได้ แต่ขึ้นป้ายให้กลับมาเติม
+  const t=[], A=c.arrival_date, bad=d=>d&&A&&d<A, add=x=>{ if(!t.includes(x)) t.push(x); };
+  if(bad(c.analysis_date)||bad(c.customer_contact_date)||bad(c.delivered_date)) add(L('วันที่ก่อนวันรถมาถึง','date before arrival'));
+  (ss||[]).forEach(s=>{
+    if(s.kind==='js'){ if(!s.ref_no) add(L('ยังไม่มีเลข JS','no JS no.')); if(!s.d1) add(L('JS ยังไม่มีวันที่ขอ','JS has no request date'));
+      if(bad(s.d1)||(s.d1&&s.d2&&s.d2<s.d1)||(s.d1&&s.d3&&s.d3<s.d1)) add(L('วันที่ JS ไม่เรียงกัน','JS dates out of order')); }
+    if(s.kind==='ys'){ if(!s.ref_no) add(L('ยังไม่มีเลข YS','no YS no.')); if(!s.d1) add(L('YS ยังไม่มีวันที่ขอ','YS has no request date'));
+      if(s.result&&!s.d2) add(L('YS ยังไม่มีวันที่ตอบ','YS has no reply date')); if(s.d2&&!s.result) add(L('YS ยังไม่เลือกผล','YS result not chosen'));
+      if(bad(s.d1)||(s.d1&&s.d2&&s.d2<s.d1)) add(L('วันที่ YS ไม่เรียงกัน','YS dates out of order')); }
+    if(s.kind==='parts'){ if(!s.parts_type) add(L('ยังไม่เลือก PO/BO','PO/BO not chosen')); if(!s.ref_no) add(L('ยังไม่มีเลข PO/BO','no PO/BO no.'));
+      if(!s.d1) add(L('อะไหล่ยังไม่มีวันที่สั่ง','parts have no order date')); if(s.d1&&!s.d2&&!s.d3) add(L('ยังไม่มี ETA','no ETA yet'));
+      if(bad(s.d1)||(s.d1&&s.d3&&s.d3<s.d1)) add(L('วันที่อะไหล่ไม่เรียงกัน','parts dates out of order')); }
+    if(s.kind==='test'){ if(s.result&&s.result!=='testing'&&!s.d1) add(L('ยังไม่มีวันที่ทดสอบ','no test date')); if(s.result==='other'&&!s.note) add(L('ผลทดสอบ "อื่นๆ" ยังไม่ระบุ','"Other" test result not specified')); }
+    if((s.kind==='assemble'||s.kind==='test')&&bad(s.d1)) add(L('วันซ่อมก่อนวันรถมาถึง','repair date before arrival'));
+  });
+  if(c.delivered_date){
+    if((ss||[]).some(s=>s.kind==='js'&&s.d1&&!s.d3)) add(L('ส่งมอบแล้วแต่ JS ยังไม่ปิด','delivered but JS still open'));
+    if((ss||[]).some(s=>s.kind==='parts'&&s.d1&&!s.d3)) add(L('ส่งมอบแล้วแต่อะไหล่ยังไม่ลงวันมาถึง','delivered but parts arrival not set'));
+  }
+  return t;
 }
 let saving=false;
 async function saveCase(){
@@ -994,7 +1059,9 @@ async function saveCase(){
   const removed=[...new Set([...E.removed, ...Object.keys(E.origSteps).filter(id=>!keep.has(id))])];
   if(E.id && Object.keys(payload).length===1 && !changed.length && !removed.length){ closeModal(); return; }
   saving=true;
-  try{ const saved=await api.saveCase(payload); await api.syncSteps(saved.id||E.id, changed, removed); closeModal(); await reload(); toast(L('บันทึกแล้ว','Saved')); }
+  const td=todoList(c,ss);
+  try{ const saved=await api.saveCase(payload); await api.syncSteps(saved.id||E.id, changed, removed); closeModal(); await reload();
+    toast(td.length?L('บันทึกแล้ว · ยังขาด '+td.length+' รายการ (ขึ้นที่การ์ด)','Saved · '+td.length+' item(s) still missing (shown on the card)'):L('บันทึกแล้ว','Saved')); }
   catch(e){ toast(errMsg(e)); } finally{ saving=false; }
 }
 /* ===================== Admin ===================== */
@@ -1003,7 +1070,7 @@ function roleOpts(sel){ return [['ps','PS'],['rsm','RSM'],['admin','Admin'],['di
 function catOpts(sel,withNone){ return (withNone?`<option value="">—</option>`:'')+Object.keys(CATS).map(k=>`<option value="${k}" ${sel===k?'selected':''}>${esc(CATS[k][S.lang])}</option>`).join(''); }
 function viewAdmin(){
   const pend=S.profiles.filter(p=>p.role==='pending'), rest=S.profiles.filter(p=>p.role!=='pending');
-  const urow=(p,isP)=>`<div class="urow"><div class="who"><b>${esc(p.full_name||p.display_name||'-')}</b><div class="mut sm">${esc(p.email||'')}${isP?` · ${L('ขอเป็น','requested')} ${esc(catName(p.category||p.requested_role))}`:''}</div></div>
+  const urow=(p,isP)=>`<div class="urow"><div class="who"><b>${esc(p.full_name||p.display_name||'-')}</b><div class="mut sm">${esc(p.email||'')}${isP?` · ${L('ขอเป็น','requested')} ${esc(catName(p.category||p.requested_role))}`:''}${p.line_id?' · LINE '+esc(p.line_id):''}${p.phone?' · '+esc(p.phone):''}</div></div>
     <select data-ur="${p.user_id}">${roleOpts(isP?(p.requested_role==='rsm'?'rsm':'ps'):p.role)}</select>
     <select data-uc="${p.user_id}">${catOpts(p.category,true)}</select>
     <select data-ud="${p.user_id}">${dealerOpts(isP?p.requested_dealer_id:p.dealer_id)}</select>
@@ -1036,7 +1103,7 @@ function viewAdmin(){
       <td><input data-dk="${d.id}" data-df="zone" value="${esc(d.zone||'')}" style="width:120px"></td>
       <td><input data-dk="${d.id}" data-df="rsm" value="${esc(d.rsm||'')}" style="width:110px"></td>
       <td><input type="checkbox" data-dk="${d.id}" data-df="active" ${d.active!==false?'checked':''}></td>
-      <td><button class="btn sm ${d.id==='new'?'pri':''}" data-savedealer="${d.id}">${d.id==='new'?L('เพิ่ม','Add'):L('บันทึก','Save')}</button></td></tr>`).join('')}
+      <td style="display:flex;gap:4px"><button class="btn sm ${d.id==='new'?'pri':''}" data-savedealer="${d.id}">${d.id==='new'?L('เพิ่ม','Add'):L('บันทึก','Save')}</button>${d.id!=='new'&&dealerEmpty(d.id)?`<button class="btn sm danger" data-deldealer="${d.id}" title="${L('ลบได้เฉพาะศูนย์ที่ยังไม่มีรถหรือผู้ใช้','Only dealers with no vehicles or users')}">${L('ลบ','Delete')}</button>`:''}</td></tr>`).join('')}
     </tbody></table></div>
     <details style="margin-top:10px"><summary class="mut">${L('เพิ่มหลายศูนย์พร้อมกัน (วางจาก Excel)','Add many dealers (paste from Excel)')}</summary>
       <div class="hint" style="margin:8px 0">${L('บรรทัดละ 1 ศูนย์: รหัส, ชื่อศูนย์, โซน, RSM (คั่นด้วย comma หรือ Tab)','One dealer per line: code, name, zone, RSM (comma or Tab separated)')}</div>
@@ -1051,7 +1118,7 @@ function viewTeam(){
   const al=(S.allowed||[]).filter(a=>a.dealer_id==my);
   const row=(p,isP)=>{ const self=p.user_id===S.me.user_id, off=p.role==='disabled';
     return `<div class="urow ${off?'off':''}"><div class="who"><b>${esc(p.full_name||'-')}</b>${self?` <span class="mut sm">(${L('คุณ','you')})</span>`:''}${off?` <span class="tag">${L('ระงับแล้ว','Disabled')}</span>`:''}
-      <div class="mut sm">${esc(p.email||'')}${isP?` · ${L('ขอเป็น','requested')} ${esc(catName(p.category))}`:''}</div></div>
+      <div class="mut sm">${esc(p.email||'')}${isP?` · ${L('ขอเป็น','requested')} ${esc(catName(p.category))}`:''}${p.phone?' · 📞 '+esc(p.phone):''}${p.line_id?' · LINE '+esc(p.line_id):''}</div></div>
       ${self?`<span class="mut sm">${esc(catName(p.category))}</span>`:`<select data-tc="${p.user_id}">${catOpts(p.category)}</select>
       ${isP?`<button class="btn pri sm" data-svm="approve" data-uid="${p.user_id}">${L('อนุมัติ','Approve')}</button><button class="btn sm" data-svm="reject" data-uid="${p.user_id}">${L('ปฏิเสธ','Reject')}</button>`
       :off?`<button class="btn sm" data-svm="enable" data-uid="${p.user_id}">${L('เปิดใช้งานอีกครั้ง','Re-enable')}</button>`
@@ -1073,6 +1140,52 @@ function viewTeam(){
       <textarea id="bulkTeam" rows="5" style="width:100%" placeholder="bell@chanroad.com, เบล ใจดี, SA"></textarea>
       <button class="btn sm" data-act="svmbulkallowed" style="margin-top:6px">${L('นำเข้า','Import')}</button></details></div>`;
 }
+/* ===================== ตามงานทาง LINE ===================== */
+const appUrl = () => location.origin+location.pathname;
+const lineShare = txt => 'https://line.me/R/msg/text/?'+encodeURIComponent(txt);
+const lineChat = id => 'https://line.me/R/ti/p/~'+encodeURIComponent(id);
+function caseMsg(c,name){ const t=c._t;
+  return [name?L('เรียน คุณ','Hi ')+name:null,
+    `🚗 ${c.sp} · ${c.model||'-'} · ${dName(c.dealer_id)}`,
+    `${L('สถานะ','Status')}: ${curLabel(t)} · ${L('ค้าง','in status')} ${t.curDays} ${L('วัน','d')} (${L('รวม','total')} ${t.total} ${L('วัน','d')})`,
+    c.problem_cat?`${L('ปัญหา','Problem')}: ${probName(c.problem_cat)}${c.symptom?' – '+c.symptom:''}`:null,
+    c._f.length?'⚠ '+c._f.join(' / '):null,
+    L('รบกวนอัปเดตสถานะใน VOR Live ครับ','Please update the status in VOR Live'), appUrl()].filter(Boolean).join('\n'); }
+function summaryMsg(dealerId){ const list=S.cases.filter(c=>!c._t.done&&String(c.dealer_id)===String(dealerId)).sort((a,b)=>(b._f.length-a._f.length)||b._t.curDays-a._t.curDays);
+  const lines=list.slice(0,15).map((c,i)=>`${i+1}. ${c.sp} · ${stName(c._t.cur.k)} · ${c._t.curDays}${L('ว','d')}${c._f.length?' ⚠ '+c._f.join(', '):''}`);
+  return [`📋 VOR Live · ${dName(dealerId)} · ${fmt(today())}`, `${L('รถค้าง','Open')} ${list.length} ${L('คัน','vehicles')} · ${L('มีแจ้งเตือน','with alerts')} ${list.filter(c=>c._f.length).length}`, '', ...lines, list.length>15?`…${L('และอีก','and')} ${list.length-15}`:null, '', appUrl()].filter(x=>x!==null).join('\n'); }
+function contactRow(p,msgFn,tag){
+  const msg=msgFn(p?(p.full_name||'').split(' ')[0]:'');
+  return `<div class="crow"><div class="who"><b>${esc(p.full_name||'-')}</b>${tag?` <span class="ctag">${esc(tag)}</span>`:''}<div class="mut sm">${esc(catName(p.category||p.role))}${p.line_id?' · LINE '+esc(p.line_id):''}</div></div>
+    <div class="cbtn"><a class="btn sm line" href="${lineShare(msg)}" target="_blank" rel="noopener" data-copy="${esc(msg)}">💬 ${L('ส่ง LINE','Send LINE')}</a>
+    ${p.line_id?`<a class="btn sm" href="${lineChat(p.line_id)}" target="_blank" rel="noopener" data-copy="${esc(msg)}" title="${L('เปิดแชท (ข้อความถูก copy ไว้แล้ว วางได้เลย)','Open chat (message copied, just paste)')}">${L('เปิดแชท','Open chat')}</a>`:''}
+    ${p.phone?`<a class="btn sm" href="tel:${esc(p.phone.replace(/[^0-9+]/g,''))}" aria-label="${L('โทร','Call')}">📞</a>`:''}</div></div>`; }
+function openFollow(caseId, dealerSummary){
+  const c=caseId?S.cases.find(x=>x.id===caseId):null, dealer=c?c.dealer_id:dealerSummary;
+  const cs=(S.contacts||[]), inDealer=cs.filter(p=>p.role==='ps'&&String(p.dealer_id)===String(dealer));
+  const picked=[], seen=new Set(), add=(p,tag)=>{ if(p&&!seen.has(p.user_id)&&p.user_id!==S.me.user_id){ seen.add(p.user_id); picked.push([p,tag]); } };
+  const last=c&&S.last[c.id];
+  if(last) add(cs.find(p=>p.user_id===last.actor), L('อัปเดตล่าสุด','last updated'));
+  if(c) (FOLLOW_CATS[c._t.cur.k]||[]).forEach(k=>inDealer.filter(p=>p.category===k).forEach(p=>add(p,L('รับผิดชอบขั้นนี้','owns this status'))));
+  inDealer.filter(p=>p.category==='owner_svm').forEach(p=>add(p,'SVM'));
+  const others=inDealer.filter(p=>!seen.has(p.user_id)&&p.user_id!==S.me.user_id);
+  const rsms=S.me.role==='ps'?cs.filter(p=>p.role!=='ps'&&!seen.has(p.user_id)):[];
+  const msgFn=name=>c?caseMsg(c,name):summaryMsg(dealer);
+  const m=$('#modal'); S.edit=null;
+  m.innerHTML=`<div class="sheet" style="max-width:520px;height:auto"><div class="mh"><b>💬 ${c?L('ตามงาน','Follow up')+' · '+esc(c.sp):L('สรุปส่ง LINE','LINE summary')+' · '+esc(dName(dealer))}</b><button class="x" data-act="pwclose">✕</button></div>
+    <div class="mb" style="padding-bottom:16px">
+      ${last?`<div class="msg" style="margin-top:12px">✎ ${L('อัปเดตล่าสุดโดย','Last updated by')} <b>${esc(last.actor_name||'?')}</b> (${esc(catName(last.actor_cat))}) · ${fmtTs(last.at)}</div>`:''}
+      <div class="mut sm" style="margin:12px 0 4px">${L('ข้อความที่จะส่ง','Message')}</div>
+      <pre class="msgbox">${esc(msgFn(''))}</pre>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 4px"><a class="btn sm line" href="${lineShare(msgFn(''))}" target="_blank" rel="noopener">💬 ${L('ส่ง LINE (เลือกผู้รับ / กลุ่มเอง)','Send LINE (pick person / group)')}</a><button class="btn sm" data-copytext="${esc(msgFn(''))}">${L('Copy ข้อความ','Copy text')}</button></div>
+      ${picked.length?`<h4 style="margin:14px 0 4px">${L('แนะนำให้ส่งถึง','Suggested')}</h4>${picked.map(([p,t])=>contactRow(p,msgFn,t)).join('')}`:''}
+      ${others.length?`<details style="margin-top:10px" ${picked.length?'':'open'}><summary class="mut">${L('ติดต่อตามตำแหน่ง','Contact by position')} (${others.length})</summary>${Object.keys(CATS).filter(k=>others.some(p=>p.category===k)).map(k=>`<div class="poshead">${esc(catName(k))}</div>`+others.filter(p=>p.category===k).map(p=>contactRow(p,msgFn)).join('')).join('')}</details>`:''}
+      ${rsms.length?`<details style="margin-top:6px"><summary class="mut">RSM / Admin (${rsms.length})</summary>${rsms.map(p=>contactRow(p,msgFn)).join('')}</details>`:''}
+      <div class="mut sm" style="margin-top:12px">${L('"ส่ง LINE" จะเปิด LINE พร้อมข้อความ → แตะชื่อผู้รับ → ส่ง · "เปิดแชท" จะ copy ข้อความไว้ให้ วางในแชทได้เลย','"Send LINE" opens LINE with the message → tap the person → send · "Open chat" copies the message for you to paste')}</div>
+    </div></div>`;
+  m.classList.remove('hidden');
+}
+function dealerEmpty(id){ return !S.cases.some(c=>String(c.dealer_id)===String(id)) && !(S.profiles||[]).some(p=>String(p.dealer_id)===String(id)||String(p.requested_dealer_id)===String(id)) && !(S.allowed||[]).some(a=>String(a.dealer_id)===String(id)); }
 function parseCat(s){ s=(s||'').toLowerCase().trim();
   if(/rsm/.test(s)) return 'rsm'; if(/svm|owner|เจ้าของ|ผู้จัดการ/.test(s)) return 'owner_svm'; if(/^sa|advisor|ที่ปรึกษา/.test(s)) return 'sa';
   if(/foreman|ช่าง|tech/.test(s)) return 'foreman'; if(/part|อะไหล่/.test(s)) return 'parts'; if(/warr|วารัน/.test(s)) return 'warranty'; if(/cr|ลูกค้า/.test(s)) return 'cr'; return null; }
@@ -1081,13 +1194,18 @@ function findDealer(s){ s=(s||'').trim().toLowerCase(); if(!s) return null;
 function tempPw(){ const a='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789'; let s=''; const r=crypto.getRandomValues(new Uint32Array(10)); r.forEach(x=>s+=a[x%a.length]); return s; }
 /* ===================== Events ===================== */
 document.addEventListener('click', async e=>{
-  const t=e.target.closest('[data-svm],[data-temppw],[data-delallowed],[data-clear],[data-toggle],[data-tab],[data-act],[data-open],[data-today],[data-rmstep],[data-addstep],[data-auth],[data-dealer],[data-saveuser],[data-reject],[data-savedealer],[data-demo],[data-lang]');
+  if(e.target.closest('[data-stop]')) return;
+  const t=e.target.closest('[data-follow],[data-copy],[data-copytext],[data-deldealer],[data-svm],[data-temppw],[data-delallowed],[data-clear],[data-toggle],[data-tab],[data-act],[data-open],[data-today],[data-rmstep],[data-addstep],[data-auth],[data-dealer],[data-saveuser],[data-reject],[data-savedealer],[data-demo],[data-lang]');
   if(!t) return;
   const d=t.dataset;
   if(d.toggle){ e.stopPropagation(); const c=S.cases.find(x=>x.id===d.cid); if(!c) return;
     const v=!c[d.toggle]; try{ await api.saveCase({id:c.id,[d.toggle]:v}); c[d.toggle]=v; renderView();
       toast(d.toggle==='parked'?(v?L('เปลี่ยนเป็น: จอด','Now: parked'):L('เปลี่ยนเป็น: ไม่จอด','Now: not parked')):(v?L('มีรถใช้ระหว่างซ่อม','Loaner car: yes'):L('ไม่มีรถใช้ระหว่างซ่อม','Loaner car: no'))); }
     catch(err){ toast(errMsg(err)); } return; }
+  if(d.follow){ e.stopPropagation(); openFollow(d.follow); return; }
+  if(d.copy!==undefined){ try{ navigator.clipboard&&navigator.clipboard.writeText(d.copy); }catch(_){} return; }   // ปล่อยให้ลิงก์ LINE เปิดต่อ
+  if(d.copytext!==undefined){ try{ await navigator.clipboard.writeText(d.copytext); toast(L('Copy แล้ว','Copied')); }catch(_){ toast(L('Copy ไม่ได้ — กดค้างที่ข้อความเพื่อ copy','Could not copy — long-press the text')); } return; }
+  if(d.deldealer){ if(!confirmDel()) return; try{ await api.deleteDealer(+d.deldealer||d.deldealer); await reload(); toast(L('ลบศูนย์แล้ว','Dealer deleted')); }catch(err){ toast(errMsg(err)); } return; }
   if(d.lang){ setLang(d.lang); return; }
   if(d.svm){ const uid=d.uid, sel=$(`[data-tc="${uid}"]`), cat=sel?sel.value:null;
     if(d.svm==='disable' && !confirmDel()) return;
@@ -1103,7 +1221,9 @@ document.addEventListener('click', async e=>{
   if(d.auth){ renderAuth(d.auth); return; }
   if(d.demo){ S.me = d.demo==='ps' ? {user_id:'u2',email:'svm.chanroad@example.com',display_name:'SVM Chan Road',role:'ps',dealer_id:1} : {user_id:'u1',email:'nat@example.com',display_name:'Natchanon C.',role:'admin'};
     S.f={rsm:'',dealer:'',q:'',parked:'',loaner:'',showDone:false,period:'open'}; S.tab='board'; await loadAll(); renderApp(); return; }
-  if(d.today!==undefined){ const w=t.closest('.dwrap'), inp=w.querySelector('input'); inp.value=today(); w.querySelector('.clr').classList.remove('hidden'); updatePreview(); return; }
+  if(d.today!==undefined){ const w=t.closest('.dwrap'), inp=w.querySelector('input'); inp.value=today(); w.querySelector('.clr').classList.remove('hidden');
+    const st=inp.dataset.s!=null&&S.edit&&S.edit.steps[+inp.dataset.s]; if(st&&st.kind==='test'&&!st.result){ const r=$(`#modal input[name="tr_${inp.dataset.s}"][value="testing"]`); if(r) r.checked=true; }
+    updatePreview(); return; }
   if(d.clear!==undefined){ const w=t.closest('.dwrap'), inp=w.querySelector('input'); inp.value=''; t.classList.add('hidden'); updatePreview();
     toast(L('ล้างวันที่แล้ว — กด "บันทึก" เพื่อยืนยัน','Date cleared — press "Save" to confirm')); return; }
   if(d.rmstep!==undefined){ readForm(); const s=S.edit.steps.splice(+d.rmstep,1)[0]; if(s&&!isNew(s.id)) S.edit.removed.push(s.id); renderModal(); return; }
@@ -1129,9 +1249,17 @@ document.addEventListener('click', async e=>{
       const mb=$('#modal .mb'); mb.scrollTop=mb.scrollHeight; break; }
     case 'del': if(confirmDel()){ try{ await api.deleteCase(S.edit.id); closeModal(); await reload(); toast(L('ลบแล้ว','Deleted')); }catch(err){ toast(errMsg(err)); } } break;
     case 'logout': await api.signOut(); break;
-    case 'chpw': { const m=$('#modal'); S.edit=null; m.innerHTML=`<div class="sheet" style="max-width:420px;height:auto"><div class="mh"><b>${L('เปลี่ยนรหัสผ่าน','Change password')}</b><button class="x" data-act="pwclose">✕</button></div>
-        <div class="mb"><form id="fChPw" style="display:flex;flex-direction:column;gap:12px;padding:14px 0">
-          <div class="mut sm">${esc(meName())} · ${esc(S.me.email||'')}</div>
+    case 'summary': openFollow(null, S.f.dealer || S.me.dealer_id); break;
+    case 'chpw': { const m=$('#modal'); S.edit=null; m.innerHTML=`<div class="sheet" style="max-width:420px;height:auto"><div class="mh"><b>${L('บัญชีของฉัน','My account')}</b><button class="x" data-act="pwclose">✕</button></div>
+        <div class="mb"><div class="mut sm" style="margin-top:14px">${esc(meName())} · ${esc(meTag())} · ${esc(S.me.email||'')}</div>
+        <form id="fContact" style="display:flex;flex-direction:column;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)">
+          <b>${L('ช่องทางติดต่อ (ให้ทีมตามงานได้)','Contact (so the team can follow up)')}</b>
+          <label class="drow">LINE ID<input name="line" ${S.me.category==='owner_svm'?'required':''} value="${esc(S.me.line_id||'')}" placeholder="${L('เช่น somchai.gwm','e.g. somchai.gwm')}" autocapitalize="none"></label>
+          <label class="drow">${L('เบอร์โทร','Phone')}<input name="phone" type="tel" ${S.me.category==='owner_svm'?'required':''} value="${esc(S.me.phone||'')}" placeholder="08x-xxx-xxxx"></label>
+          <div class="mut sm">${L('เห็นเฉพาะคนในศูนย์เดียวกัน, RSM และ admin · ใน LINE ต้องเปิด "อนุญาตให้เพิ่มเพื่อนด้วย ID"','Visible only to your dealer, RSMs and admins · in LINE, turn on "Allow others to add me by ID"')}</div>
+          <button class="btn pri">${L('บันทึกช่องทางติดต่อ','Save contact')}</button></form>
+        <form id="fChPw" style="display:flex;flex-direction:column;gap:12px;padding:14px 0">
+          <b>${L('เปลี่ยนรหัสผ่าน','Change password')}</b>
           <label class="drow">${L('รหัสผ่านใหม่ (อย่างน้อย 8 ตัว)','New password (min. 8 characters)')}<input type="password" name="pw" minlength="8" autocomplete="new-password" required></label>
           <label class="drow">${L('พิมพ์ซ้ำอีกครั้ง','Repeat it')}<input type="password" name="pw2" minlength="8" autocomplete="new-password" required></label>
           <button class="btn pri">${L('บันทึกรหัสใหม่','Save new password')}</button></form></div></div>`; m.classList.remove('hidden'); break; }
@@ -1182,7 +1310,8 @@ document.addEventListener('change', e=>{
 });
 document.addEventListener('input', e=>{
   const el=e.target;
-  if(el.closest('#modal')){ if(!S.edit) return; if(el.type==='date'){ const c=el.parentElement.querySelector('.clr'); if(c) c.classList.toggle('hidden',!el.value); updatePreview(); } return; }
+  if(el.closest('#modal')){ if(!S.edit) return; if(el.type==='date'){ const st=el.dataset.s!=null&&S.edit.steps[+el.dataset.s];
+      if(st&&st.kind==='test'&&el.value&&!st.result){ const r=$(`#modal input[name="tr_${el.dataset.s}"][value="testing"]`); if(r) r.checked=true; } const c=el.parentElement.querySelector('.clr'); if(c) c.classList.toggle('hidden',!el.value); updatePreview(); } return; }
   if(el.dataset.f==='q'){ S.f.q=el.value; renderView(); }
 });
 document.addEventListener('submit', async e=>{
@@ -1191,15 +1320,17 @@ document.addEventListener('submit', async e=>{
     if(f.id==='fLogin'){ await api.signIn(fd.get('email').trim(), fd.get('pw')); setTimeout(boot,0); }
     if(f.id==='fForgot'){ try{ await api.resetPw(fd.get('email').trim()); renderAuth('login',L('ส่งลิงก์ตั้งรหัสใหม่ไปที่อีเมลแล้ว (เช็กใน Junk ด้วย)','Reset link sent — check your inbox (and junk)')); }
       catch(err){ renderAuth('forgot',L('ส่งอีเมลไม่ได้ — ติดต่อ RSM เพื่อขอรหัสชั่วคราว','Could not send email — ask your RSM for a temporary password'),true); } return; }
+    if(f.id==='fContact'){ await api.updateMyContact(fd.get('line').trim(), fd.get('phone').trim()); S.me.line_id=fd.get('line').trim()||null; S.me.phone=fd.get('phone').trim()||null; toast(L('บันทึกแล้ว','Saved')); try{ S.contacts=await api.contacts(); }catch(_){} $('#modal').classList.add('hidden'); renderMain(); return; }
     if(f.id==='fChPw'){ if(fd.get('pw')!==fd.get('pw2')){ toast(L('รหัสทั้งสองช่องไม่ตรงกัน','The two passwords do not match')); return; }
       if(!DEMO) await api.updatePw(fd.get('pw')); $('#modal').classList.add('hidden'); $('#modal').innerHTML=''; toast(L('เปลี่ยนรหัสผ่านแล้ว','Password changed')); return; }
     if(f.id==='fNewPw'){ await api.updatePw(fd.get('pw')); S.recovery=false; toast(L('ตั้งรหัสใหม่แล้ว','Password updated')); history.replaceState(null,'',location.pathname); boot(); return; }
     if(f.id==='fSignup'){
       const cat=fd.get('cat'), role=cat==='rsm'?'rsm':'ps';
-      const r=await api.signUp(fd.get('email').trim(), fd.get('pw'), {full_name:fd.get('name').trim(), category: role==='ps'?cat:'', requested_role:role, dealer_id: role==='ps'?fd.get('dealer'):''});
+      if(cat==='owner_svm' && (!(fd.get('line')||'').trim() || !(fd.get('phone')||'').trim())){ renderAuth('signup', L('Owner / SVM ต้องใส่ LINE ID และเบอร์โทร','Owner / SVM must enter a LINE ID and phone'), true); return; }
+      const r=await api.signUp(fd.get('email').trim(), fd.get('pw'), {full_name:fd.get('name').trim(), category: role==='ps'?cat:'', requested_role:role, dealer_id: role==='ps'?fd.get('dealer'):'', line_id:(fd.get('line')||'').trim(), phone:(fd.get('phone')||'').trim()});
       if(!r.session) renderAuth('login',L('สมัครเรียบร้อย กรุณายืนยันอีเมล (ถ้ามี) แล้วรอ RSM อนุมัติ','Signed up. Confirm your email (if asked), then wait for RSM approval.'));
     }
-  }catch(err){ if(f.id==='fChPw'){ toast(errMsg(err)); } else renderAuth(f.id==='fLogin'?'login':f.id==='fNewPw'?'newpw':'signup', errMsg(err), true); }
+  }catch(err){ if(f.id==='fChPw'||f.id==='fContact'){ toast(errMsg(err)); } else renderAuth(f.id==='fLogin'?'login':f.id==='fNewPw'?'newpw':'signup', errMsg(err), true); }
   finally{ btn.disabled=false; }
 });
 document.addEventListener('keydown', e=>{ if(e.key==='Escape' && S.edit) closeModal(); });
