@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>VOR Live · GWM-AFS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--red:#c8102e;--red50:#fdecef;--ink:#1f2328;--mut:#6b7280;--line:#e5e7eb;--bg:#f5f6f8;--P:#2563eb;--G:#c8102e;--C:#9ca3af;--warn:#b45309;--warnbg:#fef3c7}
+*{box-sizing:border-box}
+body{margin:0;font-family:'IBM Plex Sans Thai',system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;-webkit-text-size-adjust:100%}
+button{font:inherit;cursor:pointer}
+.hidden{display:none!important}
+.mut{color:var(--mut)}.sm{font-size:12px}.sp{flex:1}
+.demo{background:#111827;color:#fff;font-size:12px;padding:6px 16px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.demo button{background:#374151;color:#fff;border:0;border-radius:6px;padding:3px 10px;font-size:12px}
+.demo button.on{background:var(--red)}
+header.top{position:sticky;top:0;z-index:20;background:#fff;border-bottom:3px solid var(--red);display:flex;align-items:center;gap:10px;padding:10px 16px}
+.brand{font-weight:700;font-size:17px;letter-spacing:.2px}.brand span{color:var(--red)}
+.hsub{font-size:13px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mut)}
+.role{background:var(--red50);color:var(--red);padding:2px 8px;border-radius:99px;font-weight:600;font-size:11px}
+nav.tabs{display:flex;gap:2px;padding:0 12px;background:#fff;border-bottom:1px solid var(--line);overflow-x:auto}
+nav.tabs button{border:0;background:none;padding:11px 12px;color:var(--mut);border-bottom:2px solid transparent;white-space:nowrap}
+nav.tabs button.on{color:var(--red);border-color:var(--red);font-weight:600}
+main{padding:14px 16px 40px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+select,input,textarea{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);min-width:0}
+input[type=search]{min-width:170px}
+input:focus,select:focus,textarea:focus{outline:2px solid #f3b6c1;border-color:var(--red)}
+.btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:8px 14px;color:var(--ink)}
+.btn.pri{background:var(--red);border-color:var(--red);color:#fff;font-weight:600}
+.btn.sm{padding:4px 10px;font-size:12px}
+.btn.danger{color:var(--red);border-color:#f3c2cb}
+.btn.wide{width:100%;padding:11px}
+.chk{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--mut)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:10px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px}
+.stat .v{font-size:22px;font-weight:700;line-height:1.2}.stat .l{font-size:12px;color:var(--mut)}
+.stat.g .v{color:var(--G)}.stat.p .v{color:var(--P)}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--mut);margin:0 0 10px;flex-wrap:wrap}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex:none}
+.board{display:flex;gap:10px;overflow-x:auto;padding-bottom:10px;scroll-snap-type:x mandatory;align-items:flex-start}
+.col{flex:0 0 258px;background:#eceef2;border-radius:12px;padding:8px;scroll-snap-align:start;max-height:calc(100vh - 250px);min-height:120px;overflow-y:auto;transition:background .15s}
+.col.over{background:#fde2e7;outline:2px dashed var(--red)}
+.col h3{margin:2px 4px 8px;font-size:13px;display:flex;align-items:center;gap:6px;position:sticky;top:-8px;background:inherit;padding:6px 0}
+.col h3 .n{margin-left:auto;background:#fff;border-radius:99px;padding:0 9px;font-size:12px;font-weight:700}
+.col h3 small{font-weight:400;color:var(--mut);font-size:11px}
+.empty{font-size:12px;color:var(--mut);text-align:center;padding:14px 0}
+.card{background:#fff;border-radius:10px;padding:10px 10px 9px;margin-bottom:8px;border-left:4px solid var(--oc,#999);box-shadow:0 1px 2px rgba(0,0,0,.06);cursor:pointer;user-select:none}
+.card:hover{box-shadow:0 3px 10px rgba(0,0,0,.1)}
+.card.drag{opacity:.4}
+.ct{display:flex;align-items:center;gap:6px}.ct b{font-size:14px}
+.tag{margin-left:auto;font-size:11px;border-radius:99px;padding:1px 8px;background:#f3f4f6;color:var(--mut)}
+.tag.park{background:var(--red50);color:var(--red);font-weight:600}
+.stg{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:500;margin-top:6px}
+.stg.big{font-size:15px;font-weight:600}
+.nums{display:flex;gap:10px;font-size:12px;color:var(--mut);margin:5px 0}.nums b{color:var(--ink);font-size:13px}
+.tl{display:flex;height:7px;border-radius:99px;overflow:hidden;background:#eef0f3;gap:1px}
+.tl i{display:block;min-width:3px}
+.flag{display:inline-block;font-size:11px;background:var(--warnbg);color:var(--warn);border-radius:6px;padding:1px 7px;margin:6px 4px 0 0;font-weight:500}
+.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+.panel h3{margin:0 0 10px;font-size:15px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{text-align:left;padding:8px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:12px;color:var(--mut);font-weight:600;background:#fafafa;position:sticky;top:0}
+tr.click{cursor:pointer}tr.click:hover td{background:#fafbfc}
+.tw{overflow:auto;max-height:calc(100vh - 220px);background:#fff;border:1px solid var(--line);border-radius:12px}
+.hbar{display:flex;align-items:center;gap:8px;margin:7px 0;font-size:13px}
+.hbar .lb{flex:0 0 46%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hbar .tr{flex:1;background:#f1f2f4;border-radius:6px;height:18px;overflow:hidden}
+.hbar .tr i{display:block;height:100%;border-radius:6px}
+.hbar .vv{flex:0 0 58px;text-align:right;font-weight:600}
+.share{display:flex;height:28px;border-radius:8px;overflow:hidden;margin:6px 0 8px}
+.share i{display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-style:normal;font-weight:600;min-width:0}
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(17,24,39,.45);z-index:50;display:flex;align-items:center;justify-content:center;padding:16px}
+.sheet{background:#fff;border-radius:14px;width:min(760px,100%);max-height:calc(100vh - 32px);display:flex;flex-direction:column;overflow:hidden}
+.mh{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.mh b{font-size:16px}.mh .x{margin-left:auto;border:0;background:none;font-size:20px;color:var(--mut)}
+.mb{overflow-y:auto;padding:4px 16px 16px;flex:1}
+.mf{display:flex;gap:8px;padding:12px 16px;border-top:1px solid var(--line);background:#fafafa}
+.pv{background:#f8f9fb;border:1px solid var(--line);border-radius:12px;padding:12px;margin:12px 0}
+.pv .tl{height:10px;margin:8px 0 4px}
+.pv details{margin-top:6px;font-size:12.5px}.pv summary{cursor:pointer;color:var(--mut)}
+.seg-row{display:flex;gap:8px;align-items:center;padding:4px 0;border-bottom:1px dashed var(--line)}
+.seg-row .d{margin-left:auto;font-weight:600}
+section.fs{border-top:1px solid var(--line);padding:12px 0 4px}
+section.fs h4{margin:0 0 8px;font-size:14px;display:flex;align-items:center;gap:8px}
+section.fs h4 .no{background:var(--red);color:#fff;border-radius:99px;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:12px}
+.hint{font-size:12px;color:var(--mut);margin:-4px 0 8px}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px 12px}
+.fg label,.drow{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--mut)}
+.dwrap{display:flex;gap:6px}.dwrap input{flex:1}
+.today{border:1px solid var(--line);background:#fff;border-radius:8px;padding:0 10px;font-size:12px;color:var(--red);white-space:nowrap}
+.radios{display:flex;gap:6px;flex-wrap:wrap}
+.radios label{flex-direction:row;align-items:center;gap:6px;border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--ink);font-size:13px;cursor:pointer}
+.radios input{margin:0}
+.radios label:has(input:checked){border-color:var(--red);background:var(--red50);color:var(--red);font-weight:600}
+.jsrow{display:grid;grid-template-columns:110px 1fr 1fr auto;gap:8px;align-items:end;background:#fafafa;border:1px solid var(--line);border-radius:10px;padding:8px;margin-bottom:8px}
+.jsrow .rn{grid-column:1/-1;font-size:12px;font-weight:600;color:var(--G)}
+.rm{border:0;background:none;color:var(--mut);font-size:18px;padding:6px}
+.rnd{font-size:11px;background:#fff7ed;color:#c2410c;border-radius:99px;padding:1px 7px;font-weight:600}
+.srow{position:relative;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px 10px;background:#fafafa;border:1px solid var(--line);border-left:4px solid var(--G);border-radius:10px;padding:10px 36px 10px 10px;margin-bottom:8px}
+.srow.parts{border-left-color:#7c3aed}.srow .rt{grid-column:1/-1;font-size:12px;font-weight:600;color:var(--ink)}
+.srow .rm{position:absolute;top:4px;right:4px}
+.addrow{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+section.round{background:linear-gradient(#fff,#fff) padding-box}
+.col.alert{background:#fdf2f4}
+.col h3 small.step{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;background:#fff;color:var(--ink);font-weight:700;font-size:10px;margin-right:2px}
+.own{font-size:11px;border-radius:6px;padding:1px 6px;color:#fff;font-weight:600}.own.G{background:var(--G)}.own.P{background:var(--P)}
+.lang{font-weight:700;min-width:38px}
+.tags2{margin:4px 0 2px}.tag[data-toggle]{cursor:pointer;border:1px dashed transparent}.tag[data-toggle]:hover{border-color:currentColor}
+.tag.loan{background:#ecfdf5;color:#047857;font-weight:600}.tags2 .tag{margin-left:0}
+.clr{border:1px solid var(--line);background:#fff;border-radius:8px;padding:0 9px;color:var(--mut);font-size:13px}
+.clr:hover{color:var(--red);border-color:#f3c2cb}
+.stamp{font-size:11.5px;color:var(--mut);margin-top:4px;grid-column:1/-1}.stamp:empty{display:none}
+.radios.locked{opacity:.55;pointer-events:none}input:disabled,select:disabled,textarea:disabled{background:#f3f4f6;color:#6b7280}
+.today:disabled,.clr:disabled{opacity:.4}.mono{font-family:ui-monospace,Menlo,monospace;font-size:14px;letter-spacing:.5px;user-select:all}
+.pwout{flex-basis:100%}.pwout:empty{display:none}.demo select{font-size:12px;padding:3px 6px;background:#374151;color:#fff;border-color:#4b5563}
+a.sm{color:var(--red);text-decoration:none}
+.badge{background:var(--red);color:#fff;border-radius:99px;padding:0 6px;font-size:11px;font-weight:700}.urow.off .who{opacity:.55}
+.credit{text-align:center;font-size:11px;color:#9ca3af;padding:14px 0 22px;letter-spacing:.2px}.credit a,.ver{color:inherit;text-decoration:none}
+.ver{font-size:11px;color:#9ca3af;margin-left:-4px;align-self:flex-end;padding-bottom:3px}
+.auth{flex-direction:column}.auth .credit{padding-top:16px}
+/* auth */
+.auth{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(160deg,#fff 0%,#fdecef 100%)}
+.authbox{background:#fff;border-radius:16px;box-shadow:0 10px 40px rgba(200,16,46,.12);padding:26px;width:min(400px,100%)}
+.authbox .brand{font-size:24px}
+.authbox form{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+.authbox label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--mut)}
+.segc{display:flex;background:#f3f4f6;border-radius:10px;padding:3px;margin-top:16px}
+.segc button{flex:1;border:0;background:none;padding:8px;border-radius:8px;color:var(--mut)}
+.segc button.on{background:#fff;color:var(--red);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.msg{margin-top:12px;font-size:13px;padding:10px;border-radius:8px;background:#f3f4f6}
+.msg.err{background:var(--red50);color:var(--red)}
+.urow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.urow .who{flex:1 1 200px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 18px;border-radius:10px;z-index:80;font-size:13px;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+@media (max-width:640px){
+  main{padding:10px 10px 40px}
+  .modal{padding:0}.sheet{border-radius:0;max-height:100vh;height:100%}
+  .col{flex-basis:84vw;max-height:none}
+  .hsub{display:none}
+  .jsrow{grid-template-columns:1fr 1fr}.jsrow .rm{grid-column:2;justify-self:end}
+  .hbar .lb{flex-basis:52%}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="modal" class="modal hidden"></div>
+<div id="toast" class="toast hidden"></div>
+<script>
+/* ===================== ตั้งค่า ===================== */
+// วาง Project URL และ anon public key จาก Supabase › Project Settings › API
+// (ถ้าเว้นว่าง ระบบจะเปิดเป็น "โหมดตัวอย่าง" ข้อมูลจำลอง ไม่บันทึกจริง)
+const CONFIG = {
+  SUPABASE_URL: 'https://giffclznqdkayjypifes.supabase.co',
+  SUPABASE_ANON_KEY: 'sb_publishable_RESqSgvp97Bh5thFluhs0w_M1LYS4dk'
+};
+// ===== เวอร์ชัน: อัปเกรดทุกครั้ง ให้เพิ่มเลข + เพิ่มรายการไว้บนสุดของ CHANGELOG =====
+const APP_VERSION = '1.0';
+const CHANGELOG = [
+  {v:'1.0', d:'2026-11-15', th:['เปิดใช้งานครั้งแรก: Board 9 สถานะ, รอบการซ่อม, สิทธิ์ตามตำแหน่ง, ทีมงานศูนย์ (SVM), TH/EN'],
+                            en:['First release: 9-status board, repair rounds, position-based access, SVM team management, TH/EN']}
+];
+const CREDIT = 'by Natchanon C.';
+const MODELS = ['Haval H6','Haval H6 HEV','Haval H6 PHEV','Haval Jolion','Haval Jolion HEV','ORA Good Cat','ORA 07','Tank 300','Tank 500','POER'];
+
+/* ===================== สถานะ (แก้ชื่อ / เจ้าของได้ที่นี่) ===================== */
+// o = เวลาในสถานะนี้นับเป็นของใคร: P = Partner (PS), G = GWM
+const ST = {
+  diag:        {th:'รอช่างวิเคราะห์',     en:'Awaiting diagnosis',          o:'P'},
+  js_wait:     {th:'รอเทคนิควิเคราะห์',   en:'Awaiting technical analysis', o:'G'},
+  js_close:    {th:'รอปิด JS',            en:'Awaiting JS closure',         o:'P'},
+  ys_open:     {th:'รอเปิด YS',           en:'Awaiting YS request',         o:'P'},
+  ys_wait:     {th:'รอ Warranty อนุมัติ',  en:'Awaiting warranty approval',  o:'G'},
+  parts_order: {th:'รอสั่งอะไหล่',        en:'Awaiting parts order',        o:'P'},
+  eta:         {th:'รอ ETA',              en:'Awaiting parts (ETA)',        o:'G'},
+  test:        {th:'รอช่างทดสอบ',         en:'Awaiting test',               o:'G'},
+  follow:      {th:'รอติดตามลูกค้า',      en:'Awaiting customer follow-up', o:'P'},
+  decide:      {th:'ต้องตัดสินใจ',         en:'Decision needed',             o:'P'},
+  done:        {th:'ส่งมอบแล้ว',          en:'Delivered',                   o:null}
+};
+const COL_ORDER = ['diag','js_wait','js_close','ys_open','ys_wait','parts_order','eta','test','follow','decide','done'];
+const OWN = { P:{n:'Partner (PS)',c:'#2563eb'}, G:{n:'GWM',c:'#c8102e'} };
+const DONE_C = '#16a34a';
+
+/* ===================== ภาษา ===================== */
+const S = { lang:'th', me:null, dealers:[], cases:[], steps:[], stepsBy:{}, profiles:[], tab:'board',
+  f:{rsm:'',dealer:'',q:'',parked:'',loaner:'',showDone:false,period:'open'}, edit:null, ready:false };
+try{ S.lang = localStorage.getItem('vor_lang') || 'th'; }catch(e){}
+const L = (th,en) => S.lang==='en' ? en : th;
+const stName = k => ST[k] ? ST[k][S.lang] : k;
+const ownName = o => o==='G' ? 'GWM' : L('Partner (PS)','Partner (PS)');
+function setLang(l){ S.lang=l; try{ localStorage.setItem('vor_lang',l); }catch(e){} document.documentElement.lang=l;
+  if(S.edit) renderModal(); if($('#main')) renderApp(); else if(!S.me) renderAuth(S.authMode||'login'); else renderPending(); }
+const langBtn = () => `<button class="btn sm lang" data-lang="${S.lang==='en'?'th':'en'}">${S.lang==='en'?'TH':'EN'}</button>`;
+
+/* ===================== ค่าคงที่ ===================== */
+const DEMO = !CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY;
+const CASE_DATES = ['arrival_date','est_delivery','analysis_date','customer_contact_date','delivered_date'];
+const CASE_FIELDS = ['id','dealer_id','sp','vin','model','parked','loaner','cost_band','remark',...CASE_DATES];
+const STEP_FIELDS = ['id','round','kind','ref_no','d1','d2','d3','result','parts_type','note'];
+
+/* ===================== utils ===================== */
+const $ = s => document.querySelector(s);
+const app = $('#app');
+const pad = n => String(n).padStart(2,'0');
+const ymd = d => d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const today = () => ymd(new Date());
+const dAgo = n => { const d=new Date(); d.setDate(d.getDate()-n); return ymd(d); };
+const dd = (a,b) => Math.round((Date.parse(b+'T00:00:00Z')-Date.parse(a+'T00:00:00Z'))/864e5);
+const fmt = s => s ? s.slice(8,10)+'/'+s.slice(5,7)+'/'+s.slice(2,4) : '–';
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const isNew = id => !id || String(id).startsWith('new');
+const days = n => n+' '+L('วัน', n===1?'day':'days');
+let toastT;
+function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.remove('hidden'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.add('hidden'),3400); }
+
+/* ===================== เครื่องคำนวณสถานะ / เวลา ===================== */
+function timeline(c, steps){
+  const T=today(), ev=[];
+  const add=(d,k,r,s)=>{ if(d) ev.push({d,k,r,s,rd:s?(s.round||1):0}); };
+  add(c.arrival_date,'arrival',0);
+  add(c.analysis_date,'analysis',1);
+  (steps||[]).forEach(s=>{ const R=(s.round||1)*10;
+    if(s.kind==='js'){ add(s.d1,'js_req',R+1,s); add(s.d2,'js_rep',R+1.1,s); add(s.d3,'js_close',R+1.2,s); }
+    if(s.kind==='ys'){ add(s.d1,'ys_req',R+2,s); if(s.result) add(s.d2, s.result==='rejected'?'ys_rej':'ys_app', R+2.1,s); }
+    if(s.kind==='parts'){ add(s.d1,'parts_order',R+3,s); add(s.d3,'parts_arr',R+3.1,s); }
+    if(s.kind==='assemble') add(s.d1,'assemble',R+4,s);
+    if(s.kind==='test' && s.result) add(s.d1, s.result==='fail'?'test_fail':s.result==='pass'?'test_pass':'test_ip', R+5,s);
+  });
+  add(c.customer_contact_date,'contact',900);
+  add(c.delivered_date,'delivered',901);
+  ev.sort((a,b)=> a.d===b.d ? a.r-b.r : (a.d<b.d?-1:1));
+
+  const jsW=new Set(), jsR=new Set(), ys=new Set(), parts=new Set(), RI={};
+  const ri=r=>RI[r]=RI[r]||{ordered:0,assembled:false,test:null,ysApp:false,ysRej:false};
+  let round=1, analysed=false, hadStep=false, ysAppAny=false;
+  const mk=(k,detail)=>({k, o:ST[k].o, detail:detail||''});
+  const states=ev.map(e=>{
+    const s=e.s; if(e.rd>round) round=e.rd; if(s) hadStep=true;
+    switch(e.k){
+      case 'analysis': analysed=true; break;
+      case 'js_req': jsW.add(s); break;
+      case 'js_rep': jsW.delete(s); jsR.add(s); break;
+      case 'js_close': jsW.delete(s); jsR.delete(s); break;
+      case 'ys_req': ys.add(s); break;
+      case 'ys_app': ys.delete(s); ri(e.rd).ysApp=true; ri(e.rd).ysRej=false; ysAppAny=true; break;
+      case 'ys_rej': ys.delete(s); ri(e.rd).ysRej=true; break;
+      case 'parts_order': parts.add(s); ri(e.rd).ordered++; break;
+      case 'parts_arr': parts.delete(s); break;
+      case 'assemble': ri(e.rd).assembled=true; break;
+      case 'test_pass': ri(e.rd).test='pass'; break;
+      case 'test_fail': ri(e.rd).test='fail'; break;
+      case 'test_ip': ri(e.rd).test='ip'; ri(e.rd).testNote = s.result==='other' ? (s.note||L('อื่นๆ','Other')) : L('อยู่ระหว่างทดสอบ / เก็บข้อมูล','Testing / collecting data')+(s.note?' · '+s.note:''); break;
+    }
+    if(e.k==='delivered') return mk('done');
+    const cr=ri(round);
+    if(jsW.size) return mk('js_wait',[...jsW][0].ref_no);
+    if(ys.size)  return mk('ys_wait',[...ys][0].ref_no);
+    if(parts.size){ const ps=[...parts], x=ps.find(p=>p.parts_type==='BO')||ps[0];
+      return mk('eta',(x.ref_no||'')+(ps.length>1?` +${ps.length-1}`:'')+(x.d2?' · ETA '+fmt(x.d2):'')); }
+    if(jsR.size) return mk('js_close',[...jsR][0].ref_no);
+    if(!analysed && !hadStep) return mk('diag');
+    if(cr.test==='pass') return mk('follow');
+    if(cr.test==='fail') return mk('decide',L('ทดสอบไม่ผ่าน – เปิด JS ใหม่','Test failed – open new JS'));
+    if(cr.test==='ip') return mk('test',cr.testNote);
+    if(cr.ordered>0 || cr.assembled) return mk('test');
+    if(cr.ysRej && !cr.ysApp) return mk('decide','Warranty Reject');
+    if(c.cost_band==='gt10k' && !ysAppAny) return mk('ys_open');
+    return mk('parts_order');
+  });
+  const done=!!c.delivered_date, segs=[], own={P:0,G:0};
+  ev.forEach((e,i)=>{
+    if(e.k==='delivered') return;
+    const end = ev[i+1] ? ev[i+1].d : (done?null:T); if(!end) return;
+    const s=states[i], dys=Math.max(0,dd(e.d,end));
+    segs.push({k:s.k,o:s.o,detail:s.detail,from:e.d,to:end,days:dys,open:!ev[i+1]}); own[s.o]+=dys;
+  });
+  const last=ev.length-1;
+  const cur = last>=0 ? states[last] : mk('diag');
+  const curDays = last>=0 && !done ? Math.max(0,dd(ev[last].d,T)) : 0;
+  const total = c.arrival_date ? Math.max(0,dd(c.arrival_date, c.delivered_date||T)) : 0;
+  const maxRound = Math.max(1,...(steps||[]).map(s=>s.round||1));
+  return {ev,segs,cur,curDays,total,own,done,round:maxRound};
+}
+const curLabel = (t,withDetail=true) => stName(t.cur.k)+(withDetail&&t.cur.detail?' · '+t.cur.detail:'');
+function flags(c,t,steps){
+  const T=today(), f=[]; steps=steps||[];
+  if(t.done) return f;
+  if(c.cost_band==='gt10k' && !steps.some(s=>s.kind==='ys') && steps.some(s=>(s.kind==='parts'||s.kind==='assemble')&&s.d1)) f.push(L('เกิน 10,000 ยังไม่ขอ YS','Over 10,000 THB, no YS'));
+  if(steps.some(s=>s.kind==='parts' && s.d2 && !s.d3 && s.d2<T)) f.push(L('เลย ETA อะไหล่','Parts past ETA'));
+  if(c.est_delivery && c.est_delivery<T) f.push(L('เลยวันนัดส่งมอบ','Past est. delivery'));
+  return f;
+}
+function refsOf(steps,kind){ return (steps||[]).filter(s=>s.kind===kind && s.ref_no).map(s=>s.ref_no); }
+
+/* ===================== State helpers ===================== */
+const isStaff = () => S.me && ['rsm','admin'].includes(S.me.role);
+const isAdmin = () => S.me && S.me.role==='admin';
+const dealerById = id => S.dealers.find(d=>String(d.id)===String(id));
+const dName = id => (dealerById(id)||{}).name || '?';
+
+/* ===================== ตำแหน่ง & สิทธิ์ (ต้องตรงกับ supabase_setup.sql) ===================== */
+const CATS = {
+  owner_svm:{th:'Owner / SVM',          en:'Owner / SVM'},
+  sa:       {th:'SA',                   en:'SA (Service Advisor)'},
+  foreman:  {th:'หัวหน้าช่าง / ช่าง',     en:'Foreman / Technician'},
+  parts:    {th:'อะไหล่',               en:'Spare parts'},
+  warranty: {th:'Warranty',             en:'Warranty'},
+  cr:       {th:'CR (ติดตามลูกค้า)',     en:'CR (Customer relations)'}
+};
+const catName = k => CATS[k] ? CATS[k][S.lang] : (k==='rsm'?'RSM':k==='admin'?'Admin':(k||''));
+const CASE_EDIT = { foreman:['analysis_date','parked'], warranty:['cost_band'], parts:[], cr:['parked','loaner','est_delivery','customer_contact_date','delivered_date'] };
+const STEP_EDIT = { foreman:['js','assemble','test'], warranty:['ys'], parts:['parts'], cr:[] };
+const FULL = () => isStaff() || ['owner_svm','sa'].includes(S.me && S.me.category);
+const canField = f => FULL() || f==='remark' || (CASE_EDIT[S.me.category]||[]).includes(f);
+const canStep = k => FULL() || (STEP_EDIT[S.me.category]||[]).includes(k);
+const canCreate = () => FULL();
+const isSvm = () => S.me && S.me.role==='ps' && S.me.category==='owner_svm';
+const scopeText = () => ({
+  foreman:L('ช่างวิเคราะห์, JS, ประกอบ, ทดสอบ, จอด/ไม่จอด','diagnosis, JS, assembly, test, parked'),
+  warranty:L('YS และค่าซ่อม','YS and repair cost band'),
+  parts:L('อะไหล่ PO / BO','parts PO / BO'),
+  cr:L('ติดตามลูกค้า / ส่งมอบ, รถใช้ระหว่างซ่อม, จอด/ไม่จอด','customer follow-up / delivery, loaner car, parked')
+}[S.me.category]||L('หมายเหตุ','remark'));
+const meName = () => S.me.full_name || S.me.display_name || S.me.email || '';
+const meTag = () => S.me.role==='ps' ? 'PS · '+catName(S.me.category) : S.me.role.toUpperCase();
+const FIELD_L = { created:['เปิดเคส','opened case'], sp:['SP','SP'], vin:['VIN','VIN'], model:['รุ่น','model'], arrival_date:['วันที่มาถึง','arrival'], parked:['จอด/ไม่จอด','parked'],
+  loaner:['รถใช้ระหว่างซ่อม','loaner'], est_delivery:['นัดส่งมอบ','est. delivery'], analysis_date:['ช่างวิเคราะห์','diagnosis'], cost_band:['ค่าซ่อม','cost band'],
+  customer_contact_date:['โทรแจ้งลูกค้า','customer contact'], delivered_date:['ส่งมอบ','delivered'], remark:['หมายเหตุ','remark'], dealer_id:['ศูนย์','dealer'],
+  ref_no:['เลขอ้างอิง','ref no.'], d1:['วันที่','date'], d2:['วันที่','date'], d3:['วันที่','date'], result:['ผล','result'], parts_type:['PO/BO','PO/BO'], note:['รายละเอียด','details'], round:['รอบ','round'] };
+const KIND_L = { case:['ข้อมูลรถ','vehicle'], js:['JS','JS'], ys:['YS','YS'], parts:['อะไหล่','parts'], assemble:['ประกอบ','assembly'], test:['ทดสอบ','test'] };
+const SEC_FIELDS = { vehicle:['created','sp','vin','model','arrival_date','parked','loaner','est_delivery','analysis_date','cost_band','dealer_id'], delivery:['customer_contact_date','delivered_date'], remark:['remark'] };
+const fmtTs = ts => { const d=new Date(ts); return pad(d.getDate())+'/'+pad(d.getMonth()+1)+' '+pad(d.getHours())+':'+pad(d.getMinutes()); };
+const stampHtml = lg => lg ? `✎ ${esc(lg.actor_name||'?')} <span class="mut">(${esc(catName(lg.actor_cat))})</span> · ${fmtTs(lg.at)}` : '';
+
+/* ===================== Data layer: Supabase ===================== */
+function supaApi(){
+  const sb = supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+  const ok = r => { if(r.error) throw r.error; return r.data; };
+  return {
+    sb,
+    async session(){ return (await sb.auth.getSession()).data.session; },
+    async signIn(email,password){ ok(await sb.auth.signInWithPassword({email,password})); },
+    async signUp(email,password,meta){ return ok(await sb.auth.signUp({email,password,options:{data:meta}})); },
+    async signOut(){ await sb.auth.signOut(); },
+    async resetPw(email){ ok(await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname})); },
+    async updatePw(pw){ ok(await sb.auth.updateUser({password:pw})); },
+    async me(){ const u=(await sb.auth.getUser()).data.user; if(!u) return null;
+      return ok(await sb.from('profiles').select('*').eq('user_id',u.id).maybeSingle()); },
+    async dealers(){ return ok(await sb.from('dealers').select('*').order('zone').order('name')); },
+    async cases(){ const cut=dAgo(180);
+      return ok(await sb.from('vor_cases').select('*').or('delivered_date.is.null,delivered_date.gte.'+cut).order('arrival_date')); },
+    async steps(){ return ok(await sb.from('vor_steps').select('*').order('round').order('created_at')); },
+    async logs(caseId){ return ok(await sb.from('vor_log').select('*').eq('case_id',caseId).order('id',{ascending:false})); },
+    async saveCase(c){
+      const r={...c}; delete r.id;
+      if(c.id){ if(!Object.keys(r).length) return {id:c.id}; return ok(await sb.from('vor_cases').update(r).eq('id',c.id).select().single()); }
+      return ok(await sb.from('vor_cases').insert(r).select().single());
+    },
+    async syncSteps(caseId, rows, removed){
+      if(removed.length) ok(await sb.from('vor_steps').delete().in('id',removed));
+      for(const s of rows){ const r={case_id:caseId}; STEP_FIELDS.forEach(k=>{ if(k!=='id') r[k]=s[k]??null; });
+        if(!isNew(s.id)) ok(await sb.from('vor_steps').update(r).eq('id',s.id)); else ok(await sb.from('vor_steps').insert(r)); }
+    },
+    async deleteCase(id){ ok(await sb.from('vor_cases').delete().eq('id',id)); },
+    async profiles(){ return ok(await sb.from('profiles').select('*').order('created_at',{ascending:false})); },
+    async updateProfile(uid,p){ ok(await sb.from('profiles').update(p).eq('user_id',uid)); },
+    async setTempPw(uid,pw){ ok(await sb.rpc('admin_set_password',{uid,pw})); },
+    async svmSetMember(uid,role,cat){ ok(await sb.rpc('svm_set_member',{uid,new_role:role,cat:cat||null})); },
+    async allowed(){ return ok(await sb.from('allowed_emails').select('*').order('created_at',{ascending:false})); },
+    async saveAllowed(rows){ ok(await sb.from('allowed_emails').upsert(rows)); },
+    async delAllowed(email){ ok(await sb.from('allowed_emails').delete().eq('email',email)); },
+    async saveDealer(d){ const r={code:d.code||null,name:d.name,zone:d.zone||null,rsm:d.rsm||null,active:d.active!==false};
+      if(d.id) ok(await sb.from('dealers').update(r).eq('id',d.id)); else ok(await sb.from('dealers').insert(r)); },
+    async bulkDealers(rows){ ok(await sb.from('dealers').insert(rows)); },
+    subscribe(fn){ let t; const go=()=>{clearTimeout(t);t=setTimeout(fn,600);};
+      sb.channel('vor').on('postgres_changes',{event:'*',schema:'public',table:'vor_cases'},go)
+        .on('postgres_changes',{event:'*',schema:'public',table:'vor_steps'},go).subscribe(); }
+  };
+}
+/* ===================== Data layer: โหมดตัวอย่าง ===================== */
+const SEED_DEALERS = [
+ ['GWM Bangkok Chan Road','Bangkok/Metro'],['Charansanitwong','Bangkok/Metro'],['168 Kanchanapisek','Bangkok/Metro'],['Motor Mall Rama 2','Bangkok/Metro'],
+ ['Nava Auto Navanakorn','Bangkok/Metro'],['Tongcharoen Samutsakhon','Bangkok/Metro'],['Maporn Lamlukka','Bangkok/Metro'],['Anuphas Phuket','South'],
+ ['Anuphas Phuket Kathu','South'],['Chookiat Hatyai','South'],['Chookiat Krabi','South'],['Chookiat Nakhon Si Thammarat','South'],['Chookiat Songkhla','South'],
+ ['KT Suratthani','South'],['Origin Chumphon','South'],['Tara Huahin','South'],['YASYALA','South'],['ANN Pattani','South'],['Chookiat Trang','South'],['Sitthiphan Phetchaburi','South']];
+const DEMO_USERS = {
+  admin:   {user_id:'u1',email:'nat@example.com',full_name:'Natchanon C.',role:'admin',category:null,dealer_id:null},
+  owner_svm:{user_id:'u2',email:'svm@chanroad.example',full_name:'สมชาย ใจดี',role:'ps',category:'owner_svm',dealer_id:1},
+  foreman: {user_id:'u4',email:'fm@chanroad.example',full_name:'เอก ช่างใหญ่',role:'ps',category:'foreman',dealer_id:1},
+  warranty:{user_id:'u5',email:'wty@chanroad.example',full_name:'ฝน วารันตี',role:'ps',category:'warranty',dealer_id:1},
+  parts:   {user_id:'u6',email:'parts@chanroad.example',full_name:'บี อะไหล่',role:'ps',category:'parts',dealer_id:1},
+  cr:      {user_id:'u7',email:'cr@chanroad.example',full_name:'แนน CR',role:'ps',category:'cr',dealer_id:1}
+};
+function demoApi(){
+  let seq=1, lid=1;
+  const db={ dealers: SEED_DEALERS.map((d,i)=>({id:i+1,code:i===11?'41000035':null,name:d[0],zone:d[1],rsm:'Natchanon',active:i!==11})), cases:[], steps:[], logs:[],
+    profiles:[...Object.values(DEMO_USERS).map(u=>({...u})),
+      {user_id:'u3',email:'sa.hatyai@example.com',full_name:'มานี ศรีสุข',role:'pending',category:'sa',requested_role:'ps',requested_dealer_id:10},
+      {user_id:'u8',email:'ton.tech@gmail.com',full_name:'ต้น ช่างใหม่',role:'pending',category:'foreman',requested_role:'ps',requested_dealer_id:1}],
+    allowed:[{email:'sa2@chanroad.example',full_name:'เบล SA',role:'ps',category:'sa',dealer_id:1},{email:'svm@chanroad.example',full_name:'สมชาย ใจดี',role:'ps',category:'owner_svm',dealer_id:1},{email:'svm@hatyai.example',full_name:'วิชัย',role:'ps',category:'owner_svm',dealer_id:10}] };
+  const who={case:DEMO_USERS.owner_svm, js:DEMO_USERS.foreman, assemble:DEMO_USERS.foreman, test:DEMO_USERS.foreman, ys:DEMO_USERS.warranty, parts:DEMO_USERS.parts};
+  const log=(cid,dealer,kind,action,fields,u,step_id,at)=>db.logs.push({id:lid++,case_id:cid,dealer_id:dealer,step_id:step_id||null,kind,action,fields:fields||null,
+    actor_name:u.full_name,actor_cat:u.category||u.role,at:at||new Date().toISOString()});
+  const D=n=>n==null?null:dAgo(n);
+  const J=(ref,a,b,c,r)=>({kind:'js',ref_no:ref,d1:D(a),d2:D(b),d3:D(c),round:r||1});
+  const Y=(ref,a,res,b,r)=>({kind:'ys',ref_no:ref,d1:D(a),result:res||null,d2:D(b),round:r||1});
+  const P=(t,ref,a,eta,c,r)=>({kind:'parts',parts_type:t,ref_no:ref,d1:D(a),d2:D(eta),d3:D(c),round:r||1});
+  const A=(a,r)=>({kind:'assemble',d1:D(a),round:r||1});
+  const X=(a,res,r)=>({kind:'test',d1:D(a),result:res,round:r||1});
+  const C=(dealer_id,sp,model,vin,parked,x,steps)=>{ const id='c'+(seq++);
+    db.cases.push(Object.assign({id,dealer_id,sp,model,vin,parked,cost_band:'le10k'},x));
+    log(id,dealer_id,'case','insert',['created'],who.case,null,x.arrival_date+'T09:15:00');
+    (steps||[]).forEach(s=>{ const st=Object.assign({id:'s'+(seq++),case_id:id,dealer_id},s); db.steps.push(st);
+      log(id,dealer_id,s.kind,'insert',null,who[s.kind],st.id,(s.d3||s.d2||s.d1)+'T14:30:00'); }); };
+  C(1,'SP2611-0412','Haval H6 HEV','LGWEF6A51RH000412',true,{arrival_date:D(2)});
+  C(2,'SP2611-0388','Tank 300','LGWFF7A59RJ000388',true,{arrival_date:D(12),analysis_date:D(11)},[J('JS-2611021',10)]);
+  C(14,'SP2611-0333','POER','LGWDB2A55RH000333',true,{arrival_date:D(5),analysis_date:D(5)},[J('JS-2611030',4,2)]);
+  C(6,'SP2611-0290','Tank 500','LGWFF8A51RJ000290',true,{arrival_date:D(9),analysis_date:D(8),cost_band:'gt10k'},[J('JS-2611018',8,6,5)]);
+  C(3,'SP2610-0951','ORA Good Cat','LGWEE2K55RH000951',true,{loaner:true,arrival_date:D(21),analysis_date:D(20),cost_band:'gt10k',est_delivery:D(1)},
+    [J('JS-2610118',19,15,14),J('JS-2611004',14,10,9),Y('YS-2611007',8)]);
+  C(7,'SP2611-0254','Haval Jolion HEV','LGWEF4A59RH000254',false,{arrival_date:D(6),analysis_date:D(5)});
+  C(4,'SP2610-0877','Haval Jolion','LGWEF4A55RH000877',true,{arrival_date:D(26),analysis_date:D(25)},[P('BO','BO-55821',23,2)]);
+  C(5,'SP2611-0102','Haval H6','LGWEF6A50RH000102',false,{arrival_date:D(15),analysis_date:D(15),est_delivery:D(-6)},[P('PO','PO-66102',13,-3)]);
+  C(10,'SP2611-0170','Haval H6 HEV','LGWEF6A53RH000170',true,{arrival_date:D(18),analysis_date:D(17),cost_band:'gt10k'},[J('JS-2611012',16,14,14),P('BO','BO-55990',10,-5)]);
+  C(1,'SP2611-0399','Tank 500','LGWFF8A58RJ000399',true,{arrival_date:D(9),analysis_date:D(8)},[P('PO','PO-66231',7,3,2)]);
+  C(1,'SP2611-0371','Haval H6','LGWEF6A55RH000371',true,{arrival_date:D(11),analysis_date:D(10),cost_band:'gt10k'},[J('JS-2611016',10,8,8),Y('YS-2611010',7)]);
+  C(8,'SP2610-0712','Haval H6 PHEV','LGWEF6A57RH000712',true,{loaner:true,arrival_date:D(31),analysis_date:D(30),customer_contact_date:D(2),est_delivery:today()},
+    [J('JS-2610077',30,29,29),P('BO','BO-55470',28,10,6),A(4),X(3,'pass')]);
+  C(3,'SP2610-0802','Tank 300','LGWFF7A50RJ000802',true,{arrival_date:D(35),analysis_date:D(34),cost_band:'gt10k'},[Y('YS-2610031',30,'rejected',26)]);
+  C(4,'SP2610-0915','Haval H6','LGWEF6A52RH000915',true,{loaner:true,arrival_date:D(28),analysis_date:D(27)},
+    [J('JS-2610090',26,24,23),P('PO','PO-65990',22,18,17),A(16),X(15,'fail'),J('JS-2611015',14,12,null,2)]);
+  C(2,'SP2610-0655','ORA 07','LGWEE7K52RH000655',true,{arrival_date:D(40),analysis_date:D(39),customer_contact_date:D(10),delivered_date:D(8)},
+    [P('PO','PO-65811',37,20,16),A(12),X(11,'pass')]);
+  const vis = () => db.cases.filter(c=>S.me.role!=='ps'||c.dealer_id==S.me.dealer_id).map(c=>c.id);
+  const cp = o => JSON.parse(JSON.stringify(o));
+  return {
+    async dealers(){ return cp(db.dealers); },
+    async cases(){ const v=vis(); return cp(db.cases.filter(c=>v.includes(c.id))); },
+    async steps(){ const v=vis(); return cp(db.steps.filter(s=>v.includes(s.case_id))); },
+    async logs(cid){ return cp(db.logs.filter(l=>l.case_id===cid).sort((a,b)=>b.id-a.id)); },
+    async saveCase(c){
+      const keys=Object.keys(c).filter(k=>k!=='id');
+      if(c.id){ const x=db.cases.find(z=>z.id===c.id);
+        if(keys.includes('sp') && db.cases.some(z=>z.id!==c.id && z.dealer_id==x.dealer_id && z.sp===c.sp)) throw {code:'23505'};
+        if(!keys.length) return cp(x);
+        Object.assign(x,cp(c)); log(x.id,x.dealer_id,'case','update',keys,S.me); return cp(x); }
+      if(db.cases.some(z=>z.dealer_id==c.dealer_id && z.sp===c.sp)) throw {code:'23505'};
+      const n=Object.assign(cp(c),{id:'c'+(seq++)}); db.cases.push(n); log(n.id,n.dealer_id,'case','insert',['created'],S.me); return cp(n);
+    },
+    async syncSteps(cid,rows,removed){
+      const dealer=db.cases.find(c=>c.id===cid).dealer_id;
+      db.steps.filter(s=>removed.includes(s.id)).forEach(s=>log(cid,dealer,s.kind,'delete',null,S.me,s.id));
+      db.steps=db.steps.filter(s=>!removed.includes(s.id));
+      rows.forEach(s=>{ const o={case_id:cid,dealer_id:dealer}; STEP_FIELDS.forEach(k=>{ if(k!=='id') o[k]=s[k]??null; });
+        const k=db.steps.findIndex(x=>x.id===s.id);
+        if(k>=0){ const ch=STEP_FIELDS.filter(f=>f!=='id'&&(db.steps[k][f]??null)!==(o[f]??null)); db.steps[k]=Object.assign(db.steps[k],o); log(cid,dealer,o.kind,'update',ch,S.me,s.id); }
+        else { o.id='s'+(seq++); db.steps.push(o); log(cid,dealer,o.kind,'insert',null,S.me,o.id); } }); },
+    async deleteCase(id){ db.cases=db.cases.filter(c=>c.id!==id); db.steps=db.steps.filter(s=>s.case_id!==id); },
+    async profiles(){ return cp(S.me.role==='admin'?db.profiles:db.profiles.filter(p=>p.user_id===S.me.user_id||p.dealer_id==S.me.dealer_id||(!p.dealer_id&&p.requested_dealer_id==S.me.dealer_id))); },
+    async updateProfile(uid,p){ Object.assign(db.profiles.find(x=>x.user_id===uid),p); },
+    async setTempPw(){ },
+    async svmSetMember(uid,role,cat){ const p=db.profiles.find(x=>x.user_id===uid);
+      if(uid===S.me.user_id) throw {message:'NOT_SELF'};
+      if(!p||!['pending','ps','disabled'].includes(p.role)||!(p.dealer_id==S.me.dealer_id||(!p.dealer_id&&p.requested_dealer_id==S.me.dealer_id))) throw {message:'NOT_YOUR_STAFF'};
+      Object.assign(p,{role,category:cat||p.category,dealer_id:S.me.dealer_id}); },
+    async allowed(){ return cp(S.me.role==='admin'?db.allowed:db.allowed.filter(a=>a.dealer_id==S.me.dealer_id&&a.role==='ps')); },
+    async saveAllowed(rows){ rows.forEach(r=>{ r.email=r.email.toLowerCase(); const i=db.allowed.findIndex(a=>a.email===r.email); if(i>=0) db.allowed[i]=r; else db.allowed.unshift(r);
+      const p=db.profiles.find(x=>x.email===r.email&&x.role==='pending'); if(p) Object.assign(p,{role:r.role,dealer_id:r.dealer_id,category:r.category||p.category}); }); },
+    async delAllowed(email){ db.allowed=db.allowed.filter(a=>a.email!==email); },
+    async saveDealer(d){ if(d.id) Object.assign(db.dealers.find(x=>x.id==d.id),d); else db.dealers.push(Object.assign({},d,{id:100+(seq++)})); },
+    async bulkDealers(rows){ rows.forEach(r=>db.dealers.push(Object.assign({},r,{id:100+(seq++)}))); },
+    subscribe(){}
+  };
+}
+const api = DEMO ? demoApi() : supaApi();
+
+/* ===================== โหลดข้อมูล ===================== */
+async function loadAll(){
+  const [d,c,st] = await Promise.all([api.dealers(), api.cases(), api.steps()]);
+  S.dealers=d; S.steps=st; S.stepsBy={};
+  st.forEach(x=>(S.stepsBy[x.case_id]=S.stepsBy[x.case_id]||[]).push(x));
+  S.cases=c;
+  computeAll();
+  if(isAdmin()||isSvm()){ const [p,a]=await Promise.all([api.profiles(),api.allowed()]); S.profiles=p; S.allowed=a; }
+}
+function computeAll(){ S.cases.forEach(x=>{ const ss=S.stepsBy[x.id]||[]; x._t=timeline(x,ss); x._f=flags(x,x._t,ss); }); }
+async function reload(){ try{ await loadAll(); renderMain(); }catch(e){ toast(errMsg(e)); } }
+function errMsg(e){
+  if(!e) return L('เกิดข้อผิดพลาด','Something went wrong');
+  if(e.code==='23505') return L('SP นี้มีอยู่แล้วในศูนย์นี้','This SP already exists for this dealer');
+  if(/NOT_SELF/.test(e.message||'')) return L('แก้สิทธิ์ของตัวเองไม่ได้','You cannot change your own access');
+  if(/NOT_YOUR_STAFF/.test(e.message||'')) return L('ผู้ใช้นี้ไม่ได้อยู่ในศูนย์ของคุณ','This user is not in your service center');
+  if(e.code==='42501'||/NOT_ALLOWED|row-level security/.test(e.message||'')) return L('ตำแหน่งของคุณไม่มีสิทธิ์แก้ส่วนนี้','Your position cannot edit this part');
+  const m=e.message||String(e);
+  if(/Invalid login/i.test(m)) return L('อีเมลหรือรหัสผ่านไม่ถูกต้อง','Wrong email or password');
+  if(/already registered/i.test(m)) return L('อีเมลนี้สมัครไว้แล้ว','This email is already registered');
+  if(/Email not confirmed/i.test(m)) return L('ยังไม่ได้ยืนยันอีเมล','Email not confirmed');
+  return m;
+}
+
+/* ===================== Boot / Auth ===================== */
+let booting=false;
+async function boot(){
+  if(booting) return; booting=true;
+  document.documentElement.lang=S.lang;
+  try{
+    if(DEMO){ if(!S.me) S.me={...DEMO_USERS.admin}; await loadAll(); renderApp(); return; }
+    if(S.recovery){ renderAuth('newpw'); return; }
+    const s=await api.session();
+    if(!s){ S.me=null; S.dealers=await api.dealers().catch(()=>[]); renderAuth('login'); return; }
+    S.me=await api.me();
+    if(!S.me || ['pending','disabled'].includes(S.me.role)){ if(!S.dealers.length) S.dealers=await api.dealers().catch(()=>[]); renderPending(); return; }
+    await loadAll(); renderApp();
+    if(!S.ready){ S.ready=true; api.subscribe(()=>{ if(!S.edit) reload(); }); }
+  }catch(e){ app.innerHTML=`<div class="auth"><div class="authbox"><b>${L('เชื่อมต่อไม่ได้','Cannot connect')}</b><div class="msg err">${esc(errMsg(e))}</div><button class="btn wide" onclick="location.reload()">${L('ลองใหม่','Retry')}</button></div></div>`; }
+  finally{ booting=false; }
+}
+if(!DEMO){
+  api.sb.auth.onAuthStateChange((ev,session)=>{
+    if(ev==='PASSWORD_RECOVERY'){ S.recovery=true; renderAuth('newpw'); return; }
+    if(ev==='SIGNED_OUT'){ S.me=null; boot(); }
+    else if(ev==='SIGNED_IN' && !(S.me && session && S.me.user_id===session.user.id)) setTimeout(boot,0);
+  });
+}
+function renderAuth(mode, msg, isErr){
+  S.authMode=mode;
+  const ds=S.dealers.filter(d=>d.active!==false);
+  const head=`<div style="display:flex;align-items:center"><div class="brand">VOR <span>Live</span></div><span class="sp"></span>${langBtn()}</div>
+    <div class="mut">${L('GWM-AFS · ติดตามรถค้างซ่อม','GWM-AFS · Vehicle-off-road tracking')}</div>`;
+  let body='';
+  if(mode==='login') body=`
+    <form id="fLogin">
+      <label>${L('อีเมล','Email')}<input type="email" name="email" autocomplete="email" required></label>
+      <label>${L('รหัสผ่าน','Password')}<input type="password" name="pw" autocomplete="current-password" required></label>
+      <button class="btn pri wide">${L('เข้าสู่ระบบ','Log in')}</button>
+      <a href="#" class="sm" data-auth="forgot">${L('ลืมรหัสผ่าน?','Forgot password?')}</a>
+    </form>`;
+  if(mode==='signup') body=`
+    <form id="fSignup">
+      <label>${L('ชื่อ - นามสกุล (ชื่อจริง) *','Full name *')}<input name="name" autocomplete="name" required></label>
+      <label>${L('ตำแหน่ง *','Position *')}<select name="cat" id="suCat">
+        ${Object.keys(CATS).map(k=>`<option value="${k}">${esc(CATS[k][S.lang])}</option>`).join('')}<option value="rsm">RSM (GWM)</option></select></label>
+      <label id="suDealer">${L('ศูนย์บริการ *','Service center *')}<select name="dealer">${ds.map(d=>`<option value="${d.id}">${esc(d.name)}</option>`).join('')}</select></label>
+      <label>${L('อีเมล *','Email *')}<input type="email" name="email" autocomplete="email" required></label>
+      <label>${L('ตั้งรหัสผ่าน (อย่างน้อย 8 ตัว) *','Choose a password (min. 8 characters) *')}<input type="password" name="pw" minlength="8" autocomplete="new-password" required></label>
+      <button class="btn pri wide">${L('สมัคร','Sign up')}</button>
+      <div class="mut sm">${L('ถ้าอีเมลของคุณอยู่ในรายชื่อที่ RSM ลงไว้ จะเข้าใช้ได้ทันที — ถ้าไม่อยู่ ระบบจะส่งคำขอให้ RSM อนุมัติ แล้วเข้าด้วยรหัสที่ตั้งไว้นี้','If your email is on your RSM\'s list you can start right away — otherwise your request goes to the RSM, then you log in with the password you set here')}</div>
+    </form>`;
+  if(mode==='forgot') body=`
+    <form id="fForgot">
+      <div class="mut sm">${L('ใส่อีเมลที่ใช้สมัคร ระบบจะส่งลิงก์ตั้งรหัสใหม่ไปให้','Enter your email and we\'ll send a link to set a new password')}</div>
+      <label>${L('อีเมล','Email')}<input type="email" name="email" autocomplete="email" required></label>
+      <button class="btn pri wide">${L('ส่งลิงก์ตั้งรหัสใหม่','Send reset link')}</button>
+      <a href="#" class="sm" data-auth="login">← ${L('กลับไปเข้าสู่ระบบ','Back to log in')}</a>
+    </form>`;
+  if(mode==='newpw') body=`
+    <form id="fNewPw">
+      <label>${L('ตั้งรหัสผ่านใหม่ (อย่างน้อย 8 ตัว)','New password (min. 8 characters)')}<input type="password" name="pw" minlength="8" autocomplete="new-password" required></label>
+      <button class="btn pri wide">${L('บันทึกรหัสใหม่','Save new password')}</button>
+    </form>`;
+  app.innerHTML=`<div class="auth"><div class="authbox">${head}
+    ${mode==='login'||mode==='signup'?`<div class="segc"><button data-auth="login" class="${mode==='login'?'on':''}">${L('เข้าสู่ระบบ','Log in')}</button><button data-auth="signup" class="${mode==='signup'?'on':''}">${L('สมัครใช้งาน','Sign up')}</button></div>`:''}
+    ${body}
+    ${msg?`<div class="msg ${isErr?'err':''}">${esc(msg)}</div>`:''}
+  </div><div class="credit">VOR Live <a href="#" data-act="changelog">v${APP_VERSION}</a> · ${CREDIT}</div></div>`;
+}
+function renderPending(){
+  const m=S.me||{};
+  app.innerHTML=`<div class="auth"><div class="authbox">
+    <div style="display:flex;align-items:center"><div class="brand">VOR <span>Live</span></div><span class="sp"></span>${langBtn()}</div>
+    <div class="msg">${m.role==='disabled'?L('บัญชีนี้ถูกระงับ กรุณาติดต่อ RSM','This account is disabled. Please contact your RSM.')
+      :L('ส่งคำขอแล้ว <b>รอ RSM อนุมัติ</b><br>เมื่ออนุมัติแล้วกด "ตรวจสอบอีกครั้ง" ใช้รหัสที่ตั้งไว้ได้เลย','Request sent — <b>awaiting RSM approval</b>.<br>Once approved, press "Check again" and use the password you set.')}</div>
+    ${m.email?`<div class="mut sm" style="margin-top:10px">${esc(m.full_name||'')} · ${esc(catName(m.category||m.requested_role))}${m.requested_dealer_id?' · '+esc(dName(m.requested_dealer_id)):''}<br>${esc(m.email)}</div>`:''}
+    <div style="display:flex;gap:8px;margin-top:14px"><button class="btn pri" data-act="recheck">${L('ตรวจสอบอีกครั้ง','Check again')}</button><button class="btn" data-act="logout">${L('ออกจากระบบ','Log out')}</button></div>
+  </div></div>`;
+}
+/* ===================== App shell ===================== */
+function renderApp(){
+  computeAll();
+  const tabs=[['board','Board'],['list',L('รายการ','List')],['stats',L('วิเคราะห์เวลา','Lead time')]];
+  if(isAdmin()) tabs.push(['admin',L('ผู้ใช้ & PS','Users & PS')]);
+  if(isSvm()){ const n=(S.profiles||[]).filter(p=>p.role==='pending').length; tabs.push(['team',L('ทีมงานศูนย์','Team')+(n?` <span class="badge">${n}</span>`:'')]); }
+  if(!tabs.some(t=>t[0]===S.tab)) S.tab='board';
+  const psDealer = S.me.role==='ps' ? dName(S.me.dealer_id) : '';
+  app.innerHTML=`${DEMO?demoBanner():''}
+  <header class="top"><div class="brand">VOR <span>Live</span></div><a href="#" class="ver" data-act="changelog">v${APP_VERSION}</a><div class="hsub">${psDealer?esc(psDealer):L('GWM-AFS · ทุกศูนย์','GWM-AFS · all dealers')}</div>
+    <div class="user"><span class="hsub">${esc(meName())}</span><span class="role">${esc(meTag())}</span>${langBtn()}<button class="btn sm" data-act="chpw" title="${L('เปลี่ยนรหัสผ่าน','Change password')}">🔑</button>${DEMO?'':`<button class="btn sm" data-act="logout">${L('ออก','Log out')}</button>`}</div></header>
+  <nav class="tabs">${tabs.map(t=>`<button data-tab="${t[0]}" class="${S.tab===t[0]?'on':''}">${t[1]}</button>`).join('')}</nav>
+  <main id="main"></main>
+  <footer class="credit">VOR Live <a href="#" data-act="changelog">v${APP_VERSION}</a> · ${CREDIT}</footer>`;
+  renderMain();
+}
+function demoBanner(){
+  const cur = S.me.role==='ps' ? S.me.category : 'admin';
+  return `<div class="demo">${L('โหมดตัวอย่าง · ข้อมูลจำลอง ยังไม่ต่อ Supabase','Demo mode · sample data, not connected to Supabase')} <span class="sp"></span>${L('ดูแบบ:','View as:')}
+    <select data-demo-sel>${Object.keys(DEMO_USERS).map(k=>`<option value="${k}" ${cur===k?'selected':''}>${k==='admin'?L('RSM (คุณ)','RSM (you)'):'PS Chan Road · '+esc(catName(k))}</option>`).join('')}</select></div>`;
+}
+function renderMain(){
+  const m=$('#main'); if(!m) return;
+  if(S.tab==='admin'){ m.innerHTML=viewAdmin(); return; }
+  if(S.tab==='team'){ m.innerHTML=viewTeam(); return; }
+  m.innerHTML=filterBar()+'<div id="view"></div>';
+  renderView();
+}
+function renderView(){
+  const v=$('#view'); if(!v) return;
+  v.innerHTML = S.tab==='board'?viewBoard() : S.tab==='list'?viewList() : viewStats();
+  if(S.tab==='board') bindDnD();
+}
+function filterBar(){
+  const staff=isStaff(), f=S.f;
+  const rsms=[...new Set(S.dealers.map(d=>d.rsm).filter(Boolean))];
+  const ds=S.dealers.filter(d=>!f.rsm||d.rsm===f.rsm);
+  return `<div class="bar">
+    ${staff?`<select data-f="rsm"><option value="">${L('ทุก RSM','All RSMs')}</option>${rsms.map(r=>`<option ${f.rsm===r?'selected':''}>${esc(r)}</option>`).join('')}</select>
+    <select data-f="dealer"><option value="">${L('ทุกศูนย์ (PS)','All dealers (PS)')}</option>${ds.map(d=>`<option value="${d.id}" ${String(f.dealer)===String(d.id)?'selected':''}>${esc(d.name)}</option>`).join('')}</select>`:''}
+    <input type="search" data-f="q" placeholder="${L('ค้นหา SP / VIN / JS / YS / PO / BO','Search SP / VIN / JS / YS / PO / BO')}" value="${esc(f.q)}">
+    <select data-f="parked"><option value="">${L('จอด + ไม่จอด','Parked + not parked')}</option><option value="y" ${f.parked==='y'?'selected':''}>${L('เฉพาะจอด','Parked only')}</option><option value="n" ${f.parked==='n'?'selected':''}>${L('เฉพาะไม่จอด','Not parked only')}</option></select>
+    <select data-f="loaner"><option value="">${L('รถใช้ระหว่างซ่อม: ทั้งหมด','Loaner: all')}</option><option value="y" ${f.loaner==='y'?'selected':''}>${L('มีรถใช้ระหว่างซ่อม','With loaner')}</option><option value="n" ${f.loaner==='n'?'selected':''}>${L('ไม่มีรถใช้','No loaner')}</option></select>
+    ${S.tab==='board'?`<label class="chk"><input type="checkbox" data-f="showDone" ${f.showDone?'checked':''}> ${L('แสดงที่ส่งมอบแล้ว','Show delivered')}</label>`:''}
+    ${S.tab==='stats'?`<select data-f="period"><option value="open" ${f.period==='open'?'selected':''}>${L('รถที่ยังค้าง','Open vehicles')}</option><option value="closed90" ${f.period==='closed90'?'selected':''}>${L('ส่งมอบแล้ว 90 วันล่าสุด','Delivered, last 90 days')}</option><option value="all" ${f.period==='all'?'selected':''}>${L('ทั้งหมด','All')}</option></select>`:''}
+    <span class="sp"></span>
+    ${S.tab==='list'?'<button class="btn" data-act="csv">Export CSV</button>':''}
+    <button class="btn" data-act="refresh" title="${L('โหลดใหม่','Reload')}">↻</button>
+    ${canCreate()?`<button class="btn pri" data-act="new">${L('+ เพิ่มรถค้างซ่อม','+ Add vehicle')}</button>`:''}
+  </div>`;
+}
+function filtered(){
+  const f=S.f, q=f.q.trim().toLowerCase();
+  return S.cases.filter(c=>{ const d=dealerById(c.dealer_id)||{};
+    if(f.rsm && d.rsm!==f.rsm) return false;
+    if(f.dealer && String(c.dealer_id)!==String(f.dealer)) return false;
+    if(f.parked==='y' && !c.parked) return false;
+    if(f.parked==='n' && c.parked) return false;
+    if(f.loaner==='y' && !c.loaner) return false;
+    if(f.loaner==='n' && c.loaner) return false;
+    if(q){ const refs=(S.stepsBy[c.id]||[]).map(s=>s.ref_no||'').join(' ');
+      if(![c.sp,c.vin,c.model,refs].join(' ').toLowerCase().includes(q)) return false; }
+    return true; });
+}
+
+/* ===================== Board ===================== */
+const oc = o => o ? OWN[o].c : DONE_C;
+function tlBar(t){ const s=t.segs.filter(x=>x.days>0); if(!s.length) return '<div class="tl"></div>';
+  return `<div class="tl">${s.map(x=>`<i style="flex:${x.days};background:${oc(x.o)}" title="${esc(stName(x.k))} ${days(x.days)}"></i>`).join('')}</div>`; }
+function card(c){
+  const t=c._t;
+  const tog=(f,on,cls,txtOn,txtOff)=>{ const can=canField(f);
+    return `<span class="tag ${on?cls:''}" ${can?`data-toggle="${f}" data-cid="${c.id}" title="${L('แตะเพื่อสลับ','Tap to switch')}"`:''}>${on?txtOn:txtOff}</span>`; };
+  return `<div class="card" style="--oc:${oc(t.cur.o)}" data-open="${c.id}" ${FULL()?'draggable="true"':''} data-id="${c.id}">
+    <div class="ct"><b>${esc(c.sp)}</b>${t.round>1?`<span class="rnd">${L('รอบ','Round')} ${t.round}</span>`:''}<span class="sp"></span>${tog('parked',c.parked,'park',L('จอด','Parked'),L('ไม่จอด','Not parked'))}</div>
+    <div class="tags2">${tog('loaner',c.loaner,'loan','🚗 '+L('มีรถใช้ระหว่างซ่อม','Loaner car'),'🚗 '+L('ไม่มีรถใช้','No loaner'))}</div>
+    <div class="mut sm">${esc(c.model||'-')}${c.vin?' · …'+esc(c.vin.slice(-6)):''}</div>
+    ${isStaff()?`<div class="mut sm">${esc(dName(c.dealer_id))}</div>`:''}
+    ${t.cur.detail?`<div class="stg"><span class="dot" style="background:${oc(t.cur.o)}"></span>${esc(t.cur.detail)}</div>`:''}
+    <div class="nums">${t.done?`<span>${L('ส่งมอบ','Delivered')} ${fmt(c.delivered_date)}</span>`:`<span>${L('ขั้นนี้','In status')} <b>${t.curDays}</b> ${L('วัน','d')}</span>`}<span>${L('รวม','Total')} <b>${t.total}</b> ${L('วัน','d')}</span>${c.est_delivery&&!t.done?`<span>${L('นัด','Due')} ${fmt(c.est_delivery)}</span>`:''}</div>
+    ${tlBar(t)}
+    ${c._f.map(x=>`<span class="flag">⚠ ${esc(x)}</span>`).join('')}
+  </div>`;
+}
+function viewBoard(){
+  const list=filtered(), T=today(), open=list.filter(c=>!c._t.done);
+  const avg=open.length?Math.round(open.reduce((s,c)=>s+c._t.total,0)/open.length):0;
+  const stats=[[L('รถค้างซ่อม','Open vehicles'),open.length,''],[L('จอด','Parked'),open.filter(c=>c.parked).length,''],[L('ค้างที่ GWM','Waiting on GWM'),open.filter(c=>c._t.cur.o==='G').length,'g'],
+    [L('ค้างที่ Partner','Waiting on Partner'),open.filter(c=>c._t.cur.o==='P').length,'p'],[L('มีรถใช้ระหว่างซ่อม','Loaner cars out'),open.filter(c=>c.loaner).length,''],[L('อายุเฉลี่ย (วัน)','Avg age (days)'),avg,''],[L('ซ่อมซ้ำ (รอบ 2+)','Repeat repair (round 2+)'),open.filter(c=>c._t.round>1).length,'']];
+  const cols=COL_ORDER.filter(k=>k!=='done'||S.f.showDone), g={};
+  cols.forEach(k=>g[k]=[]);
+  list.forEach(c=>{ const k=c._t.cur.k; if(k==='done' && dd(c.delivered_date,T)>30) return; if(g[k]) g[k].push(c); });
+  Object.keys(g).forEach(k=> g[k].sort((a,b)=> k==='done' ? b.delivered_date.localeCompare(a.delivered_date) : b._t.curDays-a._t.curDays || b._t.total-a._t.total));
+  const hideEmpty = k => k==='decide' && !g[k].length;
+  return `<div class="stats">${stats.map(s=>`<div class="stat ${s[2]}"><div class="v">${s[1]}</div><div class="l">${s[0]}</div></div>`).join('')}</div>
+  <div class="legend">${['P','G'].map(k=>`<span><span class="dot" style="background:${OWN[k].c}"></span> ${OWN[k].n}</span>`).join('')}<span>· ${L('ลากการ์ดไปคอลัมน์ถัดไปเพื่ออัปเดตสถานะ (บนคอมพิวเตอร์) · แตะการ์ดเพื่อแก้ไข','Drag a card to another column to update it (desktop) · tap a card to edit')}</span></div>
+  <div class="board">${cols.filter(k=>!hideEmpty(k)).map((k,i)=>{ const o=ST[k].o;
+    return `<div class="col ${k==='decide'?'alert':''}" data-col="${k}">
+    <h3><span class="dot" style="background:${oc(o)}"></span><span>${k==='done'||k==='decide'?'':`<small class="step">${COL_ORDER.indexOf(k)+1}</small> `}${esc(stName(k))}<br><small>${o?esc(o==='G'?'GWM':'Partner (PS)'):(k==='done'?L('30 วันล่าสุด','last 30 days'):'')}${k==='decide'?' · '+L('Reject / ทดสอบไม่ผ่าน','Reject / test failed'):''}</small></span><span class="n">${g[k].length}</span></h3>
+    ${g[k].map(card).join('')||'<div class="empty">—</div>'}</div>`; }).join('')}</div>`;
+}
+function bindDnD(){
+  document.querySelectorAll('.card[draggable]').forEach(el=>{
+    el.addEventListener('dragstart',e=>{ e.dataTransfer.setData('text/plain',el.dataset.id); el.classList.add('drag'); });
+    el.addEventListener('dragend',()=>el.classList.remove('drag'));
+  });
+  document.querySelectorAll('.col').forEach(col=>{
+    col.addEventListener('dragover',e=>{ e.preventDefault(); col.classList.add('over'); });
+    col.addEventListener('dragleave',()=>col.classList.remove('over'));
+    col.addEventListener('drop',e=>{ e.preventDefault(); col.classList.remove('over');
+      const id=e.dataTransfer.getData('text/plain'), k=col.dataset.col, c=S.cases.find(x=>x.id===id);
+      if(!c || c._t.cur.k===k) return;
+      if(k==='diag'||k==='decide'){ toast(L('คอลัมน์นี้อัปเดตจากวันที่ในการ์ด — แตะการ์ดเพื่อแก้ไข','This column is set by the card dates — tap the card to edit')); return; }
+      openCase(id, k); });
+  });
+}
+
+/* ===================== รายการ (ตาราง) ===================== */
+function rowsForExport(list){
+  return list.map(c=>{ const t=c._t, ss=S.stepsBy[c.id]||[];
+    const openEta=ss.filter(s=>s.kind==='parts'&&!s.d3&&s.d2).map(s=>s.d2).sort()[0]||'';
+    const r={}; const put=(th,en,v)=>r[L(th,en)]=v;
+    put('ศูนย์ (PS)','Dealer (PS)',dName(c.dealer_id)); put('SP','SP',c.sp); put('VIN','VIN',c.vin||''); put('รุ่น','Model',c.model||'');
+    put('วันที่มาถึง','Arrival date',c.arrival_date); put('จอด','Parked',c.parked?L('จอด','Yes'):L('ไม่จอด','No')); put('รถใช้ระหว่างซ่อม','Loaner car',c.loaner?L('มี','Yes'):L('ไม่มี','No')); put('รอบการซ่อม','Repair round',t.round);
+    put('สถานะปัจจุบัน','Current status',stName(t.cur.k)); put('รายละเอียด','Detail',t.cur.detail||''); put('ผู้รับผิดชอบ','Owner',t.cur.o?ownName(t.cur.o):'');
+    put('ค้างสถานะนี้ (วัน)','Days in status',t.done?'':t.curDays); put('รวม (วัน)','Total days',t.total);
+    put('Partner (วัน)','Partner days',t.own.P); put('GWM (วัน)','GWM days',t.own.G);
+    put('JS','JS',refsOf(ss,'js').join(' / ')); put('YS','YS',refsOf(ss,'ys').join(' / ')); put('PO/BO','PO/BO',refsOf(ss,'parts').join(' / '));
+    put('ETA (ที่ยังไม่มา)','Open ETA',openEta); put('นัดส่งมอบ','Est. delivery',c.est_delivery||''); put('ส่งมอบ','Delivered',c.delivered_date||'');
+    put('แจ้งเตือน','Alerts',c._f.join(' / ')); put('หมายเหตุ','Remark',c.remark||'');
+    return r; });
+}
+function viewList(){
+  const list=filtered().sort((a,b)=>(a._t.done-b._t.done)||b._t.total-a._t.total);
+  if(!list.length) return `<div class="panel mut">${L('ไม่มีข้อมูล','No data')}</div>`;
+  return `<div class="tw"><table><thead><tr>${isStaff()?`<th>${L('ศูนย์','Dealer')}</th>`:''}<th>SP</th><th>${L('รุ่น','Model')}</th><th>${L('มาถึง','Arrived')}</th><th></th><th>${L('รอบ','Round')}</th><th>${L('สถานะปัจจุบัน','Current status')}</th><th>${L('ขั้นนี้','In status')}</th><th>${L('รวม','Total')}</th><th>Partner</th><th>GWM</th><th>${L('เลขอ้างอิง','References')}</th><th>${L('นัดส่งมอบ','Est. delivery')}</th><th>${L('แจ้งเตือน','Alerts')}</th></tr></thead><tbody>
+  ${list.map(c=>{const t=c._t,ss=S.stepsBy[c.id]||[];return `<tr class="click" data-open="${c.id}">${isStaff()?`<td>${esc(dName(c.dealer_id))}</td>`:''}
+    <td><b>${esc(c.sp)}</b></td><td>${esc(c.model||'')}</td><td>${fmt(c.arrival_date)}</td><td>${c.parked?`<span class="tag park">${L('จอด','Parked')}</span>`:''}${c.loaner?' <span class="tag loan">🚗</span>':''}</td><td>${t.round}</td>
+    <td><span class="dot" style="background:${oc(t.cur.o)}"></span> ${esc(curLabel(t))}</td><td>${t.done?'':t.curDays}</td><td><b>${t.total}</b></td>
+    <td style="color:${OWN.P.c}">${t.own.P}</td><td style="color:${OWN.G.c}">${t.own.G}</td>
+    <td class="mut sm">${esc([...refsOf(ss,'js'),...refsOf(ss,'ys'),...refsOf(ss,'parts')].join(', '))}</td><td>${fmt(c.est_delivery)}</td>
+    <td>${c._f.map(x=>`<span class="flag">${esc(x)}</span>`).join('')}</td></tr>`;}).join('')}
+  </tbody></table></div>`;
+}
+function exportCSV(){
+  const rows=rowsForExport(filtered()); if(!rows.length) return toast(L('ไม่มีข้อมูล','No data'));
+  const h=Object.keys(rows[0]), q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
+  const csv='﻿'+[h.map(q).join(','),...rows.map(r=>h.map(k=>q(r[k])).join(','))].join('\r\n');
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  a.download='VOR-Live_'+S.lang.toUpperCase()+'_'+today()+'.csv'; document.body.appendChild(a); a.click(); a.remove();
+}
+
+/* ===================== วิเคราะห์เวลา ===================== */
+function hbar(label,val,max,color,suffix){ return `<div class="hbar"><span class="lb" title="${esc(label)}">${esc(label)}</span><span class="tr"><i style="width:${max?Math.max(2,val/max*100):0}%;background:${color}"></i></span><span class="vv">${val}${suffix||''}</span></div>`; }
+function viewStats(){
+  let list=filtered(); const T=today(), f=S.f.period;
+  if(f==='open') list=list.filter(c=>!c._t.done);
+  else if(f==='closed90') list=list.filter(c=>c._t.done && dd(c.delivered_date,T)<=90);
+  const n=list.length; if(!n) return `<div class="panel mut">${L('ไม่มีข้อมูลในช่วงนี้','No data in this period')}</div>`;
+  const own={P:0,G:0}; list.forEach(c=>{ own.P+=c._t.own.P; own.G+=c._t.own.G; });
+  const tot=own.P+own.G||1, avg=k=>(own[k]/n).toFixed(1), pct=(x,t)=>t?Math.round(x/t*100):0;
+  const stg={};
+  list.forEach(c=>c._t.segs.forEach(s=>{ const e=stg[s.k]=stg[s.k]||{k:s.k,o:s.o,days:0,cases:new Set()}; e.days+=s.days; e.cases.add(c.id); }));
+  const stages=Object.values(stg).map(e=>({...e,avg:+(e.days/e.cases.size).toFixed(1),n:e.cases.size})).sort((a,b)=>COL_ORDER.indexOf(a.k)-COL_ORDER.indexOf(b.k));
+  const smax=Math.max(...stages.map(s=>s.avg),1);
+  const B=[['0–7',0,7],['8–15',8,15],['16–30',16,30],['31–60',31,60],['60+',61,1e9]].map(b=>({l:b[0]+' '+L('วัน','days'),v:list.filter(c=>c._t.total>=b[1]&&c._t.total<=b[2]).length}));
+  const bmax=Math.max(...B.map(b=>b.v),1);
+  const dg={}; list.forEach(c=>{ const e=dg[c.dealer_id]=dg[c.dealer_id]||{id:c.dealer_id,n:0,tot:0,P:0,G:0,rep:0,max:null}; e.n++; e.tot+=c._t.total; e.P+=c._t.own.P; e.G+=c._t.own.G; if(c._t.round>1) e.rep++; if(!e.max||c._t.total>e.max._t.total) e.max=c; });
+  const dealers=Object.values(dg).sort((a,b)=>b.tot/b.n-a.tot/a.n);
+  const rep=list.filter(c=>c._t.round>1).length;
+  return `<div class="stats">
+    <div class="stat"><div class="v">${n}</div><div class="l">${L('จำนวนรถ','Vehicles')}</div></div>
+    <div class="stat"><div class="v">${(list.reduce((s,c)=>s+c._t.total,0)/n).toFixed(1)}</div><div class="l">${L('เฉลี่ยรวม (วัน/คัน)','Avg total (days/vehicle)')}</div></div>
+    <div class="stat p"><div class="v">${avg('P')}</div><div class="l">Partner (${L('วัน/คัน','days/vehicle')})</div></div>
+    <div class="stat g"><div class="v">${avg('G')}</div><div class="l">GWM (${L('วัน/คัน','days/vehicle')})</div></div>
+    <div class="stat"><div class="v">${rep} <span class="mut sm">(${pct(rep,n)}%)</span></div><div class="l">${L('ซ่อมซ้ำ (รอบ 2+)','Repeat repair (round 2+)')}</div></div></div>
+  <div class="panel"><h3>${L('เวลาทั้งหมดอยู่ฝั่งไหน','Where the time goes')}</h3>
+    <div class="share">${['P','G'].filter(k=>own[k]).map(k=>`<i style="flex:${own[k]};background:${OWN[k].c}" title="${OWN[k].n} ${pct(own[k],tot)}%">${pct(own[k],tot)>=8?OWN[k].n+' '+pct(own[k],tot)+'%':''}</i>`).join('')}</div>
+    <div class="mut sm">${L('รวม','Total')} ${tot} ${L('วัน-คัน','vehicle-days')} · Partner ${own.P} · GWM ${own.G}</div></div>
+  <div class="grid2">
+    <div class="panel"><h3>${L('เฉลี่ยกี่วันต่อสถานะ','Average days per status')}</h3><div class="mut sm" style="margin-bottom:6px">${L('เฉลี่ยต่อคันที่ผ่านสถานะนั้น (ทุกรอบรวมกัน) · สี = ความรับผิดชอบของใคร','Average per vehicle that passed the status (all rounds) · colour = owner')}</div>
+      ${stages.map(s=>hbar(stName(s.k)+' ('+s.n+')',s.avg,smax,oc(s.o))).join('')}</div>
+    <div class="panel"><h3>${L('อายุรถค้าง (วันรวม)','Vehicle age (total days)')}</h3>${B.map(b=>hbar(b.l,b.v,bmax,'#6b7280',' '+L('คัน','veh.'))).join('')}</div>
+  </div>
+  <div class="panel"><h3>${L('แยกตามศูนย์','By dealer')}</h3><div class="tw" style="max-height:none;border:0"><table><thead><tr><th>${L('ศูนย์','Dealer')}</th><th>${L('คัน','Vehicles')}</th><th>${L('เฉลี่ย (วัน)','Avg (days)')}</th><th>Partner</th><th>GWM</th><th>${L('ซ่อมซ้ำ','Repeat')}</th><th>${L('นานสุด','Longest')}</th></tr></thead><tbody>
+    ${dealers.map(e=>{const t=e.P+e.G;return `<tr class="click" data-dealer="${e.id}"><td>${esc(dName(e.id))}</td><td>${e.n}</td><td><b>${(e.tot/e.n).toFixed(1)}</b></td>
+      <td style="color:${OWN.P.c}">${pct(e.P,t)}%</td><td style="color:${OWN.G.c}">${pct(e.G,t)}%</td><td>${e.rep||''}</td><td>${esc(e.max.sp)} · ${days(e.max._t.total)}</td></tr>`;}).join('')}
+  </tbody></table></div></div>`;
+}
+
+/* ===================== ฟอร์มเคส ===================== */
+const newStep = (kind,round,x) => Object.assign({id:'new'+Math.random().toString(36).slice(2),kind,round},x||{});
+const curRound = () => Math.max(1,...S.edit.steps.map(s=>s.round||1));
+function ensureRoundSteps(){ // ทุกรอบมีช่อง "ประกอบ" และ "ทดสอบ"
+  for(let r=1;r<=curRound();r++) ['assemble','test'].forEach(k=>{ if(!S.edit.steps.some(s=>s.kind===k&&s.round===r)) S.edit.steps.push(newStep(k,r)); });
+}
+function openCase(id, dropCol){
+  const base = id ? S.cases.find(x=>x.id===id) : {dealer_id: S.me.role==='ps'?S.me.dealer_id:(S.f.dealer||''), arrival_date:today(), parked:true, loaner:false, cost_band:'le10k'};
+  const c={}; Object.keys(base).forEach(k=>{ if(!k.startsWith('_')) c[k]=base[k]; });
+  const steps=(id?(S.stepsBy[id]||[]):[]).map(s=>({...s}));
+  S.edit={c,steps,removed:[],id,logs:[],orig:id?normCase(c):null,origSteps:Object.fromEntries(normSteps(steps).map(s=>[s.id,s]))};
+  ensureRoundSteps();
+  if(dropCol){
+    if(c.delivered_date && dropCol!=='done') c.delivered_date=null;   // ลากออกจาก "ส่งมอบแล้ว" = ยกเลิกวันส่งมอบ
+    const T=today(), r=curRound(), st=k=>S.edit.steps.find(s=>s.kind===k&&s.round===r), ss=S.edit.steps;
+    const closeReplied=()=>ss.filter(s=>s.kind==='js'&&s.d2&&!s.d3).forEach(s=>s.d3=T);
+    switch(dropCol){
+      case 'js_wait': ss.push(newStep('js',r,{d1:T})); break;
+      case 'js_close': { const w=ss.filter(s=>s.kind==='js'&&s.d1&&!s.d2&&!s.d3); w.forEach(s=>s.d2=T); break; }
+      case 'ys_open': if(!c.analysis_date) c.analysis_date=T; closeReplied(); c.cost_band='gt10k'; break;
+      case 'ys_wait': ss.push(newStep('ys',r,{d1:T})); c.cost_band='gt10k'; break;
+      case 'parts_order': if(!c.analysis_date) c.analysis_date=T; closeReplied();
+        ss.filter(s=>s.kind==='ys'&&s.d1&&!s.result).forEach(s=>{ s.result='approved'; s.d2=T; }); break;
+      case 'eta': ss.push(newStep('parts',r,{d1:T})); break;
+      case 'test': { const op=ss.filter(s=>s.kind==='parts'&&s.d1&&!s.d3); if(op.length) op.forEach(s=>s.d3=T); else st('assemble').d1=T; break; }
+      case 'follow': { const a=st('assemble'); if(!a.d1) a.d1=T; const x=st('test'); x.d1=T; x.result='pass'; break; }
+      case 'done': c.delivered_date=T; break;
+    }
+    S.edit.hint=L('ใส่วันที่วันนี้ให้แล้ว — กรอกเลขอ้างอิงให้ครบ แล้วกด "บันทึก"','Today\'s date has been filled in — complete the reference numbers, then press "Save"');
+  }
+  renderModal();
+  if(id){ const E=S.edit; api.logs(id).then(l=>{ if(S.edit===E){ E.logs=l||[]; renderStamps(); } }).catch(()=>{}); }
+}
+function dateIn(attr,v){ return `<div class="dwrap"><input type="date" ${attr} value="${esc(v||'')}"><button type="button" class="clr ${v?'':'hidden'}" data-clear title="${L('ล้างวันที่','Clear date')}">✕</button><button type="button" class="today" data-today>${L('วันนี้','Today')}</button></div>`; }
+function dateRow(f,label,v){ return `<label class="drow">${label}${dateIn(`data-c="${f}"`,v)}</label>`; }
+function radio(name,attr,opts,val){ return `<div class="radios">${opts.map(o=>`<label><input type="radio" name="${name}" ${attr} value="${o[0]}" ${String(val)===String(o[0])?'checked':''}> ${o[1]}</label>`).join('')}</div>`; }
+function sIn(i,f,label,v,ph){ return `<label class="drow">${label}<input data-s="${i}" data-sf="${f}" value="${esc(v||'')}" placeholder="${ph||''}" autocapitalize="characters"></label>`; }
+function sDate(i,f,label,v){ return `<label class="drow">${label}${dateIn(`data-s="${i}" data-sf="${f}"`,v)}</label>`; }
+function stepBlock(s,i){
+  const rm = canStep(s.kind) ? `<button type="button" class="rm" data-rmstep="${i}" title="${L('ลบ','Delete')}">🗑</button>` : '';
+  const st = isNew(s.id) ? '' : `<div class="stamp" data-step="${s.id}"></div>`;
+  if(s.kind==='js') return `<div class="srow js">${rm}<div class="rt">${L('JS · ขอสนับสนุนทางเทคนิค','JS · Technical support request')}</div>
+    ${sIn(i,'ref_no',L('เลข JS *','JS no. *'),s.ref_no,'JS-…')}${sDate(i,'d1',L('วันที่ขอ JS *','Request date *'),s.d1)}${sDate(i,'d2',L('วันที่ช่าง (TSS) ตอบ','TSS reply date'),s.d2)}${sDate(i,'d3',L('วันที่ปิด JS (จบเคส)','JS closed date'),s.d3)}${st}</div>`;
+  if(s.kind==='ys') return `<div class="srow ys">${rm}<div class="rt">${L('YS · ขออนุมัติก่อนซ่อม','YS · Pre-repair warranty approval')}</div>
+    ${sIn(i,'ref_no',L('เลข YS *','YS no. *'),s.ref_no,'YS-…')}${sDate(i,'d1',L('วันที่ขอ YS *','Request date *'),s.d1)}
+    <label class="drow">${L('ผล Warranty','Warranty result')}<select data-s="${i}" data-sf="result"><option value="">${L('— รอผล —','— Pending —')}</option><option value="approved" ${s.result==='approved'?'selected':''}>${L('อนุมัติ','Approved')}</option><option value="rejected" ${s.result==='rejected'?'selected':''}>Reject</option></select></label>
+    ${sDate(i,'d2',L('วันที่ Warranty ตอบ','Warranty reply date'),s.d2)}${st}</div>`;
+  if(s.kind==='parts') return `<div class="srow parts">${rm}<div class="rt">${L('อะไหล่ · PS เปิดออเดอร์แล้ว รอ GWM ส่ง','Parts · ordered by PS, awaiting GWM delivery')}</div>
+    <label class="drow">${L('ประเภท *','Type *')}${radio('pt_'+i,`data-s="${i}" data-sf="parts_type"`,[['PO','PO'],['BO','BO']],s.parts_type||'')}</label>
+    ${sIn(i,'ref_no',L('เลข PO / BO *','PO / BO no. *'),s.ref_no,(s.parts_type||'PO')+'-…')}${sDate(i,'d1',L('วันที่สั่ง *','Order date *'),s.d1)}${sDate(i,'d2','ETA',s.d2)}${sDate(i,'d3',L('วันที่อะไหล่มาถึง','Parts arrival date'),s.d3)}${st}</div>`;
+  return '';
+}
+function renderModal(){
+  const E=S.edit, c=E.c, staff=isStaff(), m=$('#modal');
+  const prevScroll = m.querySelector('.mb') ? m.querySelector('.mb').scrollTop : 0;
+  const ds=S.dealers.filter(d=>d.active!==false || String(d.id)===String(c.dealer_id));
+  const R=curRound(), idx=s=>E.steps.indexOf(s);
+  let rounds='';
+  for(let r=1;r<=R;r++){
+    const of=k=>E.steps.filter(s=>s.kind===k&&s.round===r);
+    const asm=of('assemble')[0], tst=of('test')[0], ai=idx(asm), ti=idx(tst);
+    rounds+=`<section class="fs round"><h4><span class="no">${r}</span>${L('รอบการซ่อมที่','Repair round')} ${r}${r>1?` <span class="mut sm" style="font-weight:400">${L('(เปิดใหม่เพราะทดสอบไม่ผ่าน)','(reopened after a failed test)')}</span>`:''}</h4>
+      ${[...of('js'),...of('ys'),...of('parts')].map(s=>stepBlock(s,idx(s))).join('')}
+      <div class="addrow"><button type="button" class="btn sm" data-addstep="js" data-r="${r}">+ JS</button><button type="button" class="btn sm" data-addstep="ys" data-r="${r}">+ YS</button><button type="button" class="btn sm" data-addstep="parts" data-r="${r}">+ PO / BO</button>
+        ${c.cost_band==='gt10k'&&!of('ys').length?`<span class="hint" style="margin:0">${L('ค่าซ่อมเกิน 10,000 ต้องขอ YS ก่อนซ่อม','Over 10,000 THB requires YS before repair')}</span>`:''}</div>
+      <div class="fg" style="margin-top:10px">
+        <label class="drow">${L('ช่างประกอบ','Assembly date')}${dateIn(`data-s="${ai}" data-sf="d1"`,asm.d1)}</label>
+        <label class="drow">${L('ช่างทดสอบ','Test date')}${dateIn(`data-s="${ti}" data-sf="d1"`,tst.d1)}</label>
+      </div>
+      <label class="drow" style="margin-top:10px">${L('ผลทดสอบ','Test result')}${radio('tr_'+ti,`data-s="${ti}" data-sf="result"`,[['testing',L('อยู่ระหว่างทดสอบ / เก็บข้อมูล','Testing / collecting data')],['pass',L('ผ่าน','Pass')],['fail',L('ไม่ผ่าน (อาการไม่หาย)','Fail (issue persists)')],['other',L('อื่นๆ','Other')]],tst.result||'')}</label>
+      ${tst.result==='testing'||tst.result==='other'?`<label class="drow" style="margin-top:8px">${tst.result==='other'?L('ระบุ *','Please specify *'):L('รายละเอียด (ถ้ามี)','Details (optional)')}<input data-s="${ti}" data-sf="note" value="${esc(tst.note||'')}" placeholder="${L('เช่น รอลูกค้าขับทดสอบ 1 สัปดาห์','e.g. customer road test for 1 week')}"></label>`:''}
+      <div class="stamp" data-step="${asm.id}"></div><div class="stamp" data-step="${tst.id}"></div>
+      ${r===R&&tst.result==='fail'?`<button type="button" class="btn pri sm" data-act="newround" style="margin-top:10px">${L('เริ่มรอบที่','Start round')} ${R+1} · ${L('เปิด JS ใหม่','open new JS')}</button>`:''}
+    </section>`;
+  }
+  m.innerHTML=`<div class="sheet">
+    <div class="mh"><b>${E.id?'SP '+esc(c.sp):L('เพิ่มรถค้างซ่อม','Add vehicle')}</b>${E.id&&staff?`<span class="mut sm">${esc(dName(c.dealer_id))}</span>`:''}<button class="x" data-act="close" aria-label="close">✕</button></div>
+    <div class="mb">
+      ${!FULL()?`<div class="msg" style="margin-top:12px">${L('ตำแหน่งของคุณ','Your position')} (<b>${esc(catName(S.me.category))}</b>) ${L('กรอกได้เฉพาะ','can edit')}: ${esc(scopeText())}</div>`:''}
+      ${E.hint?`<div class="msg" style="margin-top:12px">${esc(E.hint)}</div>`:''}
+      <div id="pv"></div>
+      <section class="fs"><h4>${L('ข้อมูลรถ','Vehicle')}</h4><div class="fg">
+        ${staff?`<label>${L('ศูนย์บริการ (PS)','Dealer (PS)')}<select data-c="dealer_id"><option value="">${L('— เลือก —','— Select —')}</option>${ds.map(d=>`<option value="${d.id}" ${String(c.dealer_id)===String(d.id)?'selected':''}>${esc(d.name)}</option>`).join('')}</select></label>`:''}
+        <label>${L('SP (เลข RO) *','SP (RO no.) *')}<input data-c="sp" value="${esc(c.sp||'')}" placeholder="SP…" autocapitalize="characters"></label>
+        <label>VIN<input data-c="vin" value="${esc(c.vin||'')}" maxlength="17" autocapitalize="characters"></label>
+        <label>${L('รุ่น','Model')}<input data-c="model" list="models" value="${esc(c.model||'')}"></label>
+        ${dateRow('arrival_date',L('วันที่รถมาถึง *','Arrival date *'),c.arrival_date)}
+        <label>${L('จอด / ไม่จอด','Parked / not parked')}${radio('parked','data-c="parked"',[['1',L('จอด','Parked')],['0',L('ไม่จอด','Not parked')]],c.parked===false||c.parked==='0'?'0':'1')}</label>
+        <label>${L('รถใช้ระหว่างซ่อม','Loaner car')}${radio('loaner','data-c="loaner"',[['1',L('มี','Yes')],['0',L('ไม่มี','No')]],c.loaner===true||c.loaner==='1'?'1':'0')}</label>
+        ${dateRow('est_delivery',L('วันประมาณการส่งมอบ','Estimated delivery'),c.est_delivery)}
+        ${dateRow('analysis_date',L('ช่างวิเคราะห์','Diagnosis date'),c.analysis_date)}
+      </div>
+      <div class="stamp" data-sec="vehicle"></div>
+      <div style="margin-top:10px">${radio('cost_band','data-c="cost_band"',[['le10k',L('ค่าซ่อมไม่เกิน 10,000 – ทำเรื่องเคลม','Repair ≤ 10,000 THB – claim')],['gt10k',L('เกิน 10,000 – ขออนุมัติก่อนซ่อม (YS)','> 10,000 THB – pre-approval (YS)')]],c.cost_band||'le10k')}</div></section>
+      ${rounds}
+      <section class="fs"><h4><span class="no" style="background:${DONE_C}">✓</span>${L('ติดตามลูกค้า / ส่งมอบ','Customer follow-up / delivery')}</h4><div class="fg">${dateRow('customer_contact_date',L('โทรแจ้ง / นัดหมายลูกค้า','Customer contacted / appointment'),c.customer_contact_date)}${dateRow('delivered_date',L('ส่งมอบเสร็จสมบูรณ์','Delivered'),c.delivered_date)}</div><div class="stamp" data-sec="delivery"></div></section>
+      <section class="fs"><h4>${L('หมายเหตุ','Remark')}</h4><textarea data-c="remark" rows="2" style="width:100%">${esc(c.remark||'')}</textarea><div class="stamp" data-sec="remark"></div></section>
+      <div id="hist"></div>
+      <datalist id="models">${MODELS.map(x=>`<option value="${esc(x)}">`).join('')}</datalist>
+    </div>
+    <div class="mf">${E.id&&staff?`<button class="btn danger" data-act="del">${L('ลบ','Delete')}</button>`:''}<span class="sp"></span><button class="btn" data-act="close">${L('ยกเลิก','Cancel')}</button><button class="btn pri" data-act="save">${L('บันทึก','Save')}</button></div>
+  </div>`;
+  m.classList.remove('hidden');
+  m.querySelector('.mb').scrollTop=prevScroll;
+  applyPerms(); renderStamps();
+  updatePreview();
+}
+function renderStamps(){
+  const E=S.edit; if(!E) return; const logs=E.logs||[];
+  document.querySelectorAll('#modal .stamp[data-step]').forEach(el=>{ el.innerHTML=stampHtml(logs.find(l=>l.step_id===el.dataset.step)); });
+  document.querySelectorAll('#modal .stamp[data-sec]').forEach(el=>{ const fs=SEC_FIELDS[el.dataset.sec];
+    el.innerHTML=stampHtml(logs.find(l=>l.kind==='case'&&(l.fields||[]).some(f=>fs.includes(f)))); });
+  const h=$('#hist'); if(!h) return;
+  h.innerHTML = logs.length ? `<details><summary>${L('ประวัติการบันทึก','Edit history')} (${logs.length})</summary>${logs.map(l=>{
+      const what=(L(...(KIND_L[l.kind]||[l.kind,l.kind])))+(l.action==='insert'&&l.kind!=='case'?' · '+L('เพิ่ม','added'):l.action==='delete'?' · '+L('ลบ','deleted'):'')
+        +(l.fields&&l.kind==='case'||l.action==='update'?' · '+[...new Set((l.fields||[]).map(f=>L(...(FIELD_L[f]||[f,f]))))].join(', '):'');
+      return `<div class="seg-row"><span class="mut sm" style="min-width:74px">${fmtTs(l.at)}</span><span><b>${esc(l.actor_name||'?')}</b> <span class="mut sm">(${esc(catName(l.actor_cat))})</span></span><span class="d" style="font-weight:400">${esc(what)}</span></div>`; }).join('')}</details>` : '';
+}
+function applyPerms(){ // ปิดช่องที่ตำแหน่งนี้ไม่มีสิทธิ์กรอก (ฐานข้อมูลก็บังคับซ้ำอีกชั้น)
+  if(FULL()) return;
+  const m=$('#modal');
+  m.querySelectorAll('[data-c]').forEach(el=>{ if(!canField(el.dataset.c)) lock(el); });
+  m.querySelectorAll('[data-s]').forEach(el=>{ const s=S.edit.steps[+el.dataset.s]; if(s && !canStep(s.kind)) lock(el); });
+  m.querySelectorAll('[data-addstep]').forEach(b=>{ if(!canStep(b.dataset.addstep)) b.remove(); });
+  m.querySelectorAll('[data-act="newround"]').forEach(b=>{ if(!canStep('js')) b.remove(); });
+}
+function lock(el){ el.disabled=true; const w=el.closest('.dwrap'); if(w) w.querySelectorAll('button').forEach(b=>b.disabled=true);
+  const r=el.closest('.radios'); if(r) r.classList.add('locked'); }
+function readForm(){
+  const m=$('#modal'), c=S.edit.c;
+  m.querySelectorAll('[data-c]').forEach(el=>{ const k=el.dataset.c;
+    if(el.type==='radio'){ if(el.checked) c[k]= (k==='parked'||k==='loaner') ? el.value==='1' : el.value; }
+    else c[k]=el.value; });
+  m.querySelectorAll('[data-s]').forEach(el=>{ const s=S.edit.steps[+el.dataset.s]; if(!s) return;
+    if(el.type==='radio'){ if(el.checked) s[el.dataset.sf]=el.value; } else s[el.dataset.sf]=el.value; });
+}
+function normCase(src){
+  const c={}; CASE_FIELDS.forEach(k=>{ if(src[k]!==undefined) c[k]=src[k]; });
+  ['sp','vin','model','remark'].forEach(k=>{ if(typeof c[k]==='string') c[k]=c[k].trim(); });
+  if(c.vin) c.vin=c.vin.toUpperCase(); if(c.sp) c.sp=c.sp.toUpperCase();
+  Object.keys(c).forEach(k=>{ if(c[k]==='') c[k]=null; });
+  c.parked = !(c.parked===false || c.parked==='0');
+  c.loaner = c.loaner===true || c.loaner==='1';
+  if(c.dealer_id!=null && !isNaN(+c.dealer_id)) c.dealer_id=+c.dealer_id;
+  if(!c.id) delete c.id;
+  return c;
+}
+function withPrefix(ref,p){ if(!ref) return null; ref=ref.trim().toUpperCase().replace(/\s+/g,''); if(!ref) return null;
+  const re=new RegExp('^'+p.replace('-','')+'-?','i'); return re.test(ref) ? p+ref.replace(re,'') : p+ref; }
+function normSteps(steps){
+  return steps.map(s=>{ const o={}; STEP_FIELDS.forEach(k=>o[k]= s[k]===''?null:(s[k]??null));
+    if(o.kind==='js') o.ref_no=withPrefix(o.ref_no,'JS-');
+    if(o.kind==='ys') o.ref_no=withPrefix(o.ref_no,'YS-');
+    if(o.kind==='parts' && o.parts_type) o.ref_no=withPrefix(o.ref_no,o.parts_type+'-');
+    return o; })
+  .filter(s=> s.kind==='js'||s.kind==='ys'||s.kind==='parts' ? (s.ref_no||s.d1||s.d2||s.d3||s.result) : (s.d1||s.result));
+}
+function segList(t){
+  return t.segs.map(s=>`<div class="seg-row"><span class="dot" style="background:${oc(s.o)}"></span><span>${esc(stName(s.k))}${s.detail?' <span class="mut sm">'+esc(s.detail)+'</span>':''}</span><span class="mut sm">${fmt(s.from)}${s.open?' → '+L('วันนี้','today'):''}</span><span class="d">${days(s.days)}</span></div>`).join('');
+}
+function updatePreview(){
+  readForm();
+  const c=normCase(S.edit.c), ss=normSteps(S.edit.steps), t=timeline(c,ss), f=flags(c,t,ss);
+  $('#pv').innerHTML=`<div class="pv">
+    <div class="mut sm">${L('สถานะปัจจุบัน','Current status')}</div>
+    <div class="stg big"><span class="dot" style="background:${oc(t.cur.o)}"></span>${esc(curLabel(t))}${t.cur.o?` <span class="own ${t.cur.o}">${t.cur.o==='G'?'GWM':'PS'}</span>`:''}${!t.done&&t.ev.length?` <span class="mut sm" style="font-weight:400">· ${days(t.curDays)}</span>`:''}</div>
+    ${tlBar(t)}
+    <div class="nums"><span>${L('รวม','Total')} <b>${t.total}</b> ${L('วัน','days')}</span><span style="color:${OWN.P.c}">Partner <b style="color:inherit">${t.own.P}</b></span><span style="color:${OWN.G.c}">GWM <b style="color:inherit">${t.own.G}</b></span></div>
+    ${f.map(x=>`<span class="flag">⚠ ${esc(x)}</span>`).join('')}
+    ${t.segs.length?`<details><summary>${L('ดูเวลาแต่ละสถานะ','Time per status')} (${t.segs.length})</summary>${segList(t)}</details>`:''}
+  </div>`;
+}
+function closeModal(){ $('#modal').classList.add('hidden'); $('#modal').innerHTML=''; S.edit=null; }
+function validate(c,ss){
+  if(!c.dealer_id) return L('กรุณาเลือกศูนย์บริการ','Please select a dealer');
+  if(!c.sp) return L('กรุณากรอก SP','Please enter the SP');
+  if(!c.arrival_date) return L('กรุณากรอกวันที่รถมาถึง','Please enter the arrival date');
+  const A=c.arrival_date, before=d=>d&&d<A;
+  if(before(c.analysis_date)||before(c.customer_contact_date)||before(c.delivered_date)) return L('มีวันที่ก่อนวันที่รถมาถึง','A date is before the arrival date');
+  for(const s of ss){ const R=` (${L('รอบ','round')} ${s.round})`, id=s.ref_no;
+    if(s.kind==='js'){ if(!id) return L('กรอกเลข JS','Enter the JS no.')+R; if(!s.d1) return id+': '+L('ใส่วันที่ขอ JS','enter the request date');
+      if(before(s.d1)) return id+': '+L('วันที่ขอก่อนวันที่รถมาถึง','request date is before arrival');
+      if(s.d2&&s.d2<s.d1) return id+': '+L('วันที่ตอบก่อนวันที่ขอ','reply date is before request date');
+      if(s.d3&&s.d3<s.d1) return id+': '+L('วันที่ปิดก่อนวันที่ขอ','closed date is before request date'); }
+    if(s.kind==='ys'){ if(!id) return L('กรอกเลข YS','Enter the YS no.')+R; if(!s.d1) return id+': '+L('ใส่วันที่ขอ YS','enter the request date');
+      if(before(s.d1)) return id+': '+L('วันที่ขอก่อนวันที่รถมาถึง','request date is before arrival');
+      if(s.result&&!s.d2) return id+': '+L('ใส่วันที่ Warranty ตอบ','enter the warranty reply date');
+      if(s.d2&&!s.result) return id+': '+L('เลือกผล อนุมัติ / Reject','choose Approved / Reject');
+      if(s.d2&&s.d2<s.d1) return id+': '+L('วันที่ตอบก่อนวันที่ขอ','reply date is before request date'); }
+    if(s.kind==='parts'){ if(!s.parts_type) return L('เลือก PO หรือ BO','Choose PO or BO')+R; if(!id) return L('กรอกเลข '+s.parts_type,'Enter the '+s.parts_type+' no.')+R;
+      if(!s.d1) return id+': '+L('ใส่วันที่สั่ง','enter the order date');
+      if(before(s.d1)) return id+': '+L('วันที่สั่งก่อนวันที่รถมาถึง','order date is before arrival');
+      if(s.d3&&s.d3<s.d1) return id+': '+L('วันที่มาถึงก่อนวันที่สั่ง','arrival is before order date'); }
+    if(s.kind==='test'){ if(s.d1&&!s.result) return L('เลือกผลทดสอบ','Choose the test result')+R; if(s.result&&!s.d1) return L('ใส่วันที่ทดสอบ','Enter the test date')+R;
+      if(s.result==='other'&&!s.note) return L('ระบุผลทดสอบ "อื่นๆ"','Specify the "Other" test result')+R; }
+    if((s.kind==='assemble'||s.kind==='test')&&before(s.d1)) return L('วันที่ซ่อมก่อนวันที่รถมาถึง','Repair date is before arrival')+R;
+  }
+  if(c.delivered_date){
+    const R=Math.max(1,...ss.map(s=>s.round||1));
+    const openJS=ss.find(s=>s.kind==='js'&&!s.d3); if(openJS) return L('ปิด '+openJS.ref_no+' ก่อนส่งมอบ','Close '+openJS.ref_no+' before delivery');
+    const openYS=ss.find(s=>s.kind==='ys'&&!s.result); if(openYS) return openYS.ref_no+': '+L('ยังไม่มีผล Warranty','no warranty result yet');
+    const openP=ss.find(s=>s.kind==='parts'&&!s.d3); if(openP) return openP.ref_no+': '+L('อะไหล่ยังไม่มาถึง','parts not arrived yet');
+    const lt=ss.find(s=>s.kind==='test'&&s.round===R);
+    if(!lt||lt.result!=='pass'&&lt.result!=='fail') return L('รอบล่าสุดยังไม่ได้ผลทดสอบ "ผ่าน" — ยังส่งมอบไม่ได้','Latest round has no "Pass" test result — cannot deliver yet');
+    if(lt.result==='fail') return L('รอบล่าสุดทดสอบไม่ผ่าน — ยังส่งมอบไม่ได้ (กด ✕ ที่ช่องส่งมอบเพื่อล้างวันที่)','Latest test failed — cannot deliver yet (press ✕ on the delivery date to clear it)');
+  }
+  return null;
+}
+let saving=false;
+async function saveCase(){
+  if(saving) return; readForm();
+  const E=S.edit, c=normCase(E.c), ss=normSteps(E.steps);
+  const err=validate(c,ss); if(err) return toast(err);
+  // ส่งเฉพาะช่องที่เปลี่ยน (ตำแหน่งที่สิทธิ์จำกัดจะไม่ชนช่องที่ไม่ใช่ของตัวเอง)
+  let payload=c;
+  if(E.id){ payload={id:E.id}; Object.keys(c).forEach(k=>{ if(k!=='id' && JSON.stringify(c[k]??null)!==JSON.stringify(E.orig[k]??null)) payload[k]=c[k]; }); }
+  const changed=ss.filter(s=>{ const o=E.origSteps[s.id]; return !o || STEP_FIELDS.some(k=>JSON.stringify(s[k]??null)!==JSON.stringify(o[k]??null)); });
+  const keep=new Set(ss.map(s=>s.id));
+  const removed=[...new Set([...E.removed, ...Object.keys(E.origSteps).filter(id=>!keep.has(id))])];
+  if(E.id && Object.keys(payload).length===1 && !changed.length && !removed.length){ closeModal(); return; }
+  saving=true;
+  try{ const saved=await api.saveCase(payload); await api.syncSteps(saved.id||E.id, changed, removed); closeModal(); await reload(); toast(L('บันทึกแล้ว','Saved')); }
+  catch(e){ toast(errMsg(e)); } finally{ saving=false; }
+}
+/* ===================== Admin ===================== */
+function dealerOpts(sel){ return `<option value="">${L('— ไม่ระบุ —','— None —')}</option>`+S.dealers.map(d=>`<option value="${d.id}" ${String(sel)===String(d.id)?'selected':''}>${esc(d.name)}</option>`).join(''); }
+function roleOpts(sel){ return [['ps','PS'],['rsm','RSM'],['admin','Admin'],['disabled',L('ระงับ','Disabled')]].map(r=>`<option value="${r[0]}" ${sel===r[0]?'selected':''}>${r[1]}</option>`).join(''); }
+function catOpts(sel,withNone){ return (withNone?`<option value="">—</option>`:'')+Object.keys(CATS).map(k=>`<option value="${k}" ${sel===k?'selected':''}>${esc(CATS[k][S.lang])}</option>`).join(''); }
+function viewAdmin(){
+  const pend=S.profiles.filter(p=>p.role==='pending'), rest=S.profiles.filter(p=>p.role!=='pending');
+  const urow=(p,isP)=>`<div class="urow"><div class="who"><b>${esc(p.full_name||p.display_name||'-')}</b><div class="mut sm">${esc(p.email||'')}${isP?` · ${L('ขอเป็น','requested')} ${esc(catName(p.category||p.requested_role))}`:''}</div></div>
+    <select data-ur="${p.user_id}">${roleOpts(isP?(p.requested_role==='rsm'?'rsm':'ps'):p.role)}</select>
+    <select data-uc="${p.user_id}">${catOpts(p.category,true)}</select>
+    <select data-ud="${p.user_id}">${dealerOpts(isP?p.requested_dealer_id:p.dealer_id)}</select>
+    <button class="btn ${isP?'pri':''} sm" data-saveuser="${p.user_id}">${isP?L('อนุมัติ','Approve'):L('บันทึก','Save')}</button>
+    ${isP?`<button class="btn sm" data-reject="${p.user_id}">${L('ปฏิเสธ','Reject')}</button>`:`<button class="btn sm" data-temppw="${p.user_id}" title="${L('ใช้เมื่อผู้ใช้ลืมรหัส','Use when a user forgot their password')}">🔑 ${L('รหัสชั่วคราว','Temp password')}</button>`}
+    <div class="pwout" data-pwout="${p.user_id}"></div></div>`;
+  const al=S.allowed||[];
+  return `<div class="panel"><h3>${L('รออนุมัติ','Pending approval')} (${pend.length})</h3>${pend.length?pend.map(p=>urow(p,true)).join(''):`<div class="mut">${L('ไม่มีคำขอใหม่','No new requests')}</div>`}
+    <div class="mut sm" style="margin-top:8px">${L('ตรวจตำแหน่งและศูนย์ก่อนกดอนุมัติ — PS เห็นเฉพาะข้อมูลศูนย์ตัวเอง และกรอกได้เฉพาะส่วนของตำแหน่งนั้น','Check position and dealer before approving — PS users only see their dealer and can only fill their own section')}</div></div>
+  <div class="panel"><h3>${L('รายชื่ออีเมลที่อนุญาต','Pre-approved emails')} (${al.length})</h3>
+    <div class="mut sm" style="margin-bottom:8px">${L('อีเมลในรายชื่อนี้สมัครแล้วเข้าใช้ได้ทันที ไม่ต้องรออนุมัติ (ถ้าสมัครรอไว้แล้ว ระบบอนุมัติให้อัตโนมัติ)','Emails on this list get access as soon as they sign up (pending requests are approved automatically)')}</div>
+    <div class="tw" style="max-height:360px"><table><thead><tr><th>${L('อีเมล','Email')}</th><th>${L('ชื่อจริง','Full name')}</th><th>${L('สิทธิ์','Access')}</th><th>${L('ตำแหน่ง','Position')}</th><th>${L('ศูนย์','Dealer')}</th><th></th></tr></thead><tbody>
+    <tr><td><input data-al="email" type="email" placeholder="name@dealer.com" style="width:190px"></td><td><input data-al="full_name" style="width:150px"></td>
+      <td><select data-al="role"><option value="ps">PS</option><option value="rsm">RSM</option><option value="admin">Admin</option></select></td>
+      <td><select data-al="category">${catOpts('',true)}</select></td><td><select data-al="dealer_id">${dealerOpts('')}</select></td>
+      <td><button class="btn pri sm" data-act="addallowed">${L('เพิ่ม','Add')}</button></td></tr>
+    ${al.map(a=>`<tr><td>${esc(a.email)}</td><td>${esc(a.full_name||'')}</td><td>${esc((a.role||'').toUpperCase())}</td><td>${esc(catName(a.category))}</td><td>${esc(a.dealer_id?dName(a.dealer_id):'')}</td>
+      <td><button class="btn sm danger" data-delallowed="${esc(a.email)}">${L('ลบ','Remove')}</button></td></tr>`).join('')}
+    </tbody></table></div>
+    <details style="margin-top:10px"><summary class="mut">${L('เพิ่มหลายคนพร้อมกัน (วางจาก Excel)','Add many (paste from Excel)')}</summary>
+      <div class="hint" style="margin:8px 0">${L('บรรทัดละ 1 คน: อีเมล, ชื่อจริง, ตำแหน่ง (SVM / SA / ช่าง / อะไหล่ / Warranty / CR / RSM), ชื่อศูนย์หรือรหัสศูนย์','One per line: email, full name, position (SVM / SA / Foreman / Parts / Warranty / CR / RSM), dealer name or code')}</div>
+      <textarea id="bulkAl" rows="5" style="width:100%" placeholder="somchai@chanroad.com, สมชาย ใจดี, SVM, GWM Bangkok Chan Road"></textarea>
+      <button class="btn sm" data-act="bulkallowed" style="margin-top:6px">${L('นำเข้า','Import')}</button></details></div>
+  <div class="panel"><h3>${L('ผู้ใช้ทั้งหมด','All users')} (${rest.length})</h3>${rest.map(p=>urow(p,false)).join('')}</div>
+  <div class="panel"><h3>${L('รายชื่อศูนย์บริการ','Service centers')} (${S.dealers.length})</h3>
+    <div class="tw" style="max-height:420px"><table><thead><tr><th>${L('รหัส','Code')}</th><th>${L('ชื่อศูนย์','Name')}</th><th>${L('โซน','Zone')}</th><th>RSM</th><th>${L('ใช้งาน','Active')}</th><th></th></tr></thead><tbody>
+    ${[...S.dealers,{id:'new',name:'',code:'',zone:'',rsm:'',active:true}].map(d=>`<tr>
+      <td><input data-dk="${d.id}" data-df="code" value="${esc(d.code||'')}" style="width:100px"></td>
+      <td><input data-dk="${d.id}" data-df="name" value="${esc(d.name||'')}" placeholder="${d.id==='new'?L('+ เพิ่มศูนย์ใหม่','+ New dealer'):''}" style="width:220px"></td>
+      <td><input data-dk="${d.id}" data-df="zone" value="${esc(d.zone||'')}" style="width:120px"></td>
+      <td><input data-dk="${d.id}" data-df="rsm" value="${esc(d.rsm||'')}" style="width:110px"></td>
+      <td><input type="checkbox" data-dk="${d.id}" data-df="active" ${d.active!==false?'checked':''}></td>
+      <td><button class="btn sm ${d.id==='new'?'pri':''}" data-savedealer="${d.id}">${d.id==='new'?L('เพิ่ม','Add'):L('บันทึก','Save')}</button></td></tr>`).join('')}
+    </tbody></table></div>
+    <details style="margin-top:10px"><summary class="mut">${L('เพิ่มหลายศูนย์พร้อมกัน (วางจาก Excel)','Add many dealers (paste from Excel)')}</summary>
+      <div class="hint" style="margin:8px 0">${L('บรรทัดละ 1 ศูนย์: รหัส, ชื่อศูนย์, โซน, RSM (คั่นด้วย comma หรือ Tab)','One dealer per line: code, name, zone, RSM (comma or Tab separated)')}</div>
+      <textarea id="bulk" rows="5" style="width:100%" placeholder="41000001, GWM Example, Central, Chanrob"></textarea>
+      <button class="btn sm" data-act="bulk" style="margin-top:6px">${L('นำเข้า','Import')}</button></details>
+  </div>`;
+}
+function viewTeam(){
+  const my=S.me.dealer_id, ps=S.profiles||[];
+  const pend=ps.filter(p=>p.role==='pending');
+  const staff=ps.filter(p=>p.role!=='pending').sort((a,b)=>(a.role==='disabled')-(b.role==='disabled'));
+  const al=(S.allowed||[]).filter(a=>a.dealer_id==my);
+  const row=(p,isP)=>{ const self=p.user_id===S.me.user_id, off=p.role==='disabled';
+    return `<div class="urow ${off?'off':''}"><div class="who"><b>${esc(p.full_name||'-')}</b>${self?` <span class="mut sm">(${L('คุณ','you')})</span>`:''}${off?` <span class="tag">${L('ระงับแล้ว','Disabled')}</span>`:''}
+      <div class="mut sm">${esc(p.email||'')}${isP?` · ${L('ขอเป็น','requested')} ${esc(catName(p.category))}`:''}</div></div>
+      ${self?`<span class="mut sm">${esc(catName(p.category))}</span>`:`<select data-tc="${p.user_id}">${catOpts(p.category)}</select>
+      ${isP?`<button class="btn pri sm" data-svm="approve" data-uid="${p.user_id}">${L('อนุมัติ','Approve')}</button><button class="btn sm" data-svm="reject" data-uid="${p.user_id}">${L('ปฏิเสธ','Reject')}</button>`
+      :off?`<button class="btn sm" data-svm="enable" data-uid="${p.user_id}">${L('เปิดใช้งานอีกครั้ง','Re-enable')}</button>`
+      :`<button class="btn sm" data-svm="save" data-uid="${p.user_id}">${L('บันทึก','Save')}</button><button class="btn sm" data-temppw="${p.user_id}" title="${L('ใช้เมื่อพนักงานลืมรหัส','Use when staff forgot their password')}">🔑 ${L('รหัสชั่วคราว','Temp password')}</button><button class="btn sm danger" data-svm="disable" data-uid="${p.user_id}">${L('ลบออกจากทีม','Remove')}</button>`}`}
+      <div class="pwout" data-pwout="${p.user_id}"></div></div>`; };
+  return `<div class="panel"><h3>${L('คำขอเข้าใช้งาน','Access requests')} (${pend.length})</h3>${pend.length?pend.map(p=>row(p,true)).join(''):`<div class="mut">${L('ไม่มีคำขอใหม่','No new requests')}</div>`}
+    <div class="mut sm" style="margin-top:8px">${L('ตรวจชื่อและตำแหน่งก่อนอนุมัติ — อนุมัติแล้วพนักงาน login ด้วยรหัสที่ตั้งไว้ตอนสมัครได้ทันที','Check the name and position first — once approved they log in with the password they chose')}</div></div>
+  <div class="panel"><h3>${L('พนักงานศูนย์','Staff')} · ${esc(dName(my))} (${staff.filter(p=>p.role!=='disabled').length})</h3>${staff.map(p=>row(p,false)).join('')}
+    <div class="mut sm" style="margin-top:8px">${L('"ลบออกจากทีม" = ปิดสิทธิ์เข้าใช้ทันที ประวัติที่เคยบันทึกยังอยู่ครบ','"Remove" blocks access immediately — their past entries stay in the history')}</div></div>
+  <div class="panel"><h3>${L('เพิ่มพนักงานล่วงหน้า (อีเมล)','Pre-approve staff by email')} (${al.length})</h3>
+    <div class="mut sm" style="margin-bottom:8px">${L('อีเมลในรายชื่อนี้สมัครแล้วเข้าใช้ได้ทันที ไม่ต้องกดอนุมัติ','Emails on this list get access as soon as they sign up')}</div>
+    <div class="tw" style="max-height:360px"><table><thead><tr><th>${L('อีเมล','Email')}</th><th>${L('ชื่อจริง','Full name')}</th><th>${L('ตำแหน่ง','Position')}</th><th></th></tr></thead><tbody>
+    <tr><td><input data-tal="email" type="email" placeholder="name@dealer.com" style="width:200px"></td><td><input data-tal="full_name" style="width:160px"></td>
+      <td><select data-tal="category">${catOpts('sa')}</select></td><td><button class="btn pri sm" data-act="svmaddallowed">${L('เพิ่ม','Add')}</button></td></tr>
+    ${al.map(a=>`<tr><td>${esc(a.email)}</td><td>${esc(a.full_name||'')}</td><td>${esc(catName(a.category))}</td><td><button class="btn sm danger" data-delallowed="${esc(a.email)}">${L('ลบ','Remove')}</button></td></tr>`).join('')}
+    </tbody></table></div>
+    <details style="margin-top:10px"><summary class="mut">${L('เพิ่มหลายคนพร้อมกัน (วางจาก Excel)','Add many (paste from Excel)')}</summary>
+      <div class="hint" style="margin:8px 0">${L('บรรทัดละ 1 คน: อีเมล, ชื่อจริง, ตำแหน่ง (SVM / SA / ช่าง / อะไหล่ / Warranty / CR)','One per line: email, full name, position (SVM / SA / Foreman / Parts / Warranty / CR)')}</div>
+      <textarea id="bulkTeam" rows="5" style="width:100%" placeholder="bell@chanroad.com, เบล ใจดี, SA"></textarea>
+      <button class="btn sm" data-act="svmbulkallowed" style="margin-top:6px">${L('นำเข้า','Import')}</button></details></div>`;
+}
+function parseCat(s){ s=(s||'').toLowerCase().trim();
+  if(/rsm/.test(s)) return 'rsm'; if(/svm|owner|เจ้าของ|ผู้จัดการ/.test(s)) return 'owner_svm'; if(/^sa|advisor|ที่ปรึกษา/.test(s)) return 'sa';
+  if(/foreman|ช่าง|tech/.test(s)) return 'foreman'; if(/part|อะไหล่/.test(s)) return 'parts'; if(/warr|วารัน/.test(s)) return 'warranty'; if(/cr|ลูกค้า/.test(s)) return 'cr'; return null; }
+function findDealer(s){ s=(s||'').trim().toLowerCase(); if(!s) return null;
+  const d=S.dealers.find(x=>(x.code||'').toLowerCase()===s)||S.dealers.find(x=>x.name.toLowerCase()===s)||S.dealers.find(x=>x.name.toLowerCase().includes(s)); return d?d.id:null; }
+function tempPw(){ const a='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789'; let s=''; const r=crypto.getRandomValues(new Uint32Array(10)); r.forEach(x=>s+=a[x%a.length]); return s; }
+/* ===================== Events ===================== */
+document.addEventListener('click', async e=>{
+  const t=e.target.closest('[data-svm],[data-temppw],[data-delallowed],[data-clear],[data-toggle],[data-tab],[data-act],[data-open],[data-today],[data-rmstep],[data-addstep],[data-auth],[data-dealer],[data-saveuser],[data-reject],[data-savedealer],[data-demo],[data-lang]');
+  if(!t) return;
+  const d=t.dataset;
+  if(d.toggle){ e.stopPropagation(); const c=S.cases.find(x=>x.id===d.cid); if(!c) return;
+    const v=!c[d.toggle]; try{ await api.saveCase({id:c.id,[d.toggle]:v}); c[d.toggle]=v; renderView();
+      toast(d.toggle==='parked'?(v?L('เปลี่ยนเป็น: จอด','Now: parked'):L('เปลี่ยนเป็น: ไม่จอด','Now: not parked')):(v?L('มีรถใช้ระหว่างซ่อม','Loaner car: yes'):L('ไม่มีรถใช้ระหว่างซ่อม','Loaner car: no'))); }
+    catch(err){ toast(errMsg(err)); } return; }
+  if(d.lang){ setLang(d.lang); return; }
+  if(d.svm){ const uid=d.uid, sel=$(`[data-tc="${uid}"]`), cat=sel?sel.value:null;
+    if(d.svm==='disable' && !confirmDel()) return;
+    const role={approve:'ps',save:'ps',enable:'ps',reject:'disabled',disable:'disabled'}[d.svm];
+    try{ await api.svmSetMember(uid,role,cat); S.profiles=await api.profiles(); renderApp();
+      toast({approve:L('อนุมัติแล้ว','Approved'),save:L('บันทึกแล้ว','Saved'),enable:L('เปิดใช้งานแล้ว','Re-enabled'),reject:L('ปฏิเสธแล้ว','Rejected'),disable:L('ลบออกจากทีมแล้ว','Removed')}[d.svm]); }
+    catch(err){ toast(errMsg(err)); } return; }
+  if(d.temppw){ const pw=tempPw(); try{ await api.setTempPw(d.temppw,pw);
+      $(`[data-pwout="${d.temppw}"]`).innerHTML=`<div class="msg">${L('รหัสชั่วคราว','Temporary password')}: <b class="mono">${pw}</b> — ${L('ส่งให้ผู้ใช้ทาง LINE แล้วให้เข้าระบบแล้วเปลี่ยนเองที่ปุ่ม 🔑 มุมขวาบน','send it to the user (e.g. LINE); they can change it with the 🔑 button at top right')}</div>`; }
+    catch(err){ toast(errMsg(err)); } return; }
+  if(d.delallowed){ if(!confirmDel()) return; try{ await api.delAllowed(d.delallowed); S.allowed=await api.allowed(); renderMain(); toast(L('ลบแล้ว','Removed')); }catch(err){ toast(errMsg(err)); } return; }
+  if(d.tab){ S.tab=d.tab; renderApp(); return; }
+  if(d.auth){ renderAuth(d.auth); return; }
+  if(d.demo){ S.me = d.demo==='ps' ? {user_id:'u2',email:'svm.chanroad@example.com',display_name:'SVM Chan Road',role:'ps',dealer_id:1} : {user_id:'u1',email:'nat@example.com',display_name:'Natchanon C.',role:'admin'};
+    S.f={rsm:'',dealer:'',q:'',parked:'',loaner:'',showDone:false,period:'open'}; S.tab='board'; await loadAll(); renderApp(); return; }
+  if(d.today!==undefined){ const w=t.closest('.dwrap'), inp=w.querySelector('input'); inp.value=today(); w.querySelector('.clr').classList.remove('hidden'); updatePreview(); return; }
+  if(d.clear!==undefined){ const w=t.closest('.dwrap'), inp=w.querySelector('input'); inp.value=''; t.classList.add('hidden'); updatePreview();
+    toast(L('ล้างวันที่แล้ว — กด "บันทึก" เพื่อยืนยัน','Date cleared — press "Save" to confirm')); return; }
+  if(d.rmstep!==undefined){ readForm(); const s=S.edit.steps.splice(+d.rmstep,1)[0]; if(s&&!isNew(s.id)) S.edit.removed.push(s.id); renderModal(); return; }
+  if(d.addstep){ readForm(); S.edit.steps.push(newStep(d.addstep,+d.r,{d1:today()})); renderModal(); return; }
+  if(d.open && !S.edit){ openCase(d.open); return; }
+  if(d.dealer){ S.f.dealer=d.dealer; S.tab='board'; renderApp(); return; }
+  if(d.saveuser){ const uid=d.saveuser, role=$(`[data-ur="${uid}"]`).value, dl=$(`[data-ud="${uid}"]`).value, cat=$(`[data-uc="${uid}"]`).value;
+    if(role==='ps' && !dl) return toast(L('PS ต้องเลือกศูนย์','PS users need a dealer'));
+    if(role==='ps' && !cat) return toast(L('PS ต้องเลือกตำแหน่ง','PS users need a position'));
+    try{ await api.updateProfile(uid,{role,dealer_id:dl?+dl:null,category:role==='ps'?cat:(cat||null)}); S.profiles=await api.profiles(); renderMain(); toast(L('บันทึกสิทธิ์แล้ว','Access saved')); }catch(err){ toast(errMsg(err)); } return; }
+  if(d.reject){ try{ await api.updateProfile(d.reject,{role:'disabled'}); S.profiles=await api.profiles(); renderMain(); toast(L('ปฏิเสธแล้ว','Rejected')); }catch(err){ toast(errMsg(err)); } return; }
+  if(d.savedealer){ const id=d.savedealer, o={};
+    document.querySelectorAll(`[data-dk="${id}"]`).forEach(el=>o[el.dataset.df]= el.type==='checkbox'?el.checked:el.value.trim());
+    if(!o.name) return toast(L('กรอกชื่อศูนย์','Enter a dealer name')); if(id!=='new') o.id=+id||id;
+    try{ await api.saveDealer(o); await reload(); toast(L('บันทึกศูนย์แล้ว','Dealer saved')); }catch(err){ toast(errMsg(err)); } return; }
+  switch(d.act){
+    case 'new': openCase(null); break;
+    case 'refresh': await reload(); toast(L('อัปเดตแล้ว','Updated')); break;
+    case 'csv': exportCSV(); break;
+    case 'close': closeModal(); break;
+    case 'save': saveCase(); break;
+    case 'newround': { readForm(); const r=curRound()+1; S.edit.steps.push(newStep('js',r,{d1:today()})); ensureRoundSteps(); renderModal();
+      const mb=$('#modal .mb'); mb.scrollTop=mb.scrollHeight; break; }
+    case 'del': if(confirmDel()){ try{ await api.deleteCase(S.edit.id); closeModal(); await reload(); toast(L('ลบแล้ว','Deleted')); }catch(err){ toast(errMsg(err)); } } break;
+    case 'logout': await api.signOut(); break;
+    case 'chpw': { const m=$('#modal'); S.edit=null; m.innerHTML=`<div class="sheet" style="max-width:420px;height:auto"><div class="mh"><b>${L('เปลี่ยนรหัสผ่าน','Change password')}</b><button class="x" data-act="pwclose">✕</button></div>
+        <div class="mb"><form id="fChPw" style="display:flex;flex-direction:column;gap:12px;padding:14px 0">
+          <div class="mut sm">${esc(meName())} · ${esc(S.me.email||'')}</div>
+          <label class="drow">${L('รหัสผ่านใหม่ (อย่างน้อย 8 ตัว)','New password (min. 8 characters)')}<input type="password" name="pw" minlength="8" autocomplete="new-password" required></label>
+          <label class="drow">${L('พิมพ์ซ้ำอีกครั้ง','Repeat it')}<input type="password" name="pw2" minlength="8" autocomplete="new-password" required></label>
+          <button class="btn pri">${L('บันทึกรหัสใหม่','Save new password')}</button></form></div></div>`; m.classList.remove('hidden'); break; }
+    case 'changelog': { e.preventDefault(); const m=$('#modal'); if(S.edit) break;
+      m.innerHTML=`<div class="sheet" style="max-width:460px;height:auto"><div class="mh"><b>${L('มีอะไรใหม่','What\'s new')} · VOR Live</b><button class="x" data-act="pwclose">✕</button></div>
+        <div class="mb" style="padding-bottom:16px">${CHANGELOG.map(c=>`<div class="seg-row" style="align-items:flex-start"><b style="min-width:44px">v${c.v}</b><div><div class="mut sm">${fmt(c.d)}</div>${c[S.lang].map(x=>`<div>• ${esc(x)}</div>`).join('')}</div></div>`).join('')}
+        <div class="mut sm" style="margin-top:12px;text-align:center">${CREDIT}</div></div></div>`; m.classList.remove('hidden'); break; }
+    case 'pwclose': $('#modal').classList.add('hidden'); $('#modal').innerHTML=''; break;
+    case 'svmaddallowed': { const g=k=>$(`[data-tal="${k}"]`).value.trim(); const email=g('email').toLowerCase();
+      if(!/^\S+@\S+\.\S+$/.test(email)) return toast(L('อีเมลไม่ถูกต้อง','Invalid email'));
+      try{ await api.saveAllowed([{email,full_name:g('full_name')||null,role:'ps',category:g('category'),dealer_id:S.me.dealer_id}]); await reload(); toast(L('เพิ่มแล้ว','Added')); }catch(err){ toast(errMsg(err)); } break; }
+    case 'svmbulkallowed': { const bad=[], rows=$('#bulkTeam').value.split(/\r?\n/).map(l=>l.split(/\t|,/).map(x=>x.trim())).filter(r=>r[0]).map(r=>{
+        const cat=parseCat(r[2]); if(!/@/.test(r[0])||!cat||cat==='rsm'){ bad.push(r[0]); return null; }
+        return {email:r[0].toLowerCase(),full_name:r[1]||null,role:'ps',category:cat,dealer_id:S.me.dealer_id}; }).filter(Boolean);
+      if(!rows.length) return toast(L('ไม่พบข้อมูลที่ใช้ได้','No valid rows')+(bad.length?': '+bad.join(', '):''));
+      try{ await api.saveAllowed(rows); await reload(); toast(L('นำเข้า','Imported')+' '+rows.length+(bad.length?' · '+L('ข้าม','skipped')+': '+bad.join(', '):'')); }catch(err){ toast(errMsg(err)); } break; }
+    case 'addallowed': { const g=k=>$(`[data-al="${k}"]`).value.trim(); const email=g('email').toLowerCase();
+      if(!/^\S+@\S+\.\S+$/.test(email)) return toast(L('อีเมลไม่ถูกต้อง','Invalid email'));
+      const row={email,full_name:g('full_name')||null,role:g('role'),category:g('category')||null,dealer_id:g('dealer_id')?+g('dealer_id'):null};
+      if(row.role==='ps'&&(!row.dealer_id||!row.category)) return toast(L('PS ต้องเลือกตำแหน่งและศูนย์','PS needs a position and dealer'));
+      try{ await api.saveAllowed([row]); await reload(); toast(L('เพิ่มแล้ว','Added')); }catch(err){ toast(errMsg(err)); } break; }
+    case 'bulkallowed': { const bad=[], rows=$('#bulkAl').value.split(/\r?\n/).map(l=>l.split(/\t|,/).map(x=>x.trim())).filter(r=>r[0]).map(r=>{
+        const cat=parseCat(r[2]), dl=findDealer(r[3]); const role=cat==='rsm'?'rsm':'ps';
+        if(!/@/.test(r[0])||(role==='ps'&&(!cat||!dl))){ bad.push(r[0]); return null; }
+        return {email:r[0].toLowerCase(),full_name:r[1]||null,role,category:role==='ps'?cat:null,dealer_id:role==='ps'?dl:null}; }).filter(Boolean);
+      if(!rows.length) return toast(L('ไม่พบข้อมูลที่ใช้ได้','No valid rows')+(bad.length?': '+bad.join(', '):''));
+      try{ await api.saveAllowed(rows); await reload(); toast(L('นำเข้า','Imported')+' '+rows.length+(bad.length?' · '+L('ข้าม','skipped')+': '+bad.join(', '):'')); }catch(err){ toast(errMsg(err)); } break; }
+    case 'recheck': boot(); break;
+    case 'bulk': { const rows=$('#bulk').value.split(/\r?\n/).map(l=>l.split(/\t|,/).map(s=>s.trim())).filter(r=>r[1]).map(r=>({code:r[0]||null,name:r[1],zone:r[2]||null,rsm:r[3]||null,active:true}));
+      if(!rows.length) return toast(L('ไม่พบข้อมูล','Nothing to import')); try{ await api.bulkDealers(rows); await reload(); toast(L('นำเข้า','Imported')+' '+rows.length); }catch(err){ toast(errMsg(err)); } break; }
+  }
+});
+let delArm=0;
+function confirmDel(){ // กดลบ 2 ครั้งภายใน 3 วินาที (ไม่ใช้ popup ของเบราว์เซอร์)
+  if(Date.now()-delArm<3000){ delArm=0; return true; }
+  delArm=Date.now(); toast(L('กด "ลบ" อีกครั้งเพื่อยืนยัน','Press "Delete" again to confirm')); return false;
+}
+document.addEventListener('change', e=>{
+  const el=e.target;
+  if(el.closest('#modal')){ if(!S.edit) return; // ช่องที่เปลี่ยนหน้าตาฟอร์ม → วาดใหม่, ที่เหลือแค่อัปเดตตัวอย่างสถานะ
+    if(el.dataset.c==='cost_band' || el.dataset.sf==='result' || el.dataset.sf==='parts_type'){ readForm(); renderModal(); } else updatePreview(); return; }
+  if(el.id==='suCat'){ $('#suDealer').classList.toggle('hidden', el.value==='rsm'); return; }
+  if(el.dataset.demoSel!==undefined){ S.me={...DEMO_USERS[el.value]}; S.f={rsm:'',dealer:'',q:'',parked:'',loaner:'',showDone:false,period:'open'}; S.tab='board'; loadAll().then(renderApp); return; }
+  const k=el.dataset.f; if(!k || k==='q') return;
+  S.f[k]= el.type==='checkbox'?el.checked:el.value;
+  if(k==='rsm') S.f.dealer='';
+  renderMain();
+});
+document.addEventListener('input', e=>{
+  const el=e.target;
+  if(el.closest('#modal')){ if(!S.edit) return; if(el.type==='date'){ const c=el.parentElement.querySelector('.clr'); if(c) c.classList.toggle('hidden',!el.value); updatePreview(); } return; }
+  if(el.dataset.f==='q'){ S.f.q=el.value; renderView(); }
+});
+document.addEventListener('submit', async e=>{
+  e.preventDefault(); const f=e.target, fd=new FormData(f), btn=f.querySelector('button.pri'); btn.disabled=true;
+  try{
+    if(f.id==='fLogin'){ await api.signIn(fd.get('email').trim(), fd.get('pw')); setTimeout(boot,0); }
+    if(f.id==='fForgot'){ try{ await api.resetPw(fd.get('email').trim()); renderAuth('login',L('ส่งลิงก์ตั้งรหัสใหม่ไปที่อีเมลแล้ว (เช็กใน Junk ด้วย)','Reset link sent — check your inbox (and junk)')); }
+      catch(err){ renderAuth('forgot',L('ส่งอีเมลไม่ได้ — ติดต่อ RSM เพื่อขอรหัสชั่วคราว','Could not send email — ask your RSM for a temporary password'),true); } return; }
+    if(f.id==='fChPw'){ if(fd.get('pw')!==fd.get('pw2')){ toast(L('รหัสทั้งสองช่องไม่ตรงกัน','The two passwords do not match')); return; }
+      if(!DEMO) await api.updatePw(fd.get('pw')); $('#modal').classList.add('hidden'); $('#modal').innerHTML=''; toast(L('เปลี่ยนรหัสผ่านแล้ว','Password changed')); return; }
+    if(f.id==='fNewPw'){ await api.updatePw(fd.get('pw')); S.recovery=false; toast(L('ตั้งรหัสใหม่แล้ว','Password updated')); history.replaceState(null,'',location.pathname); boot(); return; }
+    if(f.id==='fSignup'){
+      const cat=fd.get('cat'), role=cat==='rsm'?'rsm':'ps';
+      const r=await api.signUp(fd.get('email').trim(), fd.get('pw'), {full_name:fd.get('name').trim(), category: role==='ps'?cat:'', requested_role:role, dealer_id: role==='ps'?fd.get('dealer'):''});
+      if(!r.session) renderAuth('login',L('สมัครเรียบร้อย กรุณายืนยันอีเมล (ถ้ามี) แล้วรอ RSM อนุมัติ','Signed up. Confirm your email (if asked), then wait for RSM approval.'));
+    }
+  }catch(err){ if(f.id==='fChPw'){ toast(errMsg(err)); } else renderAuth(f.id==='fLogin'?'login':f.id==='fNewPw'?'newpw':'signup', errMsg(err), true); }
+  finally{ btn.disabled=false; }
+});
+document.addEventListener('keydown', e=>{ if(e.key==='Escape' && S.edit) closeModal(); });
+document.addEventListener('visibilitychange', ()=>{ if(!document.hidden && S.me && !S.edit && !DEMO && $('#main')) reload(); });
+
+boot();
+
+</script>
+</body>
+</html>
