@@ -207,8 +207,16 @@ const CONFIG = {
   SUPABASE_ANON_KEY: 'sb_publishable_RESqSgvp97Bh5thFluhs0w_M1LYS4dk'
 };
 // ===== เวอร์ชัน: อัปเกรดทุกครั้ง ให้เพิ่มเลข + เพิ่มรายการไว้บนสุดของ CHANGELOG =====
-const APP_VERSION = '1.2.9';
+const APP_VERSION = '1.4.2';
 const CHANGELOG = [
+  {v:'1.4.2', d:'2026-11-15', th:['ดึงข้อมูลรถและขั้นตอนครบทุกแถว แม้เกิน 1,000 รายการ (เดิม Supabase ส่งให้ครั้งละ 1,000)'],
+                              en:['Loads every vehicle and step even beyond 1,000 rows (Supabase returns 1,000 per request)']},
+  {v:'1.4.1', d:'2026-11-15', th:['รวมปุ่ม Excel เหลือ 📊 VOR Manual ปุ่มเดียว — มีชีตข้อมูลดิบ (ทุก JS / YS / PO แยกแถว, วันค้างแยกฝั่ง) ในไฟล์เดียว · ชีตผู้ใช้เฉพาะไฟล์รวมของ Admin'],
+                              en:['One 📊 VOR Manual button — now also includes raw-data sheets (every JS / YS / PO, days split by side) · users sheet only in the admin all-dealer file']},
+  {v:'1.4', d:'2026-11-15', th:['ปุ่ม 📊 VOR Manual: ไฟล์ Excel พร้อม Dashboard (กราฟแท่ง · โดนัท · การ์ด KPI) · ชีตกรอกข้อมูลตามขั้นตอน คิดสถานะ/วันค้างเอง · ค้นหา SP/VIN · เลือก Partner ให้ศูนย์ใช้ต่อเองได้'],
+                              en:['📊 VOR Manual button: Excel file with dashboard (bar/donut charts, KPI cards), step-by-step entry sheet with auto status/days, SP/VIN search and partner filter — for dealers to keep using on their own']},
+  {v:'1.3', d:'2026-11-15', th:['ปุ่ม ⬇ Excel: ดาวน์โหลดข้อมูลทั้งหมด (รถ · ขั้นตอน JS/YS/อะไหล่ · ศูนย์ · ผู้ใช้ · คำอธิบายสถานะ) ไว้สำรองหรือใช้ต่อแบบ manual'],
+                              en:['⬇ Excel button: download all data (vehicles · JS/YS/parts steps · dealers · users · status guide) for backup or manual use']},
   {v:'1.2.9', d:'2026-11-15', th:['ประวัติ VIN: PS เห็นว่ารถเคยเข้าศูนย์ไหน + วันเข้า/ส่งมอบ (ไม่เห็นรายละเอียดของศูนย์อื่น) เหมือน v1.2.1'],
                               en:['VIN history: PS see which other dealers the vehicle visited and when (no details), as in v1.2.1']},
   {v:'1.2.8', d:'2026-11-15', th:['ประวัติ VIN ใช้ได้โดยไม่ต้องรัน SQL (RSM/Admin เห็นทุกศูนย์ · PS เห็นเฉพาะศูนย์ตัวเอง)'],
@@ -424,6 +432,8 @@ function contactIcons(actorId, caseObj){ // ปุ่มโทร / ส่ง LI
 const stampHtml = (lg, caseObj) => lg ? `✎ ${esc(lg.actor_name||'?')} <span class="mut">(${esc(catName(lg.actor_cat))})</span> · ${fmtTs(lg.at)} ${contactIcons(lg.actor, caseObj)}` : '';
 
 /* ===================== Data layer: Supabase ===================== */
+// Supabase ส่งได้ครั้งละไม่เกิน 1,000 แถว → ดึงทีละหน้าจนครบ
+async function pageAll(make){ const out=[], N=1000; for(let from=0;;from+=N){ const r=await make().range(from,from+N-1); if(r.error) throw r.error; const d=r.data||[]; out.push(...d); if(d.length<N) break; } return out; }
 function supaApi(){
   const sb = supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
   const ok = r => { if(r.error) throw r.error; return r.data; };
@@ -438,7 +448,7 @@ function supaApi(){
     async me(){ const u=(await sb.auth.getUser()).data.user; if(!u) return null;
       return ok(await sb.from('profiles').select('*').eq('user_id',u.id).maybeSingle()); },
     async dealers(){ return ok(await sb.from('dealers').select('*').order('zone').order('name')); },
-    async cases(){ return ok(await sb.from('vor_cases').select('*').order('arrival_date')); },
+    async cases(){ return pageAll(()=>sb.from('vor_cases').select('*').order('arrival_date').order('id')); },
     async vinHistory(vin){ // ใช้ฟังก์ชันในฐานข้อมูล (PS เห็นชื่อศูนย์อื่น + วันที่ ไม่เห็นรายละเอียด) · ถ้ายังไม่มีฟังก์ชัน ใช้ข้อมูลที่เห็นอยู่แทน
       const r=await sb.rpc('vin_history',{p_vin:vin}); if(!r.error) return r.data||[];
       const v=vin.trim().toUpperCase();
@@ -446,7 +456,7 @@ function supaApi(){
     async deleteUser(uid){ const r=await sb.rpc('admin_delete_user',{uid});
       if(r.error && /admin_delete_user|function|schema cache/i.test(r.error.message||'')) throw {message:L('ยังลบในแอปไม่ได้ — ลบที่ Supabase → Authentication → Users → ⋮ → Delete user','Delete isn\'t set up in the app yet — use Supabase → Authentication → Users → ⋮ → Delete user')};
       ok(r); },
-    async steps(){ return ok(await sb.from('vor_steps').select('*').order('round').order('created_at')); },
+    async steps(){ return pageAll(()=>sb.from('vor_steps').select('*').order('round').order('created_at').order('id')); },
     async logs(caseId){ return ok(await sb.from('vor_log').select('*').eq('case_id',caseId).order('id',{ascending:false})); },
     async saveCase(c){
       const r={...c}; delete r.id;
@@ -463,7 +473,7 @@ function supaApi(){
     async updateProfile(uid,p){ ok(await sb.from('profiles').update(p).eq('user_id',uid)); },
     async setTempPw(uid,pw){ ok(await sb.rpc('admin_set_password',{uid,pw})); },
     async contacts(){ return ok(await sb.rpc('contacts')) || []; },
-    async lastUpdates(){ return ok(await sb.rpc('last_updates')) || []; },
+    async lastUpdates(){ return pageAll(()=>sb.rpc('last_updates')); },
     async updateMyContact(line,phone){ ok(await sb.rpc('update_my_contact',{p_line:line,p_phone:phone})); },
     async deleteDealer(id){ ok(await sb.from('dealers').delete().eq('id',id)); },
     async svmSetMember(uid,role,cat){ ok(await sb.rpc('svm_set_member',{uid,new_role:role,cat:cat||null})); },
@@ -742,7 +752,7 @@ function filterBar(){
     ${S.tab==='board'?`<label class="chk"><input type="checkbox" data-f="showDone" ${f.showDone?'checked':''}> ${L('แสดงที่ส่งมอบแล้ว','Show delivered')}</label>`:''}
     ${S.tab==='stats'?`<select data-f="period"><option value="open" ${f.period==='open'?'selected':''}>${L('รถที่ยังค้าง','Open vehicles')}</option><option value="closed90" ${f.period==='closed90'?'selected':''}>${L('ส่งมอบแล้ว 90 วันล่าสุด','Delivered, last 90 days')}</option><option value="all" ${f.period==='all'?'selected':''}>${L('ทั้งหมด','All')}</option></select>`:''}
     <span class="sp"></span>
-    ${S.tab==='list'?'<button class="btn" data-act="csv">Export CSV</button>':''}
+    ${S.tab==='list'?'<button class="btn" data-act="csv">Export CSV</button><button class="btn" data-act="manual">📊 VOR Manual</button>':''}
     ${S.tab==='board'&&(S.f.dealer||S.me.role==='ps')?`<button class="btn line" data-act="summary">💬 ${L('สรุปส่ง LINE','LINE summary')}</button>`:''}
     <button class="btn" data-act="refresh" title="${L('โหลดใหม่','Reload')}">↻</button>
     ${canCreate()?`<button class="btn pri" data-act="new">${L('+ เพิ่มรถค้างซ่อม','+ Add vehicle')}</button>`:''}
@@ -867,6 +877,87 @@ function exportCSV(){
   a.download='VOR-Live_'+S.lang.toUpperCase()+'_'+today()+'.csv'; document.body.appendChild(a); a.click(); a.remove();
 }
 
+/* ----- ดาวน์โหลด Excel ทั้งหมด (ไว้ใช้ต่อแบบ manual / สำรองข้อมูล) ----- */
+function rawData(cases){ // ข้อมูลดิบสำหรับชีตอ้างอิงใน VOR Manual
+  const r1=rowsForExport(cases).map((r,i)=>{ const c=cases[i], dp=deptOf(c._t.cur.k); const o={};
+    Object.entries(r).forEach(([k,v])=>{ o[k]=v; if(k===L('ผู้รับผิดชอบ','Owner')) o[L('ติดที่แผนก','Department')]=dp&&!c._t.done?deptName(dp.o,dp.key):''; });
+    o[L('ค่าซ่อม','Cost band')]=c.cost_band==='gt10k'?'> 10,000':c.cost_band?'≤ 10,000':''; o[L('วันวิเคราะห์','Analysis date')]=c.analysis_date||''; o[L('วันติดต่อลูกค้า','Customer contacted')]=c.customer_contact_date||'';
+    return o; });
+  const KN={js:'JS',ys:'YS',parts:L('อะไหล่','Parts'),assemble:L('ประกอบ','Assembly'),test:L('ทดสอบ','Test')};
+  const DL={js:[L('ขอ JS','Requested'),L('GWM ตอบ','Replied'),L('ปิด JS','Closed')],ys:[L('ขอ YS','Requested'),L('วันที่ได้ผล','Result date'),''],parts:[L('สั่งอะไหล่','Ordered'),'ETA',L('อะไหล่มาถึง','Arrived')],assemble:[L('ประกอบ','Assembled'),'',''],test:[L('ทดสอบ','Tested'),'','']};
+  const RL={approved:L('อนุมัติ','Approved'),rejected:L('ไม่อนุมัติ','Rejected'),pass:L('ผ่าน','Pass'),fail:L('ไม่ผ่าน','Fail'),testing:L('ระหว่างทดสอบ / เก็บข้อมูล','Testing / collecting data'),other:L('อื่นๆ','Other')};
+  const r2=[]; cases.forEach(c=>(S.stepsBy[c.id]||[]).slice().sort((a,b)=>(a.round||1)-(b.round||1)).forEach(st=>{ const dl=DL[st.kind]||['','',''];
+    r2.push({[L('ศูนย์ (PS)','Dealer (PS)')]:dName(c.dealer_id),SP:c.sp,VIN:c.vin||'',[L('รอบ','Round')]:st.round||1,[L('ขั้นตอน','Step')]:KN[st.kind]||st.kind,[L('เลขอ้างอิง','Reference')]:st.ref_no||'',
+      [L('วันที่ 1','Date 1')]:st.d1||'',[L('ความหมายวันที่ 1','Date 1 means')]:dl[0],[L('วันที่ 2','Date 2')]:st.d2||'',[L('ความหมายวันที่ 2','Date 2 means')]:dl[1],[L('วันที่ 3','Date 3')]:st.d3||'',[L('ความหมายวันที่ 3','Date 3 means')]:dl[2],
+      [L('ผล','Result')]:RL[st.result]||st.result||'',[L('ประเภทอะไหล่','Parts type')]:st.parts_type||'',[L('หมายเหตุ','Note')]:st.note||''}); }));
+  const r4=S.me.role==='admin'?(S.profiles||[]).map(p=>({[L('ชื่อ','Name')]:p.full_name||p.display_name||'',[L('ตำแหน่ง','Position')]:catName(p.category),[L('ศูนย์ (PS)','Dealer (PS)')]:p.dealer_id?dName(p.dealer_id):'',[L('สิทธิ์','Role')]:p.role,[L('อีเมล','Email')]:p.email||'',[L('เบอร์','Phone')]:p.phone||'',LINE:p.line_id||''})):null;
+  return {veh:r1, steps:r2, users:r4};
+}
+
+/* ----- ไฟล์ VOR Manual (Excel แม่แบบ + Dashboard) ให้ Partner ใช้ต่อเองได้ ----- */
+function loadJSZip(){ if(window.JSZip) return Promise.resolve(window.JSZip);
+  return new Promise((ok,no)=>{ const sc=document.createElement('script'); sc.src='https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js'; sc.onload=()=>ok(window.JSZip); sc.onerror=()=>no({message:L('โหลดตัวสร้างไฟล์ไม่ได้ ลองใหม่อีกครั้ง','Could not load the file builder, try again')}); document.head.appendChild(sc); }); }
+async function exportManual(){
+  const staff=isStaff(), f=S.df||{};
+  const dealers=S.dealers.filter(d=> staff ? (!f.rsm||d.rsm===f.rsm)&&(!f.dealer||String(d.id)===String(f.dealer)) : String(d.id)===String(S.me.dealer_id));
+  const ids=new Set(dealers.map(d=>String(d.id)));
+  const cases=S.cases.filter(c=>ids.has(String(c.dealer_id))).sort((a,b)=>dName(a.dealer_id).localeCompare(dName(b.dealer_id))||a.arrival_date.localeCompare(b.arrival_date)||a.sp.localeCompare(b.sp));
+  toast(L('กำลังสร้างไฟล์ VOR Manual…','Building VOR Manual…'));
+  let Z, buf; try{ Z=await loadJSZip(); const r=await fetch('VOR-Manual-template.xlsx',{cache:'no-cache'}); if(!r.ok) throw {message:L('ไม่พบไฟล์แม่แบบ VOR-Manual-template.xlsx บนเว็บ — แจ้ง Admin ให้อัปไฟล์นี้ขึ้น GitHub','Template VOR-Manual-template.xlsx not found on the site — ask the admin to upload it')}; buf=await r.arrayBuffer(); }catch(e){ return toast(errMsg(e)); }
+  const zip=await Z.loadAsync(buf);
+  const XS=v=>String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  const serial=d=>{ const [y,m,dd]=String(d).slice(0,10).split('-').map(Number); return Math.round((Date.UTC(y,m-1,dd)-Date.UTC(1899,11,30))/864e5); };
+  const RES={approved:'อนุมัติ',rejected:'ไม่อนุมัติ',pass:'ผ่าน',fail:'ไม่ผ่าน',testing:'ระหว่างทดสอบ',other:'อื่นๆ'};
+  const TH=k=>PROBLEMS[k]?PROBLEMS[k].th:'';
+  const mn=a=>a.filter(Boolean).sort()[0]||'', mx=a=>a.filter(Boolean).sort().pop()||'';
+  const rows=[]; // แต่ละแถว: {col:value} โดย value = string | {n:number} | {d:'YYYY-MM-DD'}
+  cases.forEach(c=>{ const ss=S.stepsBy[c.id]||[], last=Math.max(1,...ss.map(s=>s.round||1));
+    for(let r=1;r<=last;r++){ const st=ss.filter(s=>(s.round||1)===r), of=k=>st.filter(s=>s.kind===k).sort((a,b)=>String(a.d1||'').localeCompare(String(b.d1||'')));
+      const js=of('js'), ys=of('ys'), pt=of('parts'), asm=of('assemble')[0], tst=of('test')[0], jl=js[js.length-1], yl=ys[ys.length-1], isLast=r===last;
+      const D=v=>v?{d:v}:'';
+      rows.push({A:dName(c.dealer_id),B:c.sp,C:c.vin||'',D:c.model||'',E:{n:r},F:D(c.arrival_date),G:c.parked?'จอด':'ไม่จอด',H:c.loaner?'มี':'ไม่มี',I:TH(c.problem_cat),
+        J:[c.symptom,c.cause].filter(Boolean).join(' / '),K:r===1?D(c.analysis_date):'',
+        L:js.map(s=>s.ref_no).filter(Boolean).join(', '),M:D(jl&&jl.d1),N:D(jl&&jl.d2),O:D(jl&&jl.d3),
+        P:c.cost_band==='gt10k'?'เกิน 10,000':c.cost_band?'ไม่เกิน 10,000':'',Q:ys.map(s=>s.ref_no).filter(Boolean).join(', '),R:D(yl&&yl.d1),S:yl?(RES[yl.result]||''):'',T:D(yl&&yl.d2),
+        U:pt.length?(pt.some(s=>s.parts_type==='BO')?'BO':'PO'):'',V:pt.map(s=>s.ref_no).filter(Boolean).join(', '),W:D(mn(pt.map(s=>s.d1))),X:D(mx(pt.map(s=>s.d2))),
+        Y:pt.length&&pt.every(s=>s.d3)?D(mx(pt.map(s=>s.d3))):'',Z:D(asm&&asm.d1),AA:D(tst&&tst.d1),AB:tst?(RES[tst.result]||''):'',
+        AC:isLast?D(c.est_delivery):'',AD:isLast?D(c.customer_contact_date):'',AE:isLast?D(c.delivered_date):'',AF:isLast?(c.remark||''):''}); } });
+  const MAXR=1000; if(rows.length>MAXR) toast(L(`ข้อมูลเกิน ${MAXR} แถว — ใส่ได้ ${MAXR} แถวแรก`,`More than ${MAXR} rows — only the first ${MAXR} included`));
+  const cell=(ref,s,v)=>{ if(v===''||v==null) return null;
+    if(typeof v==='object'&&v.d) return `<c r="${ref}" s="${s}"><v>${serial(v.d)}</v></c>`;
+    if(typeof v==='object'&&'n' in v) return `<c r="${ref}" s="${s}"><v>${v.n}</v></c>`;
+    return `<c r="${ref}" s="${s}" t="inlineStr"><is><t xml:space="preserve">${XS(v)}</t></is></c>`; };
+  const fill=(xml,map)=>xml.replace(/<c r="([A-Z]+)(\d+)" s="(\d+)" t="n"><\/c>/g,(m,col,row,s)=>{ const rv=map[row]; if(!rv||!(col in rv)) return m; return cell(col+row,s,rv[col])||m; });
+  // ชีตกรอกข้อมูล (sheet2) เริ่มแถว 4
+  const dm={}; rows.slice(0,MAXR).forEach((r,i)=>dm[i+4]=r);
+  const p2='xl/worksheets/sheet2.xml'; zip.file(p2, fill(await zip.file(p2).async('string'),dm));
+  // ชีต Partner (sheet4) เริ่มแถว 4
+  const pm={}; dealers.slice(0,50).forEach((d,i)=>{ const v=(S.contacts||S.profiles||[]).find(p=>p.role==='ps'&&p.category==='owner_svm'&&String(p.dealer_id)===String(d.id))||{};
+    pm[i+4]={A:d.name,B:d.rsm||'',C:v.full_name||'',D:v.phone||'',E:v.line_id||''}; });
+  const p4='xl/worksheets/sheet4.xml'; zip.file(p4, fill(await zip.file(p4).async('string'),pm));
+  // Dashboard: ตั้งตัวกรองศูนย์ถ้ามีศูนย์เดียว
+  if(dealers.length===1){ const p1='xl/worksheets/sheet1.xml'; let x=await zip.file(p1).async('string');
+    x=x.replace(/(<c r="B4" s="\d+" t="inlineStr"><is><t[^>]*>)[^<]*(<\/t><\/is><\/c>)/,(m,a,b)=>a+XS(dealers[0].name)+b); zip.file(p1,x); }
+  // ข้อมูลดิบ (sheet5 รถ · sheet6 ขั้นตอน · sheet7 ผู้ใช้)
+  const colL=n=>{ let t=''; n++; while(n>0){ const m=(n-1)%26; t=String.fromCharCode(65+m)+t; n=Math.floor((n-1)/26); } return t; };
+  const RAW=rawData(cases), withUsers=S.me.role==='admin'&&dealers.length>1&&RAW.users&&RAW.users.length;
+  const putRaw=async(path,rows)=>{ let x=await zip.file(path).async('string'); if(!rows||!rows.length) return;
+    const sh=(x.match(/<c r="A1" s="(\d+)"/)||[])[1]||'0', sd=(x.match(/<c r="A2" s="(\d+)"/)||[])[1]||'0', st=(x.match(/<c r="B2" s="(\d+)"/)||[])[1]||'0';
+    const keys=Object.keys(rows[0]), isD=v=>typeof v==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(v);
+    let out='<sheetData><row r="1" ht="30" customHeight="1">'+keys.map((k,i)=>cell(colL(i)+'1',sh,k)||'').join('')+'</row>';
+    rows.forEach((r,ri)=>{ const rn=ri+2; out+=`<row r="${rn}">`+keys.map((k,i)=>{ const v=r[k]; if(v===''||v==null) return '';
+      return isD(v)?cell(colL(i)+rn,sd,{d:v}):(typeof v==='number'?cell(colL(i)+rn,st,{n:v}):cell(colL(i)+rn,st,String(v))); }).join('')+'</row>'; });
+    out+='</sheetData><autoFilter ref="A1:'+colL(keys.length-1)+(rows.length+1)+'"/>';
+    x=x.replace(/<sheetData>[\s\S]*?<\/sheetData>|<sheetData\/>/,out); zip.file(path,x); };
+  await putRaw('xl/worksheets/sheet5.xml',RAW.veh); await putRaw('xl/worksheets/sheet6.xml',RAW.steps);
+  if(withUsers) await putRaw('xl/worksheets/sheet7.xml',RAW.users);
+  else { let w=await zip.file('xl/workbook.xml').async('string'); w=w.replace(/(name="ผู้ใช้" sheetId="7" state=")visible"/,'$1hidden"'); zip.file('xl/workbook.xml',w); }
+  const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE',mimeType:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+  const nm=dealers.length===1?dealers[0].name.replace(/\s+/g,'_'):(f.rsm?'RSM_'+f.rsm:'All');
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`VOR-Manual_${nm}_${today()}.xlsx`; document.body.appendChild(a); a.click(); a.remove();
+  toast(L(`สร้างไฟล์แล้ว · ${cases.length} SP · ${dealers.length} ศูนย์`,`File ready · ${cases.length} SP · ${dealers.length} dealers`));
+}
+
 /* ===================== วิเคราะห์เวลา ===================== */
 function hbar(label,val,max,color,suffix){ return `<div class="hbar"><span class="lb" title="${esc(label)}">${esc(label)}</span><span class="tr"><i style="width:${max?Math.max(2,val/max*100):0}%;background:${color}"></i></span><span class="vv">${val}${suffix||''}</span></div>`; }
 function viewStats(){
@@ -957,7 +1048,7 @@ function dashBar(){
     ${chips('parked',[['',L('จอด+ไม่จอด','All')],['y',L('จอด','Parked')],['n',L('ไม่จอด','Not parked')]],f.parked)}
     ${chips('age',[['',L('ทุกวันค้าง','Any age')],...AGE.map((a,i)=>[i,(i===0?'≤7':a[0])+L(' วัน','d')])],f.age)}
     <select data-df="prob"><option value="">${L('ทุกกลุ่มปัญหา','All problems')}</option>${Object.keys(PROBLEMS).map(k=>`<option value="${k}" ${f.prob===k?'selected':''}>${esc(probName(k))}</option>`).join('')}<option value="none" ${f.prob==='none'?'selected':''}>${L('ยังไม่ระบุ','Not set')}</option></select>
-    <span class="sp"></span><button class="btn" data-act="refresh" title="${L('โหลดใหม่','Reload')}">↻</button>
+    <span class="sp"></span><button class="btn" data-act="manual" title="${L('ไฟล์ Excel พร้อม Dashboard ให้ Partner ใช้ต่อเอง','Excel file with dashboard for partners to keep using')}">📊 VOR Manual</button><button class="btn" data-act="refresh" title="${L('โหลดใหม่','Reload')}">↻</button>
   </div>`;
 }
 function donut(parts,total,center,sub){ // parts: [{key,v,color,label}]
@@ -1618,6 +1709,7 @@ document.addEventListener('click', async e=>{
     case 'new': openCase(null); break;
     case 'refresh': await reload(); toast(L('อัปเดตแล้ว','Updated')); break;
     case 'csv': exportCSV(); break;
+    case 'manual': exportManual(); break;
     case 'close': closeModal(); break;
     case 'save': saveCase(); break;
     case 'newround': { readForm(); const r=curRound()+1; S.edit.steps.push(newStep('js',r,{d1:today()})); ensureRoundSteps(); renderModal();
