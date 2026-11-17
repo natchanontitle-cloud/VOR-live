@@ -217,8 +217,10 @@ const CONFIG = {
   SUPABASE_ANON_KEY: 'sb_publishable_RESqSgvp97Bh5thFluhs0w_M1LYS4dk'
 };
 // ===== เวอร์ชัน: อัปเกรดทุกครั้ง ให้เพิ่มเลข + เพิ่มรายการไว้บนสุดของ CHANGELOG =====
-const APP_VERSION = '1.6';
+const APP_VERSION = '1.6.1';
 const CHANGELOG = [
+  {v:'1.6.1', d:'2026-11-17', th:['🔔 กระดิ่งแสดงสถานะปัจจุบันของรถ 1 แถวต่อคัน · ขึ้น "ส่งมอบแล้ว" เฉพาะรถที่มีวันส่งมอบจริง','ยกเลิก SP เป็นปุ่มเท่านั้น กดแล้วกรอกเหตุผล + ยืนยัน · Admin เปิด SP กลับมาได้'],
+   en:['Bell shows each vehicle\'s current status','Cancel SP is a button with confirm; Admin can reopen']},
   {v:'1.6', d:'2026-11-17', th:['🔔 กระดิ่ง: งานใหม่ที่เข้ามา · SVM/SA เห็นความเคลื่อนไหวในศูนย์ · RSM/Admin เห็นเรื่องสำคัญ (รถเข้าใหม่ ส่งมอบ ยกเลิก ค้างเกิน 30 วัน)','👥 คำขอเข้าใช้งานแบบ add friend: Admin ทั้งหมด · RSM เฉพาะ PS ที่ดูแล · SVM ศูนย์ตัวเอง','การชำระ 3 แบบ เพิ่ม "ลูกค้าชำระเอง" (Foreman / SVM / SA เลือกได้) · ถามตอนวิเคราะห์จบและปิด JS','รุ่นรถ: เลือกจากรายการกลาง หรือ "อื่นๆ (ระบุ)" · Admin เพิ่ม / แก้ / รวมรุ่นได้','รวม "วิเคราะห์เวลา" เข้าหน้าภาพรวม + ตัวกรองการชำระ / รุ่นรถ / ช่วงเวลา','RSM / Admin: ตามงาน GWM ย้ายไปหลัง Board'],
                             en:['🔔 Notifications: new tasks · activity feed for SVM/SA · key events for RSM/Admin','👥 Access requests like friend requests: admin all · RSM own dealers · SVM own dealer','Payment types incl. "customer pays" (foreman / SVM / SA)','Vehicle models from a central list or "Other" · admin can add / rename / merge','Lead time merged into Overview, with payment / model / period filters','RSM / Admin: GWM follow-up tab moved after Board']},
   {v:'1.5.5', d:'2026-11-17', th:['วันนัดลูกค้าล่วงหน้า (อนาคต) ใส่ได้ ไม่ขึ้นเตือน'],
@@ -1122,14 +1124,19 @@ function nSave(st){ try{ localStorage.setItem(NKEY(),JSON.stringify(st)); }catch
 const taskKeys = () => [...myTasks(),...myWaiting()].map(c=>c.id+':'+c._t.cur.k);
 function over30Keys(){ const staff=isStaff(), mine=S.myRsm; return S.cases.filter(c=>!c._t.done&&c._t.total>30&&(!staff||!mine||(dealerById(c.dealer_id)||{}).rsm===mine||isAdmin())).map(c=>c.id+':30'); }
 function nInit(){ let st=nState(); if(!st){ st={tasks:taskKeys(),o30:over30Keys(),since:new Date(Date.now()-864e5).toISOString()}; nSave(st); } return st; }
-const FEED_ICON = f => f.includes('delivered_date')?'✅':f.includes('cancelled_date')?'✕':'✎';
-function feedItems(){
+const FEED_ICON = k => k==='done'?'✅':k==='cancel'?'✕':k==='new'?'🚗':'✎';
+function feedItems(){   // 1 แถวต่อรถ · แสดงสถานะปัจจุบันของรถ ไม่ใช่ช่องที่ถูกแก้
   const st=nInit(), me=S.me.user_id, staff=isStaff(), svmsa=['owner_svm','sa'].includes(S.me.category);
-  return (S.feed||[]).filter(l=>l.actor!==me).filter(l=>{
-    if(svmsa) return true;
-    if(staff){ const imp = (l.kind==='case'&&l.action==='insert') || (l.fields||[]).some(f=>f==='delivered_date'||f==='cancelled_date');
-      return imp && (isAdmin() || !S.myRsm || (dealerById(l.dealer_id)||{}).rsm===S.myRsm); }
-    return false; }).map(l=>({...l,isNew:l.at>st.since}));
+  if(!staff&&!svmsa) return [];
+  const g={};
+  (S.feed||[]).filter(l=>l.actor!==me).forEach(l=>{ const k=l.case_id||('x'+l.at); (g[k]=g[k]||[]).push(l); });
+  return Object.values(g).map(ls=>{ ls.sort((a,b)=>b.at.localeCompare(a.at));
+    const last=ls[0], c=S.cases.find(x=>x.id===last.case_id), touched=f=>ls.some(l=>(l.fields||[]).includes(f));
+    const ins=ls.some(l=>l.kind==='case'&&l.action==='insert');
+    const kind = c&&c.cancelled_date&&touched('cancelled_date') ? 'cancel' : c&&c.delivered_date&&touched('delivered_date') ? 'done' : ins ? 'new' : 'upd';
+    return {...last,c,fk:kind,isNew:last.at>st.since}; })
+   .filter(x=>x.c && (svmsa || (x.fk!=='upd' && (isAdmin() || !S.myRsm || (dealerById(x.dealer_id)||{}).rsm===S.myRsm))))
+   .sort((a,b)=>b.at.localeCompare(a.at));
 }
 function bellData(){
   const st=nInit(), seen=new Set(st.tasks||[]), s30=new Set(st.o30||[]);
@@ -1139,12 +1146,12 @@ function bellData(){
   return {newTasks,o30,feed,um,count:newTasks.length+o30.length+feed.filter(x=>x.isNew).length+(um.length?1:0)};
 }
 function logText(l){
-  const c=S.cases.find(x=>x.id===l.case_id), sp=c?c.sp:'';
-  const what = l.kind==='case'&&l.action==='insert' ? L('เพิ่มรถเข้าใหม่','added a vehicle')
-    : (l.fields||[]).includes('delivered_date') ? L('ส่งมอบแล้ว','delivered')
-    : (l.fields||[]).includes('cancelled_date') ? L('ยกเลิก SP','cancelled the SP')
-    : (L(...(KIND_L[l.kind]||[l.kind,l.kind])))+' · '+[...new Set((l.fields||[]).map(f=>L(...(FIELD_L[f]||[f,f]))))].slice(0,3).join(', ');
-  return {sp,what};
+  const c=l.c, sp=c?c.sp:'';
+  const what = l.fk==='done' ? L('ส่งมอบแล้ว','delivered')+' '+fmt(c.delivered_date)
+    : l.fk==='cancel' ? L('ยกเลิก SP','cancelled the SP')
+    : l.fk==='new' ? L('เพิ่มรถเข้าใหม่','added a vehicle') : L('อัปเดต','updated');
+  const now = c && !c._t.done ? L('ตอนนี้: ','Now: ')+stName(c._t.cur.k) : '';
+  return {sp,what,now};
 }
 function viewBell(){
   const B=bellData(), staff=isStaff();
@@ -1153,7 +1160,7 @@ function viewBell(){
   if(B.newTasks.length) h+=`<div class="blh">${L('งานใหม่ของคุณ','New tasks for you')} (${B.newTasks.length})</div>`+B.newTasks.map(c=>row(c.id,'📌',`<b>${esc(c.sp)}</b> · ${esc(stName(c._t.cur.k))}`,`${staff?esc(dName(c.dealer_id))+' · ':''}${esc(c.model||'')}`,true)).join('');
   if(B.o30.length) h+=`<div class="blh">${L('ค้างเกิน 30 วัน','Open over 30 days')} (${B.o30.length})</div>`+B.o30.map(c=>row(c.id,'⚠',`<b>${esc(c.sp)}</b> · ${c._t.total} ${L('วัน','days')}`,`${esc(dName(c.dealer_id))} · ${esc(stName(c._t.cur.k))}`,true)).join('');
   if(B.um.length) h+=`<div class="blh">${L('รุ่นรถที่ศูนย์พิมพ์เอง รอจัดเข้ารายการ','Models typed by dealers, waiting to be organised')}</div>`+row('','🚘',B.um.map(x=>esc(x.name)+' ('+x.ids.length+')').join(' · '),`<a href="#" data-tab="admin">${L('ไปจัดการในแท็บ ผู้ใช้ & PS','Manage in Users & PS')} ›</a>`,true);
-  if(B.feed.length) h+=`<div class="blh">${staff?L('เรื่องสำคัญ','Key events'):L('ความเคลื่อนไหวในศูนย์','Activity in your dealer')}</div>`+B.feed.slice(0,60).map(l=>{ const t=logText(l); return row(l.case_id,FEED_ICON(l.fields||[]),`<b>${esc(l.actor_name||'?')}</b> ${esc(t.what)}`,`${esc(t.sp)}${staff?' · '+esc(dName(l.dealer_id)):''} · ${fmtAgo(l.at)}`,l.isNew); }).join('');
+  if(B.feed.length) h+=`<div class="blh">${staff?L('เรื่องสำคัญ','Key events'):L('ความเคลื่อนไหวในศูนย์','Activity in your dealer')}</div>`+B.feed.slice(0,60).map(l=>{ const t=logText(l); return row(l.case_id,FEED_ICON(l.fk),`<b>${esc(l.actor_name||'?')}</b> ${esc(t.what)}`,`${esc(t.sp)}${staff?' · '+esc(dName(l.dealer_id)):''}${t.now?' · <b>'+esc(t.now)+'</b>':''} · ${fmtAgo(l.at)}`,l.isNew); }).join('');
   return `<div class="sheet" style="max-width:520px;height:auto"><div class="mh"><b>🔔 ${L('การแจ้งเตือน','Notifications')}</b><button class="x" data-act="pwclose">✕</button></div>
     <div class="mb" style="padding-bottom:16px">${h||`<div class="mut" style="padding:24px 0;text-align:center">${L('ยังไม่มีอะไรใหม่','Nothing new')}</div>`}</div></div>`;
 }
@@ -1593,11 +1600,9 @@ function renderModal(){
       </section>
       ${rounds}
       <section class="fs"><h4><span class="no" style="background:${DONE_C}">✓</span>${L('ติดตามลูกค้า / ส่งมอบ','Customer follow-up / delivery')}</h4><div class="fg">${dateRow('customer_contact_date',L('โทรแจ้ง / นัดหมายลูกค้า','Customer contacted / appointment'),c.customer_contact_date)}${dateRow('delivered_date',L('ส่งมอบเสร็จสมบูรณ์','Delivered'),c.delivered_date)}</div><div class="stamp" data-sec="delivery"></div></section>
-      ${FULL()&&E.id?`<section class="fs"><h4>${L('ยกเลิก SP','Cancel SP')}</h4>${c.cancelled_date?'':`<div class="mut sm" style="margin-bottom:6px">${L('ใช้เมื่อต้องปิด job นี้แล้วเปิด SP ใหม่ เช่น Warranty ให้รวมอะไหล่เคลม — รถจะออกจากรายการค้าง','Use when this job must be closed and a new SP opened — the vehicle leaves the open list')}</div>`}<div class="fg">
-        ${dateRow('cancelled_date',L('วันที่ยกเลิก','Cancelled on'),c.cancelled_date)}
-        <label>${L('เหตุผล','Reason')}<select data-c="cancel_reason"><option value="">—</option>${Object.keys(CANCEL_R).map(k=>`<option value="${k}" ${c.cancel_reason===k?'selected':''}>${esc(cancelName(k))}</option>`).join('')}</select></label>
-        <label>${L('SP ใหม่ที่เปิดแทน','New SP')}<input data-c="new_sp" value="${esc(c.new_sp||'')}" placeholder="SP…" autocapitalize="characters"></label>
-        <label>${L('รายละเอียด','Details')}<input data-c="cancel_note" value="${esc(c.cancel_note||'')}"></label></div></section>`:''}
+      ${E.id&&c.cancelled_date?`<section class="fs" style="border-color:#e5a3a3"><h4 style="color:#b42318">✕ ${L('SP นี้ถูกยกเลิกแล้ว','This SP was cancelled')}</h4>
+        <div class="sm">${L('วันที่','Date')} <b>${fmt(c.cancelled_date)}</b> · ${L('เหตุผล','Reason')} <b>${esc(cancelName(c.cancel_reason))}</b>${c.new_sp?` · ${L('SP ใหม่','New SP')} <b>${esc(c.new_sp)}</b>`:''}${c.cancel_note?`<br>${esc(c.cancel_note)}`:''}</div>
+        ${isAdmin()?`<button type="button" class="btn" style="margin-top:8px" data-reopen>↺ ${L('เปิด SP นี้กลับมา (Admin)','Reopen this SP (Admin)')}</button>`:''}</section>`:''}
       <section class="fs"><h4>${L('หมายเหตุ','Remark')}</h4><textarea data-c="remark" rows="2" style="width:100%">${esc(c.remark||'')}</textarea><div class="stamp" data-sec="remark"></div></section>
       <div id="hist"></div>
       <datalist id="models">${MODELS.map(x=>`<option value="${esc(x)}">`).join('')}</datalist>
@@ -1733,6 +1738,7 @@ async function doAction(){
   const v={}; document.querySelectorAll('#na [data-naf]').forEach(el=>{ if(el.type==='radio'){ if(el.checked) v[el.dataset.naf]=el.value; } else v[el.dataset.naf]=el.value.trim(); });
   if(!v.d) return toast(L('กรุณาใส่วันที่','Please enter a date'));
   if(E.act==='cancel'&&!v.reason) return toast(L('กรุณาเลือกเหตุผล','Please choose a reason'));
+  if(E.act==='cancel'&&!confirm(L('ยืนยันยกเลิก SP นี้? รถจะออกจากรายการค้าง','Cancel this SP? The vehicle leaves the open list.'))) return;
   const c=E.c, ss=E.steps, A=actState(normCase(c),normSteps(ss)), r=A.t.round, by=(S.me.full_name||S.me.display_name||'');
   if(v.pay && PAY[v.pay]) c.cost_band=v.pay;
   const find=x=>x&&ss.find(s=>s.id===x.id), step=k=>{ let s=ss.find(x=>x.kind===k&&x.round===r); if(!s){ s=newStep(k,r); ss.push(s); } return s; };
@@ -1986,7 +1992,7 @@ function tempPw(){ const a='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz2345
 /* ===================== Events ===================== */
 document.addEventListener('click', async e=>{
   if(e.target.closest('[data-stop]')) return;
-  const t=e.target.closest('[data-rq],[data-bopen],[data-mren],[data-mtog],[data-madd],[data-qa],[data-mt],[data-na],[data-naok],[data-nax],[data-addev],[data-rmev],[data-ucs],[data-bdrill],[data-ufd],[data-lvlrsm],[data-side2],[data-drill],[data-dside],[data-dset],[data-bucket],[data-dealer-dash],[data-dealer-board],[data-drf],[data-vin],[data-deluser],[data-follow],[data-copy],[data-copytext],[data-deldealer],[data-svm],[data-temppw],[data-delallowed],[data-clear],[data-toggle],[data-tab],[data-act],[data-open],[data-today],[data-rmstep],[data-addstep],[data-auth],[data-dealer],[data-saveuser],[data-reject],[data-savedealer],[data-demo],[data-lang]');
+  const t=e.target.closest('[data-reopen],[data-rq],[data-bopen],[data-mren],[data-mtog],[data-madd],[data-qa],[data-mt],[data-na],[data-naok],[data-nax],[data-addev],[data-rmev],[data-ucs],[data-bdrill],[data-ufd],[data-lvlrsm],[data-side2],[data-drill],[data-dside],[data-dset],[data-bucket],[data-dealer-dash],[data-dealer-board],[data-drf],[data-vin],[data-deluser],[data-follow],[data-copy],[data-copytext],[data-deldealer],[data-svm],[data-temppw],[data-delallowed],[data-clear],[data-toggle],[data-tab],[data-act],[data-open],[data-today],[data-rmstep],[data-addstep],[data-auth],[data-dealer],[data-saveuser],[data-reject],[data-savedealer],[data-demo],[data-lang]');
   if(!t) return;
   const d=t.dataset;
   if(d.drill){ openDrill(d.drill); return; }
@@ -2048,6 +2054,8 @@ document.addEventListener('click', async e=>{
   if(d.na){ readForm(); S.edit.act=d.na; renderActions(); const b=$('#na'); if(b) b.scrollIntoView({block:'nearest'}); return; }
   if(d.nax!==undefined){ S.edit.act=null; renderActions(); return; }
   if(d.naok!==undefined){ await doAction(); return; }
+  if(d.reopen!==undefined){ if(!isAdmin()||!S.edit) return; if(!confirm(L('เปิด SP นี้กลับมาเป็นรถค้าง?','Reopen this SP?'))) return; readForm();
+    Object.assign(S.edit.c,{cancelled_date:null,cancel_reason:null,new_sp:null,cancel_note:null}); await saveCase(true); return; }
   if(d.rmstep!==undefined){ readForm(); const s=S.edit.steps.splice(+d.rmstep,1)[0]; if(s&&!isNew(s.id)) S.edit.removed.push(s.id); renderModal(); return; }
   if(d.addstep){ readForm(); S.edit.steps.push(newStep(d.addstep,+d.r,{d1:today()})); renderModal(); return; }
   if(d.open && !S.edit){ openCase(d.open); return; }
