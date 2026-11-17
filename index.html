@@ -219,8 +219,9 @@ const CONFIG = {
   SUPABASE_ANON_KEY: 'sb_publishable_RESqSgvp97Bh5thFluhs0w_M1LYS4dk'
 };
 // ===== เวอร์ชัน: อัปเกรดทุกครั้ง ให้เพิ่มเลข + เพิ่มรายการไว้บนสุดของ CHANGELOG =====
-const APP_VERSION = '1.6.2';
+const APP_VERSION = '1.6.3';
 const CHANGELOG = [
+  {v:'1.6.3', d:'2026-11-18', th:['"PS ของฉัน" · ตามงาน GWM · กระดิ่ง ใช้ชุด RSM ที่เลือกอยู่ (RSM2 / RSM1)'], en:['My PS, GWM follow-up and the bell follow the selected RSM set']},
   {v:'1.6.2', d:'2026-11-18', th:['ชุด RSM 2 ชุด: RSM2 เป็นค่าเริ่มต้น เลือกเปลี่ยนเป็น RSM1 ได้ที่ตัวกรอง (ภาพรวม / Board)','Admin อัปโหลดไฟล์ PS → RSM (RSM_for_upload.xlsx) ได้เอง · ศูนย์ใหม่ในไฟล์ถูกเพิ่มให้อัตโนมัติ · ดาวน์โหลดชุดปัจจุบันไปแก้ได้','สิทธิ์อนุมัติคนสมัครของ RSM ใช้ชุด RSM2'],
    en:['Two RSM sets: RSM2 by default, switch to RSM1 in the filters','Admin uploads the PS → RSM file; new dealers are added','RSM approval rights follow RSM2']},
   {v:'1.6.1', d:'2026-11-17', th:['🔔 กระดิ่งแสดงสถานะปัจจุบันของรถ 1 แถวต่อคัน · ขึ้น "ส่งมอบแล้ว" เฉพาะรถที่มีวันส่งมอบจริง','ยกเลิก SP เป็นปุ่มเท่านั้น กดแล้วกรอกเหตุผล + ยืนยัน · Admin เปิด SP กลับมาได้'],
@@ -476,7 +477,7 @@ const RSET = () => { if(!S.rsmSet){ try{ S.rsmSet=localStorage.getItem('vor_rsms
 const dRsm = d => !d ? '' : (RSET()==='rsm1' ? (d.rsm||'') : (d.rsm2||d.rsm||''));
 const permRsm = d => !d ? '' : (d.rsm2||d.rsm||'');
 const rsmList = () => [...new Set(S.dealers.filter(d=>d.active!==false).map(dRsm).filter(Boolean))].sort();
-const rsmSetSel = () => `<select data-rsmset title="${L('ชุด RSM','RSM set')}"><option value="rsm2" ${RSET()==='rsm2'?'selected':''}>RSM2</option><option value="rsm1" ${RSET()==='rsm1'?'selected':''}>RSM1</option></select>`;
+const rsmSetSel = () => `<select data-rsmset class="rsmset" title="${L('ชุด RSM','RSM set')}"><option value="rsm2" ${RSET()==='rsm2'?'selected':''}>RSM2</option><option value="rsm1" ${RSET()==='rsm1'?'selected':''}>RSM1</option></select>`;
 const FULL = () => isStaff() || ['owner_svm','sa'].includes(S.me && S.me.category);
 const canField = f => FULL() || f==='remark' || (CASE_EDIT[S.me.category]||[]).includes(f);
 const canStep = k => FULL() || (STEP_EDIT[S.me.category]||[]).includes(k);
@@ -696,7 +697,7 @@ async function loadAll(){
   try{ const [ct,lu]=await Promise.all([api.contacts(),api.lastUpdates()]); S.contacts=ct||[]; S.last={}; (lu||[]).forEach(x=>S.last[x.case_id]=x); }catch(e){ S.contacts=[]; S.last={}; }
   if(!S.psInit && S.me.role==='ps'){ S.psInit=true; if(S.tab==='board') S.tab='mine'; }
   if(!S.rsmInit && isStaff()){ S.rsmInit=true; if(S.tab==='board') S.tab='dash'; const first=(S.me.full_name||'').split(/\s+/)[0].toLowerCase();
-    const mine=[...new Set(S.dealers.map(permRsm).filter(r=>r && first && r.toLowerCase().split(/\s+/)[0]===first))]; if(mine.length===1){ S.f.rsm=mine[0]; S.myRsm=mine[0]; } }
+    const mine=[...new Set(S.dealers.flatMap(d=>[d.rsm,d.rsm2]).filter(r=>r && first && r.toLowerCase().split(/\s+/)[0]===first))]; if(mine.length===1){ S.f.rsm=mine[0]; S.myRsm=mine[0]; } }
   if(isAdmin()||isSvm()){ const [p,a]=await Promise.all([api.profiles(),api.allowed()]); S.profiles=p; S.allowed=a; }
   else if(S.me.role==='rsm'){ try{ S.profiles=await api.profiles(); }catch(e){ S.profiles=[]; } }
   try{ S.models=await api.models(); }catch(e){ S.models=null; }
@@ -1134,7 +1135,7 @@ const NKEY = () => 'vor_seen_'+(S.me&&S.me.user_id);
 function nState(){ try{ return JSON.parse(localStorage.getItem(NKEY())||'null'); }catch(e){ return null; } }
 function nSave(st){ try{ localStorage.setItem(NKEY(),JSON.stringify(st)); }catch(e){} }
 const taskKeys = () => [...myTasks(),...myWaiting()].map(c=>c.id+':'+c._t.cur.k);
-function over30Keys(){ const staff=isStaff(), mine=S.myRsm; return S.cases.filter(c=>!c._t.done&&c._t.total>30&&(!staff||!mine||permRsm(dealerById(c.dealer_id))===mine||isAdmin())).map(c=>c.id+':30'); }
+function over30Keys(){ const staff=isStaff(), mine=S.myRsm; return S.cases.filter(c=>!c._t.done&&c._t.total>30&&(!staff||!mine||dRsm(dealerById(c.dealer_id))===mine||isAdmin())).map(c=>c.id+':30'); }
 function nInit(){ let st=nState(); if(!st){ st={tasks:taskKeys(),o30:over30Keys(),since:new Date(Date.now()-864e5).toISOString()}; nSave(st); } return st; }
 const FEED_ICON = k => k==='done'?'✅':k==='cancel'?'✕':k==='new'?'🚗':'✎';
 function feedItems(){   // 1 แถวต่อรถ · แสดงสถานะปัจจุบันของรถ ไม่ใช่ช่องที่ถูกแก้
@@ -1147,7 +1148,7 @@ function feedItems(){   // 1 แถวต่อรถ · แสดงสถา�
     const ins=ls.some(l=>l.kind==='case'&&l.action==='insert');
     const kind = c&&c.cancelled_date&&touched('cancelled_date') ? 'cancel' : c&&c.delivered_date&&touched('delivered_date') ? 'done' : ins ? 'new' : 'upd';
     return {...last,c,fk:kind,isNew:last.at>st.since}; })
-   .filter(x=>x.c && (svmsa || (x.fk!=='upd' && (isAdmin() || !S.myRsm || permRsm(dealerById(x.dealer_id))===S.myRsm))))
+   .filter(x=>x.c && (svmsa || (x.fk!=='upd' && (isAdmin() || !S.myRsm || dRsm(dealerById(x.dealer_id))===S.myRsm))))
    .sort((a,b)=>b.at.localeCompare(a.at));
 }
 function bellData(){
@@ -1201,7 +1202,7 @@ S.mt={stage:'',all:false};
 function myStages(){ if(isStaff()) return GWM_STAGES; const c=S.me.category; return ['owner_svm','sa'].includes(c)?PS_STAGES:(MY_Q[c]||[]); }
 function myTasks(){
   const st=myStages(), staff=isStaff(), mine=S.myRsm&&!S.mt.all;
-  return S.cases.filter(c=>!c._t.done && st.includes(c._t.cur.k) && (!staff||!mine||permRsm(dealerById(c.dealer_id))===S.myRsm))
+  return S.cases.filter(c=>!c._t.done && st.includes(c._t.cur.k) && (!staff||!mine||dRsm(dealerById(c.dealer_id))===S.myRsm))
     .sort((a,b)=>b._t.curDays-a._t.curDays||b._t.total-a._t.total);
 }
 function myWaiting(){ if(isStaff()) return []; const w=MY_WAIT[S.me.category]||[];
@@ -1217,7 +1218,7 @@ function viewMine(){
   const cnt=k=>all.filter(c=>c._t.cur.k===k).length;
   const who=staff?L('รถที่ศูนย์รอ GWM อยู่ (Technical / Warranty / อะไหล่) ไว้ตามภายใน GWM — ศูนย์เป็นคนบันทึกเมื่อ GWM ตอบ','Vehicles the dealers are waiting on GWM for — dealers record the reply'):`${L('งานที่รอ','Waiting on')} ${esc(catName(S.me.category))}${['owner_svm','sa'].includes(S.me.category)?' · '+L('ทุกงานฝั่งศูนย์','all dealer-side items'):''}`;
   return `<div class="panel" style="margin-bottom:12px"><h3 style="margin:0 0 4px">${staff?L('ตามงาน GWM','GWM follow-up'):L('งานของฉัน','My tasks')} <span class="mut">(${all.length})</span></h3><div class="mut sm">${who} · ${L('เรียงจากค้างในขั้นนี้นานสุด','longest in this step first')}</div>
-    ${staff&&S.myRsm?`<div class="ctl" style="margin:8px 0 0">${chips('mtall',[['',L('PS ของฉัน','My PS')],['1',L('ทุกศูนย์','All dealers')]],S.mt.all?'1':'','data-mt')}</div>`:''}
+    ${staff&&S.myRsm?`<div class="ctl" style="margin:8px 0 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap">${rsmSetSel()}${chips('mtall',[['',L('PS ของฉัน','My PS')],['1',L('ทุกศูนย์','All dealers')]],S.mt.all?'1':'','data-mt')}</div>`:''}
     ${multi?`<div class="ctl" style="margin:8px 0 0">${chips('stage',[['',L('ทั้งหมด','All')+' '+all.length],...st.map(k=>[k,stName(k)+' '+cnt(k)])],S.mt.stage||'','data-mt')}</div>`:''}</div>
   ${list.map(c=>mtRow(c,!staff)).join('') || `<div class="panel mut" style="text-align:center;padding:30px">🎉 ${L('ไม่มีงานค้างที่คุณ','Nothing waiting on you')}</div>`}
   ${wait.length?`<div class="panel" style="margin:16px 0 12px;border-color:#fecaca;background:#fff7f7"><h3 style="margin:0 0 4px;color:#9f1239">${L('รอ GWM ตอบ','Waiting on GWM')} <span class="mut">(${wait.length})</span></h3><div class="mut sm">${L('ได้คำตอบจาก GWM แล้ว (Technical ตอบ JS / Warranty อนุมัติหรือ Reject YS / อะไหล่มาถึง) ให้กดบันทึกพร้อมวันที่ที่ได้รับ','When GWM replies (JS answer / YS approved or rejected / parts arrived), record it here with the date')}</div></div>
@@ -2203,7 +2204,7 @@ document.addEventListener('change', e=>{
   if(el.dataset.msel!==undefined && S.edit){ readForm(); if(el.value==='__other'){ S.edit.modelOther=true; S.edit.c.model=''; } else { S.edit.modelOther=false; S.edit.c.model=el.value; } renderModal(); return; }
   if(el.dataset.mmerge && el.value){ if(confirm(L(`รวม "${el.dataset.mmerge}" เข้ากับ "${el.value}" ?`,`Merge "${el.dataset.mmerge}" into "${el.value}"?`))) mergeModel(el.dataset.mmerge, el.value); else el.value=''; return; }
   if(el.dataset.rsmset!==undefined){ S.rsmSet=el.value; try{ localStorage.setItem('vor_rsmset',el.value); }catch(_){}
-    const L2=rsmList(); if(S.df.rsm&&!L2.includes(S.df.rsm)){ S.df.rsm=''; S.df.dealer=''; } if(S.f.rsm&&!L2.includes(S.f.rsm)){ S.f.rsm=''; S.f.dealer=''; } renderMain(); return; }
+    const L2=rsmList(); if(S.df.rsm&&!L2.includes(S.df.rsm)){ S.df.rsm=''; S.df.dealer=''; } if(S.f.rsm&&!L2.includes(S.f.rsm)){ S.f.rsm=''; S.f.dealer=''; } renderApp(); renderHeaderIcons(); return; }
   if(el.dataset.rsmfile!==undefined){ if(el.files[0]) rsmUpload(el.files[0]); el.value=''; return; }
   if(el.dataset.dk) return;
   if(el.dataset.df){ S.df[el.dataset.df]=el.value; if(el.dataset.df==='rsm') S.df.dealer=''; renderMain(); return; }
