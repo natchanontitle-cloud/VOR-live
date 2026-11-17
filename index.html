@@ -138,6 +138,8 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .todo{font-size:11px;color:#1d4ed8;background:#eff6ff;border-radius:6px;padding:3px 7px;margin-top:6px}.todo.inl{display:inline-block;margin:2px 0}
 .cic{display:inline-flex;gap:4px;margin-left:4px;vertical-align:middle}.cic a{font-size:11px;text-decoration:none;border:1px solid var(--line);border-radius:99px;padding:1px 7px;background:#fff;color:var(--ink)}
 .cic a.ln{background:#06c755;border-color:#06c755;color:#fff;font-weight:700}.lastup a.tel{text-decoration:none;margin-left:4px}
+/* rsm upload */
+.rsmup{margin-top:14px;padding-top:12px;border-top:1px solid var(--line,#e5e7eb)}
 /* dashboard v1.2 */
 .kp{text-align:left;font:inherit;cursor:pointer}.kp:hover{border-color:#cbd5e1}
 .segc.sm2{margin-top:0;display:inline-flex}.segc.sm2 button{padding:6px 10px;font-size:12.5px;flex:none}
@@ -217,8 +219,10 @@ const CONFIG = {
   SUPABASE_ANON_KEY: 'sb_publishable_RESqSgvp97Bh5thFluhs0w_M1LYS4dk'
 };
 // ===== เวอร์ชัน: อัปเกรดทุกครั้ง ให้เพิ่มเลข + เพิ่มรายการไว้บนสุดของ CHANGELOG =====
-const APP_VERSION = '1.6.1';
+const APP_VERSION = '1.6.2';
 const CHANGELOG = [
+  {v:'1.6.2', d:'2026-11-18', th:['ชุด RSM 2 ชุด: RSM2 เป็นค่าเริ่มต้น เลือกเปลี่ยนเป็น RSM1 ได้ที่ตัวกรอง (ภาพรวม / Board)','Admin อัปโหลดไฟล์ PS → RSM (RSM_for_upload.xlsx) ได้เอง · ศูนย์ใหม่ในไฟล์ถูกเพิ่มให้อัตโนมัติ · ดาวน์โหลดชุดปัจจุบันไปแก้ได้','สิทธิ์อนุมัติคนสมัครของ RSM ใช้ชุด RSM2'],
+   en:['Two RSM sets: RSM2 by default, switch to RSM1 in the filters','Admin uploads the PS → RSM file; new dealers are added','RSM approval rights follow RSM2']},
   {v:'1.6.1', d:'2026-11-17', th:['🔔 กระดิ่งแสดงสถานะปัจจุบันของรถ 1 แถวต่อคัน · ขึ้น "ส่งมอบแล้ว" เฉพาะรถที่มีวันส่งมอบจริง','ยกเลิก SP เป็นปุ่มเท่านั้น กดแล้วกรอกเหตุผล + ยืนยัน · Admin เปิด SP กลับมาได้'],
    en:['Bell shows each vehicle\'s current status','Cancel SP is a button with confirm; Admin can reopen']},
   {v:'1.6', d:'2026-11-17', th:['🔔 กระดิ่ง: งานใหม่ที่เข้ามา · SVM/SA เห็นความเคลื่อนไหวในศูนย์ · RSM/Admin เห็นเรื่องสำคัญ (รถเข้าใหม่ ส่งมอบ ยกเลิก ค้างเกิน 30 วัน)','👥 คำขอเข้าใช้งานแบบ add friend: Admin ทั้งหมด · RSM เฉพาะ PS ที่ดูแล · SVM ศูนย์ตัวเอง','การชำระ 3 แบบ เพิ่ม "ลูกค้าชำระเอง" (Foreman / SVM / SA เลือกได้) · ถามตอนวิเคราะห์จบและปิด JS','รุ่นรถ: เลือกจากรายการกลาง หรือ "อื่นๆ (ระบุ)" · Admin เพิ่ม / แก้ / รวมรุ่นได้','รวม "วิเคราะห์เวลา" เข้าหน้าภาพรวม + ตัวกรองการชำระ / รุ่นรถ / ช่วงเวลา','RSM / Admin: ตามงาน GWM ย้ายไปหลัง Board'],
@@ -467,6 +471,12 @@ const PS_STAGES = ['diag','js_close','ys_open','parts_order','test','follow'], G
 const catName = k => CATS[k] ? CATS[k][S.lang] : (k==='rsm'?'RSM':k==='admin'?'Admin':(k||''));
 const CASE_EDIT = { foreman:['analysis_date','parked','problem_cat','symptom','cause','cost_band'], warranty:['cost_band'], parts:[], cr:['parked','loaner','est_delivery','customer_contact_date','delivered_date'] };
 const STEP_EDIT = { foreman:['diag','js','assemble','test'], warranty:['ys'], parts:['parts'], cr:[] };
+/* ชุด RSM: rsm = RSM1 (เดิม) · rsm2 = RSM2 (ปัจจุบัน, ค่าเริ่มต้น) · สิทธิ์อนุมัติของ RSM ใช้ RSM2 */
+const RSET = () => { if(!S.rsmSet){ try{ S.rsmSet=localStorage.getItem('vor_rsmset')||'rsm2'; }catch(e){ S.rsmSet='rsm2'; } } return S.rsmSet; };
+const dRsm = d => !d ? '' : (RSET()==='rsm1' ? (d.rsm||'') : (d.rsm2||d.rsm||''));
+const permRsm = d => !d ? '' : (d.rsm2||d.rsm||'');
+const rsmList = () => [...new Set(S.dealers.filter(d=>d.active!==false).map(dRsm).filter(Boolean))].sort();
+const rsmSetSel = () => `<select data-rsmset title="${L('ชุด RSM','RSM set')}"><option value="rsm2" ${RSET()==='rsm2'?'selected':''}>RSM2</option><option value="rsm1" ${RSET()==='rsm1'?'selected':''}>RSM1</option></select>`;
 const FULL = () => isStaff() || ['owner_svm','sa'].includes(S.me && S.me.category);
 const canField = f => FULL() || f==='remark' || (CASE_EDIT[S.me.category]||[]).includes(f);
 const canStep = k => FULL() || (STEP_EDIT[S.me.category]||[]).includes(k);
@@ -548,9 +558,10 @@ function supaApi(){
     async allowed(){ return ok(await sb.from('allowed_emails').select('*').order('created_at',{ascending:false})); },
     async saveAllowed(rows){ ok(await sb.from('allowed_emails').upsert(rows)); },
     async delAllowed(email){ ok(await sb.from('allowed_emails').delete().eq('email',email)); },
-    async saveDealer(d){ const r={code:d.code||null,name:d.name,zone:d.zone||null,rsm:d.rsm||null,active:d.active!==false};
+    async saveDealer(d){ const r={code:d.code||null,name:d.name,zone:d.zone||null,rsm:d.rsm||null,rsm2:d.rsm2||null,active:d.active!==false};
       if(d.id) ok(await sb.from('dealers').update(r).eq('id',d.id)); else ok(await sb.from('dealers').insert(r)); },
     async bulkDealers(rows){ ok(await sb.from('dealers').insert(rows)); },
+    async updDealer(id,patch){ ok(await sb.from('dealers').update(patch).eq('id',id)); },
     subscribe(fn){ let t; const go=()=>{clearTimeout(t);t=setTimeout(fn,600);};
       sb.channel('vor').on('postgres_changes',{event:'*',schema:'public',table:'vor_cases'},go)
         .on('postgres_changes',{event:'*',schema:'public',table:'vor_steps'},go).subscribe(); }
@@ -640,7 +651,7 @@ function demoApi(){
         if(k>=0){ const ch=STEP_FIELDS.filter(f=>f!=='id'&&(db.steps[k][f]??null)!==(o[f]??null)); db.steps[k]=Object.assign(db.steps[k],o); log(cid,dealer,o.kind,'update',ch,S.me,s.id); }
         else { o.id='s'+(seq++); db.steps.push(o); log(cid,dealer,o.kind,'insert',null,S.me,o.id); } }); },
     async deleteCase(id){ db.cases=db.cases.filter(c=>c.id!==id); db.steps=db.steps.filter(s=>s.case_id!==id); },
-    async profiles(){ if(S.me.role==='rsm'){ const f=S.me.full_name.split(' ')[0].toLowerCase(), ds=db.dealers.filter(d=>(d.rsm||'').toLowerCase().split(' ')[0]===f).map(d=>d.id); return cp(db.profiles.filter(p=>ds.includes(p.dealer_id||p.requested_dealer_id))); }
+    async profiles(){ if(S.me.role==='rsm'){ const f=S.me.full_name.split(' ')[0].toLowerCase(), ds=db.dealers.filter(d=>permRsm(d).toLowerCase().split(' ')[0]===f).map(d=>d.id); return cp(db.profiles.filter(p=>ds.includes(p.dealer_id||p.requested_dealer_id))); }
       return cp(S.me.role==='admin'?db.profiles:db.profiles.filter(p=>p.user_id===S.me.user_id||p.dealer_id==S.me.dealer_id||(!p.dealer_id&&p.requested_dealer_id==S.me.dealer_id))); },
     async updateProfile(uid,p){ Object.assign(db.profiles.find(x=>x.user_id===uid),p); },
     async setTempPw(){ },
@@ -669,6 +680,7 @@ function demoApi(){
     async delAllowed(email){ db.allowed=db.allowed.filter(a=>a.email!==email); },
     async saveDealer(d){ if(d.id) Object.assign(db.dealers.find(x=>x.id==d.id),d); else db.dealers.push(Object.assign({},d,{id:100+(seq++)})); },
     async bulkDealers(rows){ rows.forEach(r=>db.dealers.push(Object.assign({},r,{id:100+(seq++)}))); },
+    async updDealer(id,patch){ Object.assign(db.dealers.find(x=>x.id==id),patch); },
     subscribe(){}
   };
 }
@@ -684,7 +696,7 @@ async function loadAll(){
   try{ const [ct,lu]=await Promise.all([api.contacts(),api.lastUpdates()]); S.contacts=ct||[]; S.last={}; (lu||[]).forEach(x=>S.last[x.case_id]=x); }catch(e){ S.contacts=[]; S.last={}; }
   if(!S.psInit && S.me.role==='ps'){ S.psInit=true; if(S.tab==='board') S.tab='mine'; }
   if(!S.rsmInit && isStaff()){ S.rsmInit=true; if(S.tab==='board') S.tab='dash'; const first=(S.me.full_name||'').split(/\s+/)[0].toLowerCase();
-    const mine=[...new Set(S.dealers.map(d=>d.rsm).filter(r=>r && first && r.toLowerCase().split(/\s+/)[0]===first))]; if(mine.length===1){ S.f.rsm=mine[0]; S.myRsm=mine[0]; } }
+    const mine=[...new Set(S.dealers.map(permRsm).filter(r=>r && first && r.toLowerCase().split(/\s+/)[0]===first))]; if(mine.length===1){ S.f.rsm=mine[0]; S.myRsm=mine[0]; } }
   if(isAdmin()||isSvm()){ const [p,a]=await Promise.all([api.profiles(),api.allowed()]); S.profiles=p; S.allowed=a; }
   else if(S.me.role==='rsm'){ try{ S.profiles=await api.profiles(); }catch(e){ S.profiles=[]; } }
   try{ S.models=await api.models(); }catch(e){ S.models=null; }
@@ -823,10 +835,10 @@ function renderView(){
 }
 function filterBar(){
   const staff=isStaff(), f=S.f;
-  const rsms=[...new Set(S.dealers.map(d=>d.rsm).filter(Boolean))];
-  const ds=S.dealers.filter(d=>!f.rsm||d.rsm===f.rsm);
+  const rsms=rsmList();
+  const ds=S.dealers.filter(d=>!f.rsm||dRsm(d)===f.rsm);
   return `<div class="bar">
-    ${staff?`<select data-f="rsm"><option value="">${L('ทุก RSM','All RSMs')}</option>${rsms.map(r=>`<option ${f.rsm===r?'selected':''}>${esc(r)}</option>`).join('')}</select>
+    ${staff?`${rsmSetSel()}<select data-f="rsm"><option value="">${L('ทุก RSM','All RSMs')}</option>${rsms.map(r=>`<option ${f.rsm===r?'selected':''}>${esc(r)}</option>`).join('')}</select>
     <select data-f="dealer"><option value="">${L('ทุกศูนย์ (PS)','All dealers (PS)')}</option>${ds.map(d=>`<option value="${d.id}" ${String(f.dealer)===String(d.id)?'selected':''}>${esc(d.name)}</option>`).join('')}</select>`:''}
     <input type="search" data-f="q" placeholder="${L('ค้นหา SP / VIN / JS / YS / PO / BO','Search SP / VIN / JS / YS / PO / BO')}" value="${esc(f.q)}">
     <select data-f="parked"><option value="">${L('จอด + ไม่จอด','Parked + not parked')}</option><option value="y" ${f.parked==='y'?'selected':''}>${L('เฉพาะจอด','Parked only')}</option><option value="n" ${f.parked==='n'?'selected':''}>${L('เฉพาะไม่จอด','Not parked only')}</option></select>
@@ -845,7 +857,7 @@ function filtered(){
   const cut=dAgo(180);
   return S.cases.filter(c=>{ const d=dealerById(c.dealer_id)||{};
     if(c.delivered_date && c.delivered_date<cut) return false;
-    if(f.rsm && d.rsm!==f.rsm) return false;
+    if(f.rsm && dRsm(d)!==f.rsm) return false;
     if(f.dealer && String(c.dealer_id)!==String(f.dealer)) return false;
     if(f.parked==='y' && !c.parked) return false;
     if(f.parked==='n' && c.parked) return false;
@@ -981,7 +993,7 @@ function loadJSZip(){ if(window.JSZip) return Promise.resolve(window.JSZip);
   return new Promise((ok,no)=>{ const sc=document.createElement('script'); sc.src='https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js'; sc.onload=()=>ok(window.JSZip); sc.onerror=()=>no({message:L('โหลดตัวสร้างไฟล์ไม่ได้ ลองใหม่อีกครั้ง','Could not load the file builder, try again')}); document.head.appendChild(sc); }); }
 async function exportManual(){
   const staff=isStaff(), f=S.df||{};
-  const dealers=S.dealers.filter(d=> staff ? (!f.rsm||d.rsm===f.rsm)&&(!f.dealer||String(d.id)===String(f.dealer)) : String(d.id)===String(S.me.dealer_id));
+  const dealers=S.dealers.filter(d=> staff ? (!f.rsm||dRsm(d)===f.rsm)&&(!f.dealer||String(d.id)===String(f.dealer)) : String(d.id)===String(S.me.dealer_id));
   const ids=new Set(dealers.map(d=>String(d.id)));
   const cases=S.cases.filter(c=>ids.has(String(c.dealer_id))).sort((a,b)=>dName(a.dealer_id).localeCompare(dName(b.dealer_id))||a.arrival_date.localeCompare(b.arrival_date)||a.sp.localeCompare(b.sp));
   toast(L('กำลังสร้างไฟล์ VOR Manual…','Building VOR Manual…'));
@@ -1015,7 +1027,7 @@ async function exportManual(){
   const p2='xl/worksheets/sheet2.xml'; zip.file(p2, fill(await zip.file(p2).async('string'),dm));
   // ชีต Partner (sheet4) เริ่มแถว 4
   const pm={}; dealers.slice(0,50).forEach((d,i)=>{ const v=(S.contacts||S.profiles||[]).find(p=>p.role==='ps'&&p.category==='owner_svm'&&String(p.dealer_id)===String(d.id))||{};
-    pm[i+4]={A:d.name,B:d.rsm||'',C:v.full_name||'',D:v.phone||'',E:v.line_id||''}; });
+    pm[i+4]={A:d.name,B:dRsm(d),C:v.full_name||'',D:v.phone||'',E:v.line_id||''}; });
   const p4='xl/worksheets/sheet4.xml'; zip.file(p4, fill(await zip.file(p4).async('string'),pm));
   // Dashboard: ตั้งตัวกรองศูนย์ถ้ามีศูนย์เดียว
   if(dealers.length===1){ const p1='xl/worksheets/sheet1.xml'; let x=await zip.file(p1).async('string');
@@ -1064,7 +1076,7 @@ function viewStats(base){
   const gTable=(title,rows,label)=>`<div class="panel"><h3>${title}</h3><div class="tw" style="max-height:none;border:0"><table><thead><tr><th>${label}</th><th>${L('คัน','Vehicles')}</th><th>${L('เฉลี่ย (วัน)','Avg (days)')}</th><th>Partner</th><th>GWM</th></tr></thead><tbody>
     ${rows.map(e=>{const t=e.P+e.G;return `<tr><td>${esc(e.k)}</td><td>${e.n}</td><td><b>${(e.tot/e.n).toFixed(1)}</b></td><td style="color:${OWN.P.c}">${pct(e.P,t)}%</td><td style="color:${OWN.G.c}">${pct(e.G,t)}%</td></tr>`;}).join('')}</tbody></table></div></div>`;
   const byProb=grp(c=>c.problem_cat?probName(c.problem_cat):L('ยังไม่ระบุ','Not set'));
-  const byRsm=isStaff()?grp(c=>(dealerById(c.dealer_id)||{}).rsm):[];
+  const byRsm=isStaff()?grp(c=>dRsm(dealerById(c.dealer_id))):[];
   return `<div class="stats">
     <div class="stat"><div class="v">${n}</div><div class="l">${L('จำนวนรถ','Vehicles')}</div></div>
     <div class="stat"><div class="v">${(list.reduce((s,c)=>s+c._t.total,0)/n).toFixed(1)}</div><div class="l">${L('เฉลี่ยรวม (วัน/คัน)','Avg total (days/vehicle)')}</div></div>
@@ -1122,7 +1134,7 @@ const NKEY = () => 'vor_seen_'+(S.me&&S.me.user_id);
 function nState(){ try{ return JSON.parse(localStorage.getItem(NKEY())||'null'); }catch(e){ return null; } }
 function nSave(st){ try{ localStorage.setItem(NKEY(),JSON.stringify(st)); }catch(e){} }
 const taskKeys = () => [...myTasks(),...myWaiting()].map(c=>c.id+':'+c._t.cur.k);
-function over30Keys(){ const staff=isStaff(), mine=S.myRsm; return S.cases.filter(c=>!c._t.done&&c._t.total>30&&(!staff||!mine||(dealerById(c.dealer_id)||{}).rsm===mine||isAdmin())).map(c=>c.id+':30'); }
+function over30Keys(){ const staff=isStaff(), mine=S.myRsm; return S.cases.filter(c=>!c._t.done&&c._t.total>30&&(!staff||!mine||permRsm(dealerById(c.dealer_id))===mine||isAdmin())).map(c=>c.id+':30'); }
 function nInit(){ let st=nState(); if(!st){ st={tasks:taskKeys(),o30:over30Keys(),since:new Date(Date.now()-864e5).toISOString()}; nSave(st); } return st; }
 const FEED_ICON = k => k==='done'?'✅':k==='cancel'?'✕':k==='new'?'🚗':'✎';
 function feedItems(){   // 1 แถวต่อรถ · แสดงสถานะปัจจุบันของรถ ไม่ใช่ช่องที่ถูกแก้
@@ -1135,7 +1147,7 @@ function feedItems(){   // 1 แถวต่อรถ · แสดงสถา�
     const ins=ls.some(l=>l.kind==='case'&&l.action==='insert');
     const kind = c&&c.cancelled_date&&touched('cancelled_date') ? 'cancel' : c&&c.delivered_date&&touched('delivered_date') ? 'done' : ins ? 'new' : 'upd';
     return {...last,c,fk:kind,isNew:last.at>st.since}; })
-   .filter(x=>x.c && (svmsa || (x.fk!=='upd' && (isAdmin() || !S.myRsm || (dealerById(x.dealer_id)||{}).rsm===S.myRsm))))
+   .filter(x=>x.c && (svmsa || (x.fk!=='upd' && (isAdmin() || !S.myRsm || permRsm(dealerById(x.dealer_id))===S.myRsm))))
    .sort((a,b)=>b.at.localeCompare(a.at));
 }
 function bellData(){
@@ -1189,7 +1201,7 @@ S.mt={stage:'',all:false};
 function myStages(){ if(isStaff()) return GWM_STAGES; const c=S.me.category; return ['owner_svm','sa'].includes(c)?PS_STAGES:(MY_Q[c]||[]); }
 function myTasks(){
   const st=myStages(), staff=isStaff(), mine=S.myRsm&&!S.mt.all;
-  return S.cases.filter(c=>!c._t.done && st.includes(c._t.cur.k) && (!staff||!mine||(dealerById(c.dealer_id)||{}).rsm===S.myRsm))
+  return S.cases.filter(c=>!c._t.done && st.includes(c._t.cur.k) && (!staff||!mine||permRsm(dealerById(c.dealer_id))===S.myRsm))
     .sort((a,b)=>b._t.curDays-a._t.curDays||b._t.total-a._t.total);
 }
 function myWaiting(){ if(isStaff()) return []; const w=MY_WAIT[S.me.category]||[];
@@ -1229,7 +1241,7 @@ S.df = { rsm:'', dealer:'', parked:'', prob:'', age:'', pay:'', model:'' };   //
 function dashScope(){ // ตัวกรองของหน้า ภาพรวม: RSM / ศูนย์ / จอด / กลุ่มปัญหา / วันค้าง
   const f=S.df, ag=f.age!==''?AGE[+f.age]:null;
   return S.cases.filter(c=>{ const d=dealerById(c.dealer_id)||{};
-    if(f.rsm && d.rsm!==f.rsm) return false;
+    if(f.rsm && dRsm(d)!==f.rsm) return false;
     if(f.dealer && String(c.dealer_id)!==String(f.dealer)) return false;
     if(f.parked==='y' && !c.parked) return false;
     if(f.parked==='n' && c.parked) return false;
@@ -1250,12 +1262,12 @@ function dqResults(){ // ผลค้นหา SP / VIN (รวมรถที�
       <div class="drr">${t.done?'':ageBadge(t.total)}${c.vin?`<button class="lnk" data-vin="${esc(c.vin)}">VIN ›</button>`:''}</div></div>`; }).join('')||`<div class="mut" style="padding:8px 0">${L('ไม่พบ SP / VIN นี้','No matching SP / VIN')}</div>`}</div>`;
 }
 function dashBar(){
-  const staff=isStaff(), f=S.df, rsms=[...new Set(S.dealers.map(d=>d.rsm).filter(Boolean))], ds=S.dealers.filter(d=>!f.rsm||d.rsm===f.rsm);
+  const staff=isStaff(), f=S.df, rsms=rsmList(), ds=S.dealers.filter(d=>!f.rsm||dRsm(d)===f.rsm);
   return `<div class="bar"><input type="search" data-dq placeholder="🔍 ${L('ค้นหา SP หรือ VIN','Search SP or VIN')}" value="${esc(S.dq||'')}" style="flex:1 1 100%" autocapitalize="characters"></div>
   <div id="dqres">${dqResults()}</div>
   <div class="bar">
     ${staff&&S.myRsm?chips('mine',[['',L('ทั้งหมด','All')],[S.myRsm,L('PS ของฉัน','My PS')]],f.rsm===S.myRsm?S.myRsm:''):''}
-    ${staff?`<select data-df="rsm"><option value="">${L('ทุก RSM','All RSMs')}</option>${rsms.map(r=>`<option ${f.rsm===r?'selected':''}>${esc(r)}</option>`).join('')}</select>
+    ${staff?`${rsmSetSel()}<select data-df="rsm"><option value="">${L('ทุก RSM','All RSMs')}</option>${rsms.map(r=>`<option ${f.rsm===r?'selected':''}>${esc(r)}</option>`).join('')}</select>
     <select data-df="dealer"><option value="">${L('ทุกศูนย์ (PS)','All dealers (PS)')}</option>${ds.map(d=>`<option value="${d.id}" ${String(f.dealer)===String(d.id)?'selected':''}>${esc(d.name)}</option>`).join('')}</select>`:''}
     ${chips('parked',[['',L('จอด+ไม่จอด','All')],['y',L('จอด','Parked')],['n',L('ไม่จอด','Not parked')]],f.parked)}
     ${chips('age',[['',L('ทุกวันค้าง','Any age')],...AGE.map((a,i)=>[i,(i===0?'≤7':a[0])+L(' วัน','d')])],f.age)}
@@ -1346,7 +1358,7 @@ function viewDash(){
   const cnt=lst=>S.d.met==='car'?new Set(lst.map(carKey)).size:lst.length, lvl=staff?S.d.lvl:'side', srt=(a,b)=>S.d.sort==='asc'?a.v-b.v:b.v-a.v;
   const stack=lst=>[{v:cnt(lst.filter(c=>c._t.cur.o==='G')),color:OWN.G.c},{v:cnt(lst.filter(c=>c._t.cur.o==='P')),color:OWN.P.c}];
   let items=[], cntNote='';
-  if(lvl==='rsm'){ const m={}; open.forEach(c=>{ const r=(dealerById(c.dealer_id)||{}).rsm||'—'; (m[r]=m[r]||[]).push(c); });
+  if(lvl==='rsm'){ const m={}; open.forEach(c=>{ const r=dRsm(dealerById(c.dealer_id))||'—'; (m[r]=m[r]||[]).push(c); });
     items=Object.entries(m).map(([r,l])=>({label:r,v:cnt(l),segs:stack(l),attr:`data-lvlrsm="${esc(r)}"`,sub:new Set(l.map(c=>c.dealer_id)).size+' PS'})).sort(srt);
     cntNote=L('แตะแท่ง RSM เพื่อดู PS ของคนนั้น','Tap an RSM to see their dealers'); }
   else if(lvl==='ps'){ const m={}; open.forEach(c=>(m[c.dealer_id]=m[c.dealer_id]||[]).push(c));
@@ -1371,14 +1383,14 @@ function viewDash(){
   const probP=`<div class="panel"><h3>${L('ปัญหาที่เจอบ่อย','Top problems')}</h3>${vbars(Object.entries(pm).sort((a,b)=>b[1]-a[1]).map(([k,v])=>({label:k==='none'?L('ยังไม่ระบุ','Not set'):probName(k),v,color:'#7c3aed',attr:`data-drill="prob:${k}"`})),{wide:true})}</div>`;
   // PS ไหนไม่อัปเดตข้อมูล (เฉพาะ RSM / Admin)
   let actP='';
-  if(staff && !S.df.dealer){ const ds=new Set(S.dealers.filter(d=>!S.df.rsm||d.rsm===S.df.rsm).map(d=>String(d.id)));
+  if(staff && !S.df.dealer){ const ds=new Set(S.dealers.filter(d=>!S.df.rsm||dRsm(d)===S.df.rsm).map(d=>String(d.id)));
     const act=psActivity(S.profiles||[],'stale').filter(x=>ds.has(String(x.d.id))), hasD=act.filter(x=>x.days!=null), noD=act.filter(x=>x.days==null);
     if(S.d.asort==='asc') hasD.reverse();
     actP=`<div class="panel"><h3>${L('PS ไหนไม่อัปเดตข้อมูล','Dealers not updating')}</h3>
       <div class="ctl">${chips('asort',[['desc',L('นานสุด→ล่าสุด','Oldest→newest')],['asc',L('ล่าสุด→นานสุด','Newest→oldest')]],S.d.asort||'desc')}</div>
       ${vbars(hasD.map(x=>({label:x.d.name,v:x.days,top:x.days===0?L('วันนี้','today'):x.days,color:x.days>14?'#c8102e':x.days>7?'#ea580c':'#16a34a',attr:`data-dealer-dash="${x.d.id}"`,sub:'🚗 '+x.open,tip:`${x.d.name}: ${L('อัปเดตล่าสุด','last update')} ${x.days} ${L('วันก่อน','days ago')} · ${L('รถค้าง','open')} ${x.open}`})),{wide:true})}
       <div class="legend" style="margin:6px 0 0"><span>${L('ตัวเลข = อัปเดตล่าสุดกี่วันก่อน · 🚗 = รถค้าง','Number = days since last update · 🚗 = open cases')}</span><span><span class="dot" style="background:#ea580c"></span> &gt;7 ${L('วัน','d')}</span><span><span class="dot" style="background:#c8102e"></span> &gt;14 ${L('วัน','d')}</span></div>
-      ${noD.length?`<div class="mut sm" style="margin-top:8px">⚪ ${L('ยังไม่มีข้อมูลรถ','No vehicle data yet')} (${noD.length}): ${noD.map(x=>esc(x.d.name)).join(' · ')}</div>`:''}</div>`; }
+      ${noD.length?`<details class="mut sm" style="margin-top:8px"><summary>⚪ ${L('ยังไม่มีข้อมูลรถ','No vehicle data yet')} (${noD.length} ${L('ศูนย์','dealers')})</summary>${noD.map(x=>esc(x.d.name)).join(' · ')}</details>`:''}</div>`; }
   // เคลียรถออก
   const tp=throughput(all), sel=tp.find(p=>p.key===S.d.bucket);
   const tmax=Math.max(1,...tp.map(p=>Math.max(p.del.length,p.arr.length)));
@@ -1893,12 +1905,13 @@ function viewAdmin(){
         <span class="ucm">👤 <b>${x.users}</b> ${L('คน','users')}${x.users&&!x.svm?` · <i>⚠ ${L('ยังไม่มี SVM','no SVM yet')}</i>`:''}${!x.users?` · ${L('ยังไม่มีคนสมัคร','no sign-ups yet')}`:''}</span></button>`).join('')}</div></details>
     <div id="ulist">${(S._ul=()=>userList(rest,urow))()}</div></div>
   <div class="panel"><h3>${L('รายชื่อศูนย์บริการ','Service centers')} (${S.dealers.length})</h3>
-    <div class="tw" style="max-height:420px"><table><thead><tr><th>${L('รหัส','Code')}</th><th>${L('ชื่อศูนย์','Name')}</th><th>${L('โซน','Zone')}</th><th>RSM</th><th>${L('ใช้งาน','Active')}</th><th></th></tr></thead><tbody>
-    ${[...S.dealers,{id:'new',name:'',code:'',zone:'',rsm:'',active:true}].map(d=>`<tr>
+    <div class="tw" style="max-height:420px"><table><thead><tr><th>${L('รหัส','Code')}</th><th>${L('ชื่อศูนย์','Name')}</th><th>${L('โซน','Zone')}</th><th>RSM1</th><th>RSM2</th><th>${L('ใช้งาน','Active')}</th><th></th></tr></thead><tbody>
+    ${[...S.dealers,{id:'new',name:'',code:'',zone:'',rsm:'',rsm2:'',active:true}].map(d=>`<tr>
       <td><input data-dk="${d.id}" data-df="code" value="${esc(d.code||'')}" style="width:100px"></td>
       <td><input data-dk="${d.id}" data-df="name" value="${esc(d.name||'')}" placeholder="${d.id==='new'?L('+ เพิ่มศูนย์ใหม่','+ New dealer'):''}" style="width:220px"></td>
       <td><input data-dk="${d.id}" data-df="zone" value="${esc(d.zone||'')}" style="width:120px"></td>
-      <td><input data-dk="${d.id}" data-df="rsm" value="${esc(d.rsm||'')}" style="width:110px"></td>
+      <td><input data-dk="${d.id}" data-df="rsm" value="${esc(d.rsm||'')}" style="width:100px"></td>
+      <td><input data-dk="${d.id}" data-df="rsm2" value="${esc(d.rsm2||'')}" style="width:100px"></td>
       <td><input type="checkbox" data-dk="${d.id}" data-df="active" ${d.active!==false?'checked':''}></td>
       <td style="display:flex;gap:4px"><button class="btn sm ${d.id==='new'?'pri':''}" data-savedealer="${d.id}">${d.id==='new'?L('เพิ่ม','Add'):L('บันทึก','Save')}</button>${d.id!=='new'&&dealerEmpty(d.id)?`<button class="btn sm danger" data-deldealer="${d.id}" title="${L('ลบได้เฉพาะศูนย์ที่ยังไม่มีรถหรือผู้ใช้','Only dealers with no vehicles or users')}">${L('ลบ','Delete')}</button>`:''}</td></tr>`).join('')}
     </tbody></table></div>
@@ -1906,8 +1919,56 @@ function viewAdmin(){
       <div class="hint" style="margin:8px 0">${L('บรรทัดละ 1 ศูนย์: รหัส, ชื่อศูนย์, โซน, RSM (คั่นด้วย comma หรือ Tab)','One dealer per line: code, name, zone, RSM (comma or Tab separated)')}</div>
       <textarea id="bulk" rows="5" style="width:100%" placeholder="41000001, GWM Example, Central, Chanrob"></textarea>
       <button class="btn sm" data-act="bulk" style="margin-top:6px">${L('นำเข้า','Import')}</button></details>
+    <div class="rsmup"><b>${L('ไฟล์ PS → RSM (RSM_for_upload.xlsx)','PS → RSM file (RSM_for_upload.xlsx)')}</b>
+      <div class="mut sm" style="margin:4px 0 8px">${L('1 ชีตต่อ 1 ชุด (RSM1 / RSM2) มีคอลัมน์ Partner Store + RSM (Region / PS Code มีหรือไม่มีก็ได้) · ศูนย์ที่ยังไม่มีในระบบจะถูกเพิ่มให้ · ศูนย์เดิมอัปเดตแค่ RSM ชื่อเดิมไม่เปลี่ยน','One sheet per set (RSM1 / RSM2) with Partner Store + RSM columns (Region / PS Code optional) · New dealers are added · Existing dealers only get their RSM updated')}</div>
+      <div class="nab"><label class="btn sm pri" style="cursor:pointer">⬆ ${L('อัปโหลดไฟล์','Upload file')}<input type="file" accept=".xlsx,.xlsm,.xls" data-rsmfile hidden></label><button class="btn sm" data-act="rsmdl">⬇ ${L('ดาวน์โหลดชุดปัจจุบัน','Download current sets')}</button></div>
+      <div id="rsmprev">${S.rsmPlan?rsmPlanView(S.rsmPlan):''}</div></div>
   </div>`;
 }
+/* ----- อัปโหลด / ดาวน์โหลดไฟล์ PS → RSM ----- */
+function loadXLSX(){ if(window.XLSX) return Promise.resolve(window.XLSX);
+  return new Promise((ok,no)=>{ const sc=document.createElement('script'); sc.src='https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js'; sc.onload=()=>ok(window.XLSX); sc.onerror=()=>no({message:L('โหลดตัวอ่าน Excel ไม่ได้ ลองใหม่อีกครั้ง','Could not load the Excel reader, try again')}); document.head.appendChild(sc); }); }
+const dKey = n => String(n||'').toLowerCase().replace(/^\s*gwm\s+/,'').replace(/[^a-z0-9ก-๙]/g,'');
+function lev(a,b){ if(Math.abs(a.length-b.length)>2) return 9; const m=[...Array(b.length+1).keys()]; for(let i=1;i<=a.length;i++){ let p=m[0]; m[0]=i; for(let j=1;j<=b.length;j++){ const t=m[j]; m[j]=Math.min(m[j]+1,m[j-1]+1,p+(a[i-1]===b[j-1]?0:1)); p=t; } } return m[b.length]; }
+function matchDealer(code,name){ if(code){ const x=S.dealers.find(d=>d.code&&String(d.code)===String(code)); if(x) return x; }
+  const k=dKey(name), ex=S.dealers.find(d=>dKey(d.name)===k); if(ex) return ex;
+  if(k.length<8) return null; const near=S.dealers.filter(d=>lev(dKey(d.name),k)<=2); return near.length===1?near[0]:null; }
+async function rsmUpload(file){
+  try{ const X=await loadXLSX(), wb=X.read(await file.arrayBuffer(),{type:'array'}), n=v=>String(v??'').toLowerCase().replace(/[^a-z0-9ก-๙]/g,''), sets=[];
+    wb.SheetNames.forEach(sn=>{ const rows=X.utils.sheet_to_json(wb.Sheets[sn],{header:1,defval:''});
+      for(let r=0;r<Math.min(30,rows.length);r++){ const h=rows[r].map(n), rc=h.findIndex(x=>/^rsm\d*$/.test(x)), sc=h.findIndex(x=>/^(partnerstore|storename|store|partner|partnername|dealer|dealername|psname)$/.test(x));
+        if(rc<0||sc<0) continue; const cc=h.findIndex(x=>/pscode|partnercode|^code$/.test(x)), gc=h.findIndex(x=>/region|zone|ภาค/.test(x)), list=[];
+        rows.slice(r+1).forEach(w=>{ const st=String(w[sc]||'').trim(), rs=String(w[rc]||'').trim(); if(st&&rs&&!/^rsm\d*$/i.test(rs)) list.push({code:cc>=0?String(w[cc]||'').trim():'',name:st,zone:gc>=0?String(w[gc]||'').trim():'',rsm:rs}); });
+        if(list.length){ sets.push({sheet:sn,list}); break; } } });
+    if(!sets.length) return toast(L('ไม่พบคอลัมน์ Partner Store และ RSM ในไฟล์นี้','No Partner Store + RSM columns found'));
+    const pick=re=>sets.find(x=>re.test(x.sheet.replace(/\s/g,''))), s1=pick(/rsm1$|1$/i)||sets[0], s2=pick(/rsm2$|2$/i)||(sets[1]!==s1?sets[1]:null);
+    const by={}; [[s1,'rsm'],[s2,'rsm2']].forEach(([st,f])=>{ if(!st) return; st.list.forEach(x=>{ const k=dKey(x.name); const o=by[k]=by[k]||{name:x.name,code:'',zone:''}; o[f]=x.rsm; if(x.code) o.code=x.code; if(x.zone) o.zone=x.zone; }); });
+    const upd=[], add=[], seen=new Set();
+    Object.values(by).forEach(o=>{ const d=matchDealer(o.code,o.name);
+      if(d){ seen.add(d.id); const patch={}; if(s1&&o.rsm!==undefined&&o.rsm!==(d.rsm||'')) patch.rsm=o.rsm; if(s2&&o.rsm2!==undefined&&o.rsm2!==(d.rsm2||'')) patch.rsm2=o.rsm2; if(o.code&&!d.code) patch.code=o.code;
+        upd.push({d,o,patch}); }
+      else add.push({name:o.name,code:o.code||null,zone:o.zone||null,rsm:o.rsm||null,rsm2:o.rsm2||null,active:!/terminat/i.test((o.rsm2||o.rsm||''))}); });
+    S.rsmPlan={file:file.name,s1:s1&&s1.sheet,s2:s2&&s2.sheet,upd,add,miss:S.dealers.filter(d=>!seen.has(d.id))};
+    const el=$('#rsmprev'); if(el) el.innerHTML=rsmPlanView(S.rsmPlan);
+  }catch(e){ toast(errMsg(e)); }
+}
+function rsmPlanView(P){ const ch=P.upd.filter(x=>Object.keys(x.patch).length), rn=P.upd.filter(x=>dKey(x.d.name)!==dKey(x.o.name));
+  const li=a=>a.length?`<ul class="sm" style="margin:4px 0 8px 18px;max-height:160px;overflow:auto">${a.join('')}</ul>`:'';
+  return `<div class="na on" style="margin-top:10px"><b>${esc(P.file)}</b> <span class="mut sm">· RSM1 = ${esc(P.s1||'—')} · RSM2 = ${esc(P.s2||'—')}</span>
+    <div class="sm" style="margin-top:6px">✓ ${L('ตรงกับศูนย์ในระบบ','Matched')} <b>${P.upd.length}</b> · ${L('จะเปลี่ยน RSM','RSM changes')} <b>${ch.length}</b> · ${L('ศูนย์ใหม่ที่จะเพิ่ม','New dealers')} <b>${P.add.length}</b></div>
+    ${ch.length?`<div class="mut sm" style="margin-top:6px">${L('เปลี่ยน RSM','RSM changes')}</div>`+li(ch.map(x=>`<li>${esc(x.d.name)}: ${Object.entries(x.patch).filter(([k])=>k!=='code').map(([k,v])=>`${k==='rsm'?'RSM1':'RSM2'} ${esc((k==='rsm'?x.d.rsm:x.d.rsm2)||'—')} → <b>${esc(v)}</b>`).join(' · ')||L('เติมรหัส PS','add PS code')}</li>`)):''}
+    ${rn.length?`<div class="mut sm">${L('จับคู่ชื่อต่างกัน (ใช้ชื่อเดิมในระบบ)','Matched with a different name (system name kept)')}</div>`+li(rn.map(x=>`<li>${esc(x.d.name)} ⇐ ${esc(x.o.name)}</li>`)):''}
+    ${P.add.length?`<div class="mut sm">${L('ศูนย์ใหม่','New dealers')}</div>`+li(P.add.map(a=>`<li>${esc(a.name)} · ${esc(a.rsm2||a.rsm||'')}${a.active?'':' · '+L('ปิดใช้งาน','inactive')}</li>`)):''}
+    ${P.miss.length?`<div class="mut sm">${L('ศูนย์ในระบบที่ไม่มีในไฟล์ (ไม่แตะ)','In the system but not in the file (left as is)')}</div>`+li(P.miss.map(d=>`<li>${esc(d.name)}</li>`)):''}
+    <div class="nab" style="margin-top:8px"><button class="btn sm" data-act="rsmcancel">${L('ยกเลิก','Cancel')}</button><button class="btn sm pri" data-act="rsmapply">${L('ยืนยันนำเข้า','Apply')}</button></div></div>`; }
+async function rsmApply(){ const P=S.rsmPlan; if(!P) return;
+  try{ for(const x of P.upd){ if(Object.keys(x.patch).length) await api.updDealer(x.d.id,x.patch); }
+    if(P.add.length) await api.bulkDealers(P.add);
+    S.rsmPlan=null; await reload(); toast(L('นำเข้าไฟล์ RSM แล้ว','RSM file imported')); }catch(e){ toast(errMsg(e)); } }
+async function rsmDownload(){ try{ const X=await loadXLSX(), wb=X.utils.book_new();
+    [['RSM1','rsm'],['RSM2','rsm2']].forEach(([sn,f])=>{ const rows=[['PS Code','Partner Store','Region','RSM'],...S.dealers.map(d=>[d.code||'',d.name,d.zone||'',f==='rsm2'?(d.rsm2||d.rsm||''):(d.rsm||'')])];
+      const ws=X.utils.aoa_to_sheet(rows); ws['!cols']=[{wch:12},{wch:38},{wch:14},{wch:16}]; X.utils.book_append_sheet(wb,ws,sn); });
+    X.writeFile(wb,'RSM_for_upload.xlsx'); }catch(e){ toast(errMsg(e)); } }
 function viewTeam(){
   const my=S.me.dealer_id, ps=S.profiles||[];
   const pend=ps.filter(p=>p.role==='pending');
@@ -2069,6 +2130,9 @@ document.addEventListener('click', async e=>{
     document.querySelectorAll(`[data-dk="${id}"]`).forEach(el=>o[el.dataset.df]= el.type==='checkbox'?el.checked:el.value.trim());
     if(!o.name) return toast(L('กรอกชื่อศูนย์','Enter a dealer name')); if(id!=='new') o.id=+id||id;
     try{ await api.saveDealer(o); await reload(); toast(L('บันทึกศูนย์แล้ว','Dealer saved')); }catch(err){ toast(errMsg(err)); } return; }
+  if(d.act==='rsmapply'){ await rsmApply(); return; }
+  if(d.act==='rsmcancel'){ S.rsmPlan=null; renderMain(); return; }
+  if(d.act==='rsmdl'){ await rsmDownload(); return; }
   switch(d.act){
     case 'new': openCase(null); break;
     case 'refresh': await reload(); toast(L('อัปเดตแล้ว','Updated')); break;
@@ -2138,6 +2202,10 @@ document.addEventListener('change', e=>{
   if(el.dataset.uf){ S.uf[el.dataset.uf]=el.value; renderMain(); return; }
   if(el.dataset.msel!==undefined && S.edit){ readForm(); if(el.value==='__other'){ S.edit.modelOther=true; S.edit.c.model=''; } else { S.edit.modelOther=false; S.edit.c.model=el.value; } renderModal(); return; }
   if(el.dataset.mmerge && el.value){ if(confirm(L(`รวม "${el.dataset.mmerge}" เข้ากับ "${el.value}" ?`,`Merge "${el.dataset.mmerge}" into "${el.value}"?`))) mergeModel(el.dataset.mmerge, el.value); else el.value=''; return; }
+  if(el.dataset.rsmset!==undefined){ S.rsmSet=el.value; try{ localStorage.setItem('vor_rsmset',el.value); }catch(_){}
+    const L2=rsmList(); if(S.df.rsm&&!L2.includes(S.df.rsm)){ S.df.rsm=''; S.df.dealer=''; } if(S.f.rsm&&!L2.includes(S.f.rsm)){ S.f.rsm=''; S.f.dealer=''; } renderMain(); return; }
+  if(el.dataset.rsmfile!==undefined){ if(el.files[0]) rsmUpload(el.files[0]); el.value=''; return; }
+  if(el.dataset.dk) return;
   if(el.dataset.df){ S.df[el.dataset.df]=el.value; if(el.dataset.df==='rsm') S.df.dealer=''; renderMain(); return; }
   if(el.dataset.drsel){ S.drill[el.dataset.drsel]=el.value; renderDrill(); return; }
   if(el.closest('#modal')){ if(!S.edit) return; // ช่องที่เปลี่ยนหน้าตาฟอร์ม → วาดใหม่, ที่เหลือแค่อัปเดตตัวอย่างสถานะ
