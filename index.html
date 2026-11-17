@@ -212,8 +212,12 @@ const CONFIG = {
   SUPABASE_ANON_KEY: 'sb_publishable_RESqSgvp97Bh5thFluhs0w_M1LYS4dk'
 };
 // ===== เวอร์ชัน: อัปเกรดทุกครั้ง ให้เพิ่มเลข + เพิ่มรายการไว้บนสุดของ CHANGELOG =====
-const APP_VERSION = '1.5.3';
+const APP_VERSION = '1.5.5';
 const CHANGELOG = [
+  {v:'1.5.5', d:'2026-11-17', th:['วันนัดลูกค้าล่วงหน้า (อนาคต) ใส่ได้ ไม่ขึ้นเตือน'],
+                              en:['Future customer appointments are allowed without a warning']},
+  {v:'1.5.4', d:'2026-11-17', th:['"ดูเวลาแต่ละสถานะ" รวมแถวที่เป็นขั้นเดียวกันต่อเนื่อง ไม่ขึ้นซ้ำ · ไม่นับวันในอนาคต · เตือนเมื่อกรอกวันที่ในอนาคต'],
+                              en:['"Time per status" merges consecutive rows of the same step · future dates are not counted and are flagged']},
   {v:'1.5.3', d:'2026-11-17', th:['งานของฉัน: เพิ่มส่วน "รอ GWM ตอบ" — Foreman / Warranty / อะไหล่ / SVM กดบันทึกวันที่ GWM ตอบ JS, อนุมัติหรือ Reject YS, อะไหล่มาถึง ได้จากรายการ'],
                               en:['My tasks: new "Waiting on GWM" section to record GWM replies, YS approvals / rejections and parts arrival']},
   {v:'1.5.2', d:'2026-11-17', th:['รายการรถ (แตะการ์ด / กราฟ) เรียงแบบ "ราย PS" ได้ — จัดกลุ่มตามศูนย์ ศูนย์ที่ค้างมากสุดขึ้นก่อน'],
@@ -391,7 +395,10 @@ function timeline(c, steps){
   ev.forEach((e,i)=>{
     if(e.k==='delivered'||e.k==='cancel') return;
     const end = ev[i+1] ? ev[i+1].d : (done?null:T); if(!end) return;
-    const s=states[i]; if(!s.o) return; const dys=Math.max(0,dd(e.d,end)); if(!dys && ev[i+1]) return;
+    const s=states[i]; if(!s.o) return; const a=e.d<T?e.d:T, b=end<T?end:T, dys=Math.max(0,dd(a,b));
+    const p=segs[segs.length-1];
+    if(p && p.k===s.k && p.to===e.d){ p.to=end; p.days+=dys; p.open=!ev[i+1]; if(s.detail) p.detail=s.detail; own[s.o]+=dys; return; }   // ขั้นเดิมต่อเนื่อง → รวมเป็นแถวเดียว
+    if(!dys && ev[i+1]) return;
     segs.push({k:s.k,o:s.o,detail:s.detail,from:e.d,to:end,days:dys,open:!ev[i+1]}); own[s.o]+=dys;
   });
   const last=ev.length-1;
@@ -1641,6 +1648,8 @@ function validate(c,ss){   // ห้ามบันทึกเฉพาะ 3 �
 function todoList(c,ss){   // ข้อมูลที่ยังขาด: บันทึกได้ แต่ขึ้นป้ายให้กลับมาเติม
   const t=[], A=c.arrival_date, bad=d=>d&&A&&d<A, add=x=>{ if(!t.includes(x)) t.push(x); };
   if(bad(c.analysis_date)||bad(c.customer_contact_date)||bad(c.delivered_date)) add(L('วันที่ก่อนวันรถมาถึง','date before arrival'));
+  { const T=today(), fut=[c.arrival_date,c.analysis_date,c.delivered_date,c.cancelled_date,...(ss||[]).flatMap(s=>[s.d1,s.kind==='parts'?null:s.d2,s.d3,...(s.ev||[]).map(e=>e.d)])].some(d=>d&&d>T);
+    if(fut) add(L('มีวันที่ในอนาคต (ยกเว้น ETA / นัดลูกค้า / นัดส่งมอบ)','a date is in the future (except ETA / customer appointment / est. delivery)')); }
   (ss||[]).forEach(s=>{
     if(s.kind==='js'){ if(!s.ref_no) add(L('ยังไม่มีเลข JS','no JS no.')); if(!s.d1) add(L('JS ยังไม่มีวันที่ขอ','JS has no request date'));
       if(bad(s.d1)||(s.d1&&s.d3&&s.d3<s.d1)||(s.ev||[]).some(e=>s.d1&&e.d<s.d1)||(s.d3&&(s.ev||[]).some(e=>e.d>s.d3))) add(L('วันที่ JS ไม่เรียงกัน','JS dates out of order')); }
