@@ -174,6 +174,7 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .evs{margin:6px 0 8px;padding:6px 0 0 10px;border-left:3px solid #e5e7eb}.evr{display:grid;grid-template-columns:minmax(110px,1fr) minmax(150px,1.3fr) minmax(90px,1fr) auto;gap:6px;align-items:center;margin-bottom:6px}.evr.g select{color:#c8102e;font-weight:600}.evr.p select{color:#2563eb;font-weight:600}.evr .rm{position:static}
 @media(max-width:560px){.evr{grid-template-columns:1fr auto;border-bottom:1px dashed #e5e7eb;padding-bottom:6px}.evr select{grid-column:1;grid-row:1}.evr .rm{grid-column:2;grid-row:1}.evr .dwrap,.evr input[data-ef=note]{grid-column:1/3}}
 .mt{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px}.mth{cursor:pointer}.mth>div{margin-bottom:2px}.badge{display:inline-block;min-width:18px;padding:0 5px;border-radius:99px;background:#c8102e;color:#fff;font-size:11px;font-weight:700;text-align:center;margin-left:2px}
+.drh{margin:14px 0 2px;padding:6px 10px;background:#f1f5f9;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer}
 /* auth */
 .auth{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(160deg,#fff 0%,#fdecef 100%)}
 .authbox{background:#fff;border-radius:16px;box-shadow:0 10px 40px rgba(200,16,46,.12);padding:26px;width:min(400px,100%)}
@@ -211,8 +212,14 @@ const CONFIG = {
   SUPABASE_ANON_KEY: 'sb_publishable_RESqSgvp97Bh5thFluhs0w_M1LYS4dk'
 };
 // ===== เวอร์ชัน: อัปเกรดทุกครั้ง ให้เพิ่มเลข + เพิ่มรายการไว้บนสุดของ CHANGELOG =====
-const APP_VERSION = '1.5';
+const APP_VERSION = '1.5.3';
 const CHANGELOG = [
+  {v:'1.5.3', d:'2026-11-17', th:['งานของฉัน: เพิ่มส่วน "รอ GWM ตอบ" — Foreman / Warranty / อะไหล่ / SVM กดบันทึกวันที่ GWM ตอบ JS, อนุมัติหรือ Reject YS, อะไหล่มาถึง ได้จากรายการ'],
+                              en:['My tasks: new "Waiting on GWM" section to record GWM replies, YS approvals / rejections and parts arrival']},
+  {v:'1.5.2', d:'2026-11-17', th:['รายการรถ (แตะการ์ด / กราฟ) เรียงแบบ "ราย PS" ได้ — จัดกลุ่มตามศูนย์ ศูนย์ที่ค้างมากสุดขึ้นก่อน'],
+                              en:['Vehicle lists can be grouped "by dealer" — dealers with the most open vehicles first']},
+  {v:'1.5.1', d:'2026-11-17', th:['กราฟ "ค้างที่ขั้นไหน": เลือกดูจำนวนคัน / ค้างในขั้นนี้นานสุด และเรียงตามขั้นตอน / มาก→น้อย','อันดับรถค้างนานสุด: เพิ่ม Top 50 และสลับป้าย SP / VIN','RSM / Admin: แท็บเปลี่ยนชื่อเป็น "ตามงาน GWM" (ดูอย่างเดียว ศูนย์เป็นคนบันทึก)'],
+                              en:['"Where stuck" chart: vehicles / longest in step, sort by workflow or high→low','Longest-open: Top 50 and SP / VIN labels','RSM / Admin tab renamed "GWM follow-up" (view only)']},
   {v:'1.5', d:'2026-11-17', th:['ขั้นตอนไล่ตามงานจริง: ช่างวิเคราะห์ → JS (GWM ⇄ Foreman ตอบกลับไม่จำกัด เลขเดิม) → YS (Warranty ⇄ PS, Reject แล้วส่งใหม่เลขเดิม / ไม่เคลม-ลูกค้าจ่าย) → อะไหล่ → ซ่อม/ทดสอบ (ช่างศูนย์) → CR แจ้งลูกค้า → ส่งมอบ','ปุ่ม "ขั้นถัดไป" ในฟอร์ม กดแล้วย้ายขั้นทันที','แท็บ "งานของฉัน" แต่ละตำแหน่งเห็นงานที่ค้างที่ตัวเอง กดเคลียร์ได้จากรายการ','วัน GWM / PS แยกในแต่ละ JS / YS','ทดสอบไม่ผ่าน → กลับไปช่างวิเคราะห์ครั้งที่ 2 อัตโนมัติ','ยกเลิก SP + เหตุผล + SP ใหม่'],
                             en:['Real workflow: diagnosis → JS (GWM ⇄ foreman, unlimited replies, same no.) → YS (Warranty ⇄ PS, resubmit same no. / not covered) → parts → repair/test (dealer) → CR → delivery','"Next step" buttons in the form','"My tasks" tab per position','GWM / PS days per JS / YS','Failed test → back to diagnosis, round 2','Cancel SP with reason and new SP']},
   {v:'1.4.2', d:'2026-11-15', th:['ดึงข้อมูลรถและขั้นตอนครบทุกแถว แม้เกิน 1,000 รายการ (เดิม Supabase ส่งให้ครั้งละ 1,000)'],
@@ -438,6 +445,8 @@ const probName = k => PROBLEMS[k] ? PROBLEMS[k][S.lang] : (k||'');
 const FOLLOW_CATS = { diag:['foreman'], js_wait:['foreman'], js_close:['foreman'], ys_open:['warranty','owner_svm'], ys_wait:['warranty'], parts_order:['parts'], eta:['parts'], test:['foreman'], follow:['cr','sa'], decide:['owner_svm','sa'], done:['cr'], cancel:['owner_svm'] };
 // งานของฉัน: สถานะที่แต่ละตำแหน่งต้องเคลียร์ (owner_svm / sa เห็นทุกงานฝั่ง PS)
 const MY_Q = { foreman:['diag','js_close','test'], warranty:['ys_open'], parts:['parts_order'], cr:['follow'] };
+// รอ GWM: ศูนย์เป็นคนบันทึกวันที่ GWM ตอบ / อนุมัติ / อะไหล่มา
+const MY_WAIT = { foreman:['js_wait'], warranty:['ys_wait'], parts:['eta'], owner_svm:['js_wait','ys_wait','eta'], sa:['js_wait','ys_wait','eta'] };
 const PS_STAGES = ['diag','js_close','ys_open','parts_order','test','follow'], GWM_STAGES = ['js_wait','ys_wait','eta'];
 const catName = k => CATS[k] ? CATS[k][S.lang] : (k==='rsm'?'RSM':k==='admin'?'Admin':(k||''));
 const CASE_EDIT = { foreman:['analysis_date','parked','problem_cat','symptom','cause'], warranty:['cost_band'], parts:[], cr:['parked','loaner','est_delivery','customer_contact_date','delivered_date'] };
@@ -745,7 +754,7 @@ function renderPending(){
 /* ===================== App shell ===================== */
 function renderApp(){
   computeAll();
-  const nMine=myTasks().length, mineTab=['mine',L('งานของฉัน','My tasks')+(nMine?` <span class="badge">${nMine}</span>`:'')];
+  const nMine=myTasks().length, mineTab=['mine',(isStaff()?L('ตามงาน GWM','GWM follow-up'):L('งานของฉัน','My tasks'))+(nMine?` <span class="badge">${nMine}</span>`:'')];
   const tabs=[...(isStaff()?[['dash',L('ภาพรวม','Overview')],mineTab]:[mineTab,['dash',L('ภาพรวม','Overview')]]),['board','Board'],['list',L('รายการ','List')],['stats',L('วิเคราะห์เวลา','Lead time')]];
   if(isAdmin()){ const n=(S.profiles||[]).filter(p=>p.role==='pending').length; tabs.push(['admin',L('ผู้ใช้ & PS','Users & PS')+(n?` <span class="badge">${n}</span>`:'')]); }
   if(isSvm()){ const n=(S.profiles||[]).filter(p=>p.role==='pending').length; tabs.push(['team',L('ทีมงานศูนย์','Team')+(n?` <span class="badge">${n}</span>`:'')]); }
@@ -1049,20 +1058,24 @@ function myTasks(){
   return S.cases.filter(c=>!c._t.done && st.includes(c._t.cur.k) && (!staff||!mine||(dealerById(c.dealer_id)||{}).rsm===S.myRsm))
     .sort((a,b)=>b._t.curDays-a._t.curDays||b._t.total-a._t.total);
 }
+function myWaiting(){ if(isStaff()) return []; const w=MY_WAIT[S.me.category]||[];
+  return S.cases.filter(c=>!c._t.done && w.includes(c._t.cur.k)).sort((a,b)=>b._t.curDays-a._t.curDays); }
+function mtRow(c,withActs){ const t=c._t, ss=S.stepsBy[c.id]||[], staff=isStaff(), acts=withActs?actionsFor(c,ss).filter(a=>a.key!=='cancel'):[], dp=deptOf(t.cur.k);
+  return `<div class="mt"><div class="mth" data-open="${c.id}"><div><b>${esc(c.sp)}</b> <span class="mut sm">${esc(c.model||'')}${staff?' · '+esc(dName(c.dealer_id)):''}</span>${t.round>1?` <span class="rnd">${L('ครั้งที่','R')} ${t.round}</span>`:''}${c.parked?` <span class="tag park" style="margin:0">${L('จอด','Parked')}</span>`:''}</div>
+    <div class="sm"><span class="dot" style="background:${oc(t.cur.o)}"></span> ${esc(curLabel(t))}${dp?` · <span class="mut">${esc(deptName(dp.o,dp.key))}</span>`:''}</div>
+    <div class="mut sm">${L('ค้างขั้นนี้','In this step')} <b style="color:${t.curDays>14?'#c8102e':t.curDays>7?'#ea580c':'inherit'}">${t.curDays}</b> ${L('วัน','d')} · ${L('รวม','total')} ${t.total} ${L('วัน','d')}</div></div>
+    ${acts.length?`<div class="nab">${acts.map(a=>`<button type="button" class="btn sm ${a.cls}" data-qa="${c.id}" data-qk="${a.key}">${esc(a.label)}</button>`).join('')}</div>`:''}${staff?'':lastLine(c)}</div>`; }
 function viewMine(){
-  const all=myTasks(), staff=isStaff(), st=myStages(), multi=st.length>1;
+  const all=myTasks(), staff=isStaff(), st=myStages(), multi=st.length>1, wait=myWaiting();
   const list=S.mt.stage&&st.includes(S.mt.stage)?all.filter(c=>c._t.cur.k===S.mt.stage):all;
   const cnt=k=>all.filter(c=>c._t.cur.k===k).length;
-  const who=staff?L('งานฝั่ง GWM ที่ต้องตามภายใน','GWM-side items to chase internally'):`${L('งานที่รอ','Waiting on')} ${esc(catName(S.me.category))}${['owner_svm','sa'].includes(S.me.category)?' · '+L('ทุกงานฝั่งศูนย์','all dealer-side items'):''}`;
-  return `<div class="panel" style="margin-bottom:12px"><h3 style="margin:0 0 4px">${L('งานของฉัน','My tasks')} <span class="mut">(${all.length})</span></h3><div class="mut sm">${who} · ${L('เรียงจากค้างในขั้นนี้นานสุด','longest in this step first')}</div>
+  const who=staff?L('รถที่ศูนย์รอ GWM อยู่ (Technical / Warranty / อะไหล่) ไว้ตามภายใน GWM — ศูนย์เป็นคนบันทึกเมื่อ GWM ตอบ','Vehicles the dealers are waiting on GWM for — dealers record the reply'):`${L('งานที่รอ','Waiting on')} ${esc(catName(S.me.category))}${['owner_svm','sa'].includes(S.me.category)?' · '+L('ทุกงานฝั่งศูนย์','all dealer-side items'):''}`;
+  return `<div class="panel" style="margin-bottom:12px"><h3 style="margin:0 0 4px">${staff?L('ตามงาน GWM','GWM follow-up'):L('งานของฉัน','My tasks')} <span class="mut">(${all.length})</span></h3><div class="mut sm">${who} · ${L('เรียงจากค้างในขั้นนี้นานสุด','longest in this step first')}</div>
     ${staff&&S.myRsm?`<div class="ctl" style="margin:8px 0 0">${chips('mtall',[['',L('PS ของฉัน','My PS')],['1',L('ทุกศูนย์','All dealers')]],S.mt.all?'1':'','data-mt')}</div>`:''}
     ${multi?`<div class="ctl" style="margin:8px 0 0">${chips('stage',[['',L('ทั้งหมด','All')+' '+all.length],...st.map(k=>[k,stName(k)+' '+cnt(k)])],S.mt.stage||'','data-mt')}</div>`:''}</div>
-  ${list.map(c=>{ const t=c._t, ss=S.stepsBy[c.id]||[], acts=actionsFor(c,ss).filter(a=>a.key!=='cancel'), dp=deptOf(t.cur.k);
-    return `<div class="mt"><div class="mth" data-open="${c.id}"><div><b>${esc(c.sp)}</b> <span class="mut sm">${esc(c.model||'')}${staff?' · '+esc(dName(c.dealer_id)):''}</span>${t.round>1?` <span class="rnd">${L('ครั้งที่','R')} ${t.round}</span>`:''}${c.parked?` <span class="tag park" style="margin:0">${L('จอด','Parked')}</span>`:''}</div>
-      <div class="sm"><span class="dot" style="background:${oc(t.cur.o)}"></span> ${esc(curLabel(t))}${dp?` · <span class="mut">${esc(deptName(dp.o,dp.key))}</span>`:''}</div>
-      <div class="mut sm">${L('ค้างขั้นนี้','In this step')} <b style="color:${t.curDays>14?'#c8102e':t.curDays>7?'#ea580c':'inherit'}">${t.curDays}</b> ${L('วัน','d')} · ${L('รวม','total')} ${t.total} ${L('วัน','d')}</div></div>
-      ${acts.length?`<div class="nab">${acts.map(a=>`<button type="button" class="btn sm ${a.cls}" data-qa="${c.id}" data-qk="${a.key}">${esc(a.label)}</button>`).join('')}</div>`:''}${staff?'':lastLine(c)}</div>`; }).join('')
-  || `<div class="panel mut" style="text-align:center;padding:30px">🎉 ${L('ไม่มีงานค้างที่คุณ','Nothing waiting on you')}</div>`}`;
+  ${list.map(c=>mtRow(c,!staff)).join('') || `<div class="panel mut" style="text-align:center;padding:30px">🎉 ${L('ไม่มีงานค้างที่คุณ','Nothing waiting on you')}</div>`}
+  ${wait.length?`<div class="panel" style="margin:16px 0 12px;border-color:#fecaca;background:#fff7f7"><h3 style="margin:0 0 4px;color:#9f1239">${L('รอ GWM ตอบ','Waiting on GWM')} <span class="mut">(${wait.length})</span></h3><div class="mut sm">${L('ได้คำตอบจาก GWM แล้ว (Technical ตอบ JS / Warranty อนุมัติหรือ Reject YS / อะไหล่มาถึง) ให้กดบันทึกพร้อมวันที่ที่ได้รับ','When GWM replies (JS answer / YS approved or rejected / parts arrived), record it here with the date')}</div></div>
+    ${wait.map(c=>mtRow(c,true)).join('')}`:''}`;
 }
 /* ===================== ภาพรวม (Dashboard) ===================== */
 // แผนกที่รับผิดชอบแต่ละสถานะ (แก้การจับคู่ได้ที่นี่)
@@ -1182,7 +1195,10 @@ function viewDash(){
   // ค้างขั้นไหน
   const stK=COL_ORDER.filter(k=>k!=='done');
   const stP=`<div class="panel"><h3>${L('ค้างที่ขั้นไหนเยอะสุด','Where vehicles are stuck')}</h3>
-    ${vbars(stK.map(k=>({label:stName(k),v:open.filter(c=>c._t.cur.k===k).length,color:oc(ST[k].o),attr:`data-drill="st:${k}"`})),{wide:true})}
+    <div class="ctl">${chips('smet',[['cnt',L('จำนวนคัน','Vehicles')],['days',L('ค้างในขั้นนี้นานสุด (วัน)','Longest in step (days)')]],S.d.smet||'cnt')}${chips('ssort',[['flow',L('ตามขั้นตอน','By workflow')],['desc',L('มาก→น้อย','High→low')]],S.d.ssort||'flow')}</div>
+    ${(()=>{ const it=stK.map(k=>{ const l=open.filter(c=>c._t.cur.k===k), mx=l.length?Math.max(...l.map(c=>c._t.curDays)):0;
+        return {label:stName(k),v:(S.d.smet==='days'?mx:l.length),color:oc(ST[k].o),attr:`data-drill="st:${k}"`,sub:S.d.smet==='days'?l.length+' '+L('คัน','veh.'):(l.length?L('นานสุด ','max ')+mx+L('ว','d'):''),tip:`${stName(k)}: ${l.length} ${L('คัน','veh.')} · ${L('ค้างในขั้นนี้นานสุด','longest in step')} ${mx} ${L('วัน','d')}`}; });
+      if(S.d.ssort==='desc') it.sort((a,b)=>b.v-a.v); return vbars(it,{wide:true}); })()}
     <div class="legend" style="margin:6px 0 0">${['P','G'].map(k=>`<span><span class="dot" style="background:${OWN[k].c}"></span> ${OWN[k].n}</span>`).join('')}</div></div>`;
   // อายุรถค้าง
   const ageP=`<div class="panel"><h3>${L('อายุรถค้าง (วัน)','Days open')}</h3>
@@ -1209,8 +1225,8 @@ function viewDash(){
   // อันดับรถค้างนานสุด (1 แท่ง = 1 SP)
   const tops=[...open].sort((a,b)=>S.d.tsort==='asc'?a._t.total-b._t.total:b._t.total-a._t.total), topL=S.d.topN?tops.slice(0,S.d.topN):tops;
   const topP=`<div class="panel"><h3>${L('อันดับรถค้างนานสุด','Longest-open vehicles')} <button class="lnk" data-drill="open">${L('ดูเป็นรายการ','List view')} ›</button></h3>
-    <div class="ctl">${chips('tsort',[['desc',L('มาก→น้อย','High→low')],['asc',L('น้อย→มาก','Low→high')]],S.d.tsort)}${chips('topN',[[10,'Top 10'],[20,'Top 20'],[0,L('ทั้งหมด','All')]],S.d.topN)}</div>
-    ${vbars(topL.map(c=>({label:c.sp,v:c._t.total,color:ageColor(c._t.total),attr:`data-open="${c.id}"`,sub:staff?dName(c.dealer_id):stName(c._t.cur.k),tip:`${c.sp} · ${dName(c.dealer_id)} · ${stName(c._t.cur.k)} · ${c._t.total} ${L('วัน','days')}`})),{wide:true})}
+    <div class="ctl">${chips('tsort',[['desc',L('มาก→น้อย','High→low')],['asc',L('น้อย→มาก','Low→high')]],S.d.tsort)}${chips('topN',[[10,'Top 10'],[20,'Top 20'],[50,'Top 50'],[0,L('ทั้งหมด','All')]],S.d.topN)}${chips('tlab',[['sp','SP'],['vin','VIN']],S.d.tlab||'sp')}</div>
+    ${vbars(topL.map(c=>({label:S.d.tlab==='vin'?(c.vin?'…'+c.vin.slice(-8):c.sp):c.sp,v:c._t.total,color:ageColor(c._t.total),attr:`data-open="${c.id}"`,sub:staff?dName(c.dealer_id):stName(c._t.cur.k),tip:`${c.sp} · ${dName(c.dealer_id)} · ${stName(c._t.cur.k)} · ${c._t.total} ${L('วัน','days')}`})),{wide:true})}
     <div class="legend" style="margin:6px 0 0">${AGE.map(a=>`<span><span class="dot" style="background:${a[3]}"></span> ${a[0]} ${L('วัน','d')}</span>`).join('')}<span>${L('แตะแท่งเพื่อเปิดรถคันนั้น','Tap a bar to open the vehicle')}</span></div></div>`;
   // ปัญหาที่เจอบ่อย
   const pm={}; open.forEach(c=>{ const k=c.problem_cat||'none'; pm[k]=(pm[k]||0)+1; });
@@ -1272,20 +1288,25 @@ function drillDef(key){ const [a,b,c2]=key.split(':'), T=today();
     return [L('ส่งมอบแล้ว ','Delivered ')+(sel?sel.label:''),x=>x.delivered_date&&x.delivered_date>=s&&x.delivered_date<=e,true]; }
   return [key,()=>false];
 }
-function openDrill(key,src){ S.drill={key,parked:'',prob:'',src:src||'dash'}; renderDrill(); }
+function openDrill(key,src){ S.drill={key,parked:'',prob:'',sort:(S.drill&&S.drill.sort)||'days',src:src||'dash'}; renderDrill(); }
 function renderDrill(){
   const D=S.drill; if(!D) return; const [title,fn,isDel]=drillDef(D.key), staff=isStaff();
   const base=(D.src==='board'?filtered():dashScope()).filter(fn);
   const list=base.filter(c=>(!D.parked||(D.parked==='y')===!!c.parked)&&(!D.prob||(c.problem_cat||'none')===D.prob))
     .sort((a,b)=>isDel?b.delivered_date.localeCompare(a.delivered_date):b._t.total-a._t.total);
+  const byPs = staff && D.sort==='ps';
+  if(byPs){ const cnt={}; list.forEach(c=>cnt[c.dealer_id]=(cnt[c.dealer_id]||0)+1);
+    list.sort((a,b)=>(cnt[b.dealer_id]-cnt[a.dealer_id])||dName(a.dealer_id).localeCompare(dName(b.dealer_id))||(b._t.total-a._t.total)); }
   const probs=[...new Set(base.map(c=>c.problem_cat||'none'))];
   const m=$('#modal'); S.edit=null;
   m.innerHTML=`<div class="sheet" style="max-width:640px"><div class="mh"><b>${esc(title)} <span class="mut">(${list.length})</span></b><button class="x" data-act="drillclose">✕</button></div>
     <div class="mb" style="padding-top:10px">
       <div class="bar" style="margin-bottom:8px"><div class="segc sm2">${[['',L('ทั้งหมด','All')],['y',L('จอด','Parked')],['n',L('ไม่จอด','Not parked')]].map(s=>`<button data-drf="parked" data-v="${s[0]}" class="${D.parked===s[0]?'on':''}">${s[1]}</button>`).join('')}</div>
+        ${staff?`<div class="segc sm2">${[['days',L('วันค้างมาก→น้อย','Longest first')],['ps',L('ราย PS','By dealer')]].map(x=>`<button data-drf="sort" data-v="${x[0]}" class="${(D.sort||'days')===x[0]?'on':''}">${x[1]}</button>`).join('')}</div>`:''}
         <select data-drsel="prob"><option value="">${L('ทุกกลุ่มปัญหา','All problems')}</option>${probs.map(k=>`<option value="${k}" ${D.prob===k?'selected':''}>${esc(k==='none'?L('ยังไม่ระบุ','Not set'):probName(k))}</option>`).join('')}</select></div>
       ${list.map((c,i)=>{ const t=c._t, dep=deptOf(t.cur.k), dys=isDel?dd(c.arrival_date,c.delivered_date):t.total;
-        return `<div class="dr"><span class="rkn">${i+1}</span><div class="drm" data-open="${c.id}">
+        const head = byPs && (i===0 || list[i-1].dealer_id!==c.dealer_id) ? (()=>{ const g=list.filter(x=>x.dealer_id===c.dealer_id); return `<div class="drh" data-dealer-dash="${c.dealer_id}">🏢 ${esc(dName(c.dealer_id))} <span class="mut">· ${g.length} ${L('คัน','veh.')} · ${L('ค้างที่ GWM','GWM')} ${g.filter(x=>x._t.cur.o==='G').length} · PS ${g.filter(x=>x._t.cur.o==='P').length}</span></div>`; })() : '';
+        return head+`<div class="dr"><span class="rkn">${i+1}</span><div class="drm" data-open="${c.id}">
           <div><b>${esc(c.sp)}</b> ${t.round>1?`<span class="rnd">${L('รอบ','R')} ${t.round}</span>`:''} ${c.parked?`<span class="tag park" style="margin:0">${L('จอด','Parked')}</span>`:''}</div>
           <div class="mut sm">${staff?esc(dName(c.dealer_id))+' · ':''}${esc(c.model||'-')}${c.problem_cat?' · '+esc(probName(c.problem_cat)):''}</div>
           <div class="sm">${isDel?`✅ ${L('ส่งมอบ','Delivered')} ${fmt(c.delivered_date)}`:`<span class="dot" style="background:${oc(t.cur.o)}"></span> ${esc(stName(t.cur.k))}${dep?` · <span class="mut">${L('ติดที่','with')} ${esc(deptName(dep.o,dep.key))}</span>`:''} · ${L('ขั้นนี้','in status')} ${t.curDays} ${L('วัน','d')}`}</div></div>
@@ -1840,7 +1861,7 @@ document.addEventListener('click', async e=>{
   if(d.lvlrsm!==undefined){ S.df.rsm=d.lvlrsm==='—'?'':d.lvlrsm; S.df.dealer=''; S.d.lvl='ps'; renderMain(); return; }
   if(d.side2!==undefined){ S.d.side2=d.side2||null; renderMain(); return; }
   if(d.bucket!==undefined){ S.d.bucket=S.d.bucket===d.bucket?null:d.bucket; renderMain(); return; }
-  if(d.dealerDash!==undefined){ S.df.dealer=d.dealerDash; S.d.side=null; S.tab='dash'; renderApp(); window.scrollTo(0,0); return; }
+  if(d.dealerDash!==undefined){ if(S.drill){ S.drill=null; $('#modal').classList.add('hidden'); $('#modal').innerHTML=''; } S.df.dealer=d.dealerDash; S.d.side=null; S.tab='dash'; renderApp(); window.scrollTo(0,0); return; }
   if(d.dealerBoard){ S.f.dealer=d.dealerBoard; S.tab='board'; renderApp(); return; }
   if(d.drf){ S.drill[d.drf]=d.v; renderDrill(); return; }
   if(d.vin){ e.stopPropagation(); openVin(d.vin); return; }
