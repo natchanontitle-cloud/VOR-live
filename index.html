@@ -140,6 +140,12 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .todo{font-size:11px;color:#1d4ed8;background:#eff6ff;border-radius:6px;padding:3px 7px;margin-top:6px}.todo.inl{display:inline-block;margin:2px 0}
 .cic{display:inline-flex;gap:4px;margin-left:4px;vertical-align:middle}.cic a{font-size:11px;text-decoration:none;border:1px solid var(--line);border-radius:99px;padding:1px 7px;background:#fff;color:var(--ink)}
 .cic a.ln{background:#06c755;border-color:#06c755;color:#fff;font-weight:700}.lastup a.tel{text-decoration:none;margin-left:4px}
+/* case form v1.7 */
+.mht{flex:1;min-width:0}.mhv{margin-top:3px;font-size:12.5px;display:flex;flex-wrap:wrap;gap:4px;align-items:center}.btn.xs{padding:2px 7px;font-size:12px;min-height:0}
+.newbar{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:#fff;padding:8px 0;margin:8px 0 0;border-bottom:1px solid var(--line)}
+.newbar .btn{font-weight:700;color:#111}.newbar .btn:disabled{opacity:.45;cursor:not-allowed}
+.srow.diag{border-left-color:#6b7280}.srow.test{border-left-color:#059669}.srow.ys{border-left-color:#d97706}
+.fs.flow .srow .fg{grid-column:1/-1}.srow.test .rm{font-size:12px;border:1px solid var(--line);border-radius:6px;padding:3px 8px;background:#fff;top:8px;right:8px}
 /* rsm upload */
 .rsmup{margin-top:14px;padding-top:12px;border-top:1px solid var(--line,#e5e7eb)}
 /* dashboard v1.2 */
@@ -222,8 +228,12 @@ const CONFIG = {
   SUPABASE_ANON_KEY: 'sb_publishable_RESqSgvp97Bh5thFluhs0w_M1LYS4dk'
 };
 // ===== เวอร์ชัน: อัปเกรดทุกครั้ง ให้เพิ่มเลข + เพิ่มรายการไว้บนสุดของ CHANGELOG =====
-const APP_VERSION = '1.6.5';
+const APP_VERSION = '1.7.3';
 const CHANGELOG = [
+  {v:'1.7.3', d:'2026-11-18', th:['หน้ารถเรียงตามลำดับการกรอก: ข้อมูลรถ → ปัญหา → สถานะ → ขั้นถัดไป → ขั้นตอน → ส่งมอบ'], en:['Case page follows filling order: vehicle → problem → status → next step → steps → delivery']},
+  {v:'1.7.2', d:'2026-11-18', th:['เลือกวันที่ในอนาคตได้ทุกช่องเหมือนเดิม'], en:['Future dates allowed again']},
+  {v:'1.7.1', d:'2026-11-18', th:['ซ่อมไม่ผ่านแต่ยังไม่ได้เปิด JS ใหม่ ขึ้นว่า "รอเปิด JS ใหม่"','ลงวันที่วันนี้ทั้งหมด ขึ้นข้อความว่าเริ่มนับวันพรุ่งนี้'], en:['Clear status when waiting for a new JS','Note when all steps are dated today']},
+  {v:'1.7', d:'2026-11-18', th:['หน้ารถใหม่: หัวมี VIN (คัดลอก / ประวัติ VIN) · ขั้นถัดไปอยู่บนสุด · แถบ + เปิด JS ใหม่ / YS / PO-BO ติดหน้าจอ','ขั้นตอนเรียงเส้นเดียวตามวันที่: ช่างวิเคราะห์ (ครั้งเดียว) → JS ครั้งที่ 1, 2 … → YS → PO/BO → ซ่อม/ทดสอบ','เปิด JS ใหม่ได้ทุกขั้น เมื่อ JS ใบก่อนปิดแล้ว · เลิกย้าย JS ไปครั้งที่ 2 อัตโนมัติ · ลบรอบซ่อมที่กดผิดได้'], en:['New case page layout with VIN header, next step on top, sticky New JS / YS / PO-BO bar','Single timeline by date; JS numbered #1, #2 …','New JS any time once the previous JS is closed; no automatic round moves']},
   {v:'1.6.5', d:'2026-11-18', th:['ทดสอบไม่ผ่าน (อาการไม่หาย) → เปิด JS ใหม่ทันทีเป็นครั้งถัดไป ต่อลงด้านล่าง','เปิด JS หลังอะไหล่มาถึง / ประกอบแล้ว = ครั้งใหม่อัตโนมัติ (รวมรถที่บันทึกไปแล้ว)','หัวข้อ เปิด JS / YS / PO-BO ตัวหนา · จอคอมจัดช่อง 3 คอลัมน์'], en:['Failed test opens a new JS in the next round','JS opened after parts fitted starts a new round automatically','Bold step headers, 3-column desktop layout']},
   {v:'1.6.4', d:'2026-11-18', th:['จอคอม: แถว GWM ตอบ / ส่งข้อมูลเพิ่ม / Reject / ส่ง YS ใหม่ เต็มความกว้าง ไม่ทับช่องวันที่ปิด'], en:['Desktop: reply/reject rows span full width']},
   {v:'1.6.3', d:'2026-11-18', th:['"PS ของฉัน" · ตามงาน GWM · กระดิ่ง ใช้ชุด RSM ที่เลือกอยู่ (RSM2 / RSM1)'], en:['My PS, GWM follow-up and the bell follow the selected RSM set']},
@@ -416,7 +426,7 @@ function timeline(c, steps){
     if(jsP.size) return mk('js_close',ref(jsP));
     if(ysG.size) return mk('ys_wait',[...ysG][0].ref_no);
     if(ysP.size) return mk('ys_open','Reject · '+([...ysP][0].ref_no||''));
-    if(!cr.analysed) return mk('diag',rTag);
+    if(!cr.analysed) return mk('diag', round>1 ? L('รอเปิด JS ใหม่ (ซ่อมครั้งก่อนไม่ผ่าน)','Waiting new JS (previous repair failed)') : '');
     if(cr.test==='pass') return mk('follow');
     if(parts.size){ const ps=[...parts], x=ps.find(p=>p.parts_type==='BO')||ps[0];
       return mk('eta',(x.ref_no||'')+(ps.length>1?` +${ps.length-1}`:'')+(x.d2?' · ETA '+fmt(x.d2):'')); }
@@ -712,7 +722,7 @@ async function loadAll(){
   const [d,c,st] = await Promise.all([api.dealers(), api.cases(), api.steps()]);
   S.dealers=d; S.steps=st; S.stepsBy={};
   S.stepsRaw={}; st.forEach(x=>(S.stepsRaw[x.case_id]=S.stepsRaw[x.case_id]||[]).push(x));
-  Object.entries(S.stepsRaw).forEach(([k,a])=>S.stepsBy[k]=fixRounds(a.map(x=>({...x})),(kind,round,o)=>({kind,round,...o})));
+  Object.entries(S.stepsRaw).forEach(([k,a])=>S.stepsBy[k]=a);
   S.cases=c;
   computeAll();
   try{ const [ct,lu]=await Promise.all([api.contacts(),api.lastUpdates()]); S.contacts=ct||[]; S.last={}; (lu||[]).forEach(x=>S.last[x.case_id]=x); }catch(e){ S.contacts=[]; S.last={}; }
@@ -1508,7 +1518,7 @@ async function openVin(vin){
 const newStep = (kind,round,x) => Object.assign({id:'new'+Math.random().toString(36).slice(2),kind,round},x||{});
 const curRound = () => { const ss=S.edit.steps, r=Math.max(1,...ss.map(s=>s.round||1)); return ss.some(s=>s.kind==='test'&&s.round===r&&s.result==='fail') ? r+1 : r; };
 function ensureRoundSteps(){ // ทุกครั้งมีช่อง "ช่างวิเคราะห์" "ประกอบ" "ทดสอบ"
-  for(let r=1;r<=curRound();r++) ['diag','assemble','test'].forEach(k=>{ if(!S.edit.steps.some(s=>s.kind===k&&s.round===r)) S.edit.steps.push(newStep(k,r)); });
+  for(let r=1;r<=curRound();r++) (r===1?['diag','assemble','test']:['assemble','test']).forEach(k=>{ if(!S.edit.steps.some(s=>s.kind===k&&s.round===r)) S.edit.steps.push(newStep(k,r)); });
 }
 function legacySteps(c,steps){ // แปลงข้อมูลแบบเดิมให้อยู่ในรูปแบบใหม่ (ตอนเปิดฟอร์ม)
   steps.forEach(s=>{
@@ -1525,14 +1535,13 @@ function openCase(id, dropCol){
   const steps=(id?((S.stepsRaw||{})[id]||S.stepsBy[id]||[]):[]).map(s=>({...s,ev:Array.isArray(s.ev)?s.ev.map(e=>({...e})):[]}));
   legacySteps(c,steps);
   S.edit={c,steps,removed:[],id,logs:[],orig:id?normCase(c):null,origSteps:Object.fromEntries(normSteps(steps).map(s=>[s.id,s]))};
-  fixRounds(steps,(k,r,o)=>newStep(k,r,o));
   ensureRoundSteps();
   if(dropCol){
     if(c.delivered_date && dropCol!=='done') c.delivered_date=null;   // ลากออกจาก "ส่งมอบแล้ว" = ยกเลิกวันส่งมอบ
     const T=today(), r=curRound(), st=k=>S.edit.steps.find(s=>s.kind===k&&s.round===r), ss=S.edit.steps;
     const closeReplied=()=>ss.filter(s=>s.kind==='js'&&s.d2&&!s.d3).forEach(s=>s.d3=T);
     switch(dropCol){
-      case 'js_wait': { let rr=r; if(repairPoint(ss,r)){ const t=st('test'); t.result='fail'; t.d1=t.d1||T; rr=r+1; } ss.push(newStep('js',rr,{d1:T})); ensureRoundSteps(); break; }
+      case 'js_wait': if(!ss.some(s=>s.kind==='js'&&s.d1&&!s.d3)) ss.push(newStep('js',r,{d1:T})); break;
       case 'js_close': { const w=ss.filter(s=>s.kind==='js'&&s.d1&&!s.d2&&!s.d3); w.forEach(s=>s.d2=T); break; }
       case 'ys_open': if(!c.analysis_date) c.analysis_date=T; closeReplied(); c.cost_band='gt10k'; break;
       case 'ys_wait': ss.push(newStep('ys',r,{d1:T})); c.cost_band='gt10k'; break;
@@ -1548,11 +1557,12 @@ function openCase(id, dropCol){
   renderModal();
   if(id){ const E=S.edit; api.logs(id).then(l=>{ if(S.edit===E){ E.logs=l||[]; renderStamps(); } }).catch(()=>{}); }
 }
+const FUT_OK = /data-c="(est_delivery|customer_contact_date)"|data-naf="eta"|data-fut/;
 function dateIn(attr,v){ return `<div class="dwrap"><input type="date" ${attr} value="${esc(v||'')}"><button type="button" class="clr ${v?'':'hidden'}" data-clear title="${L('ล้างวันที่','Clear date')}">✕</button><button type="button" class="today" data-today>${L('วันนี้','Today')}</button></div>`; }
 function dateRow(f,label,v){ return `<label class="drow">${label}${dateIn(`data-c="${f}"`,v)}</label>`; }
 function radio(name,attr,opts,val){ return `<div class="radios">${opts.map(o=>`<label><input type="radio" name="${name}" ${attr} value="${o[0]}" ${String(val)===String(o[0])?'checked':''}> ${o[1]}</label>`).join('')}</div>`; }
 function sIn(i,f,label,v,ph){ return `<label class="drow">${label}<input data-s="${i}" data-sf="${f}" value="${esc(v||'')}" placeholder="${ph||''}" autocapitalize="characters"></label>`; }
-function sDate(i,f,label,v){ return `<label class="drow">${label}${dateIn(`data-s="${i}" data-sf="${f}"`,v)}</label>`; }
+function sDate(i,f,label,v,fut){ return `<label class="drow">${label}${dateIn(`data-s="${i}" data-sf="${f}"${fut?' data-fut':''}`,v)}</label>`; }
 const EV_L = { reply:['GWM ตอบ','GWM replied'], send:['ส่งข้อมูลเพิ่ม','Sent more info'], reject:['Warranty Reject','Warranty rejected'], resubmit:['ส่ง YS ใหม่','YS resubmitted'] };
 function evRows(s,i){ // รายการตอบกลับของ JS / YS (เพิ่มได้ไม่จำกัด)
   const types = s.kind==='js' ? ['reply','send'] : ['reject','resubmit'];
@@ -1565,20 +1575,21 @@ function evRows(s,i){ // รายการตอบกลับของ JS / Y
     <div class="addrow">${types.map(t=>`<button type="button" class="btn sm" data-addev="${i}" data-evt="${t}">+ ${L(...EV_L[t])}</button>`).join('')}</div>
     ${sp&&(sp.g||sp.p)?`<div class="mut sm">⏱ GWM <b style="color:${OWN.G.c}">${sp.g}</b> ${L('วัน','d')} · PS <b style="color:${OWN.P.c}">${sp.p}</b> ${L('วัน','d')} · ${L('ตอบกลับ','replies')} ${sp.loops} ${L('รอบ','×')}${sp.closed?'':' · '+L('ยังไม่ปิด','still open')}</div>`:''}</div>`;
 }
-function stepBlock(s,i){
+function stepBlock(s,i,no){
+  const nn = no ? ` ${L('ครั้งที่','#')} ${no}` : '';
   const rm = canStep(s.kind) ? `<button type="button" class="rm" data-rmstep="${i}" title="${L('ลบ','Delete')}">🗑</button>` : '';
   const st = isNew(s.id) ? '' : `<div class="stamp" data-step="${s.id}"></div>`;
-  if(s.kind==='js') return `<div class="srow js">${rm}<div class="rt">${L('เปิด JS <small>· ขอสนับสนุนทางเทคนิค (เลขเดิมจนกว่าจะปิด)</small>','Open JS <small>· Technical support (same no. until closed)</small>')}</div>
+  if(s.kind==='js') return `<div class="srow js">${rm}<div class="rt">${L('เปิด JS'+nn+' <small>· ขอสนับสนุนทางเทคนิค (เลขเดิมจนกว่าจะปิด)</small>','Open JS'+nn+' <small>· Technical support (same no. until closed)</small>')}</div>
     ${sIn(i,'ref_no',L('เลข JS','JS no.'),s.ref_no,'JS-…')}${sDate(i,'d1',L('วันที่เปิด JS','Opened'),s.d1)}
     ${evRows(s,i)}${sDate(i,'d3',L('วันที่ Foreman ปิด JS','Closed by foreman'),s.d3)}${st}</div>`;
-  if(s.kind==='ys') return `<div class="srow ys">${rm}<div class="rt">${L('เปิด YS <small>· ขออนุมัติก่อนซ่อม (เลขเดิมแม้ถูก Reject)</small>','Open YS <small>· Pre-approval (same no. after reject)</small>')}</div>
+  if(s.kind==='ys') return `<div class="srow ys">${rm}<div class="rt">${L('เปิด YS'+nn+' <small>· ขออนุมัติก่อนซ่อม (เลขเดิมแม้ถูก Reject)</small>','Open YS'+nn+' <small>· Pre-approval (same no. after reject)</small>')}</div>
     ${sIn(i,'ref_no',L('เลข YS','YS no.'),s.ref_no,'YS-…')}${sDate(i,'d1',L('วันที่ขอ YS','Request date'),s.d1)}
     ${evRows(s,i)}
     <label class="drow">${L('ผลสุดท้าย','Final result')}<select data-s="${i}" data-sf="result"><option value="">${L('— ยังไม่จบ —','— Not final —')}</option><option value="approved" ${s.result==='approved'?'selected':''}>${L('อนุมัติ','Approved')}</option><option value="nocover" ${s.result==='nocover'?'selected':''}>${L('ไม่เคลม – ลูกค้าจ่ายเอง','Not covered – customer pays')}</option></select></label>
     ${sDate(i,'d2',L('วันที่ได้ผลสุดท้าย','Final result date'),s.d2)}${st}</div>`;
-  if(s.kind==='parts') return `<div class="srow parts">${rm}<div class="rt">${L('เปิด PO / BO <small>· PS สั่งอะไหล่แล้ว รอ GWM ส่ง</small>','Open PO / BO <small>· ordered by PS, awaiting GWM delivery</small>')}</div>
+  if(s.kind==='parts') return `<div class="srow parts">${rm}<div class="rt">${L('เปิด '+(s.parts_type||'PO / BO')+nn+' <small>· PS สั่งอะไหล่แล้ว รอ GWM ส่ง</small>','Open '+(s.parts_type||'PO / BO')+nn+' <small>· ordered by PS, awaiting GWM delivery</small>')}</div>
     <label class="drow">${L('ประเภท','Type')}${radio('pt_'+i,`data-s="${i}" data-sf="parts_type"`,[['PO','PO'],['BO','BO']],s.parts_type||'')}</label>
-    ${sIn(i,'ref_no',L('เลข PO / BO','PO / BO no.'),s.ref_no,(s.parts_type||'PO')+'-…')}${sDate(i,'d1',L('วันที่สั่ง','Order date'),s.d1)}${sDate(i,'d2','ETA',s.d2)}${sDate(i,'d3',L('วันที่อะไหล่มาถึง','Parts arrival date'),s.d3)}${st}</div>`;
+    ${sIn(i,'ref_no',L('เลข PO / BO','PO / BO no.'),s.ref_no,(s.parts_type||'PO')+'-…')}${sDate(i,'d1',L('วันที่สั่ง','Order date'),s.d1)}${sDate(i,'d2','ETA',s.d2,1)}${sDate(i,'d3',L('วันที่อะไหล่มาถึง','Parts arrival date'),s.d3)}${st}</div>`;
   return '';
 }
 function renderModal(){
@@ -1586,33 +1597,39 @@ function renderModal(){
   const prevScroll = m.querySelector('.mb') ? m.querySelector('.mb').scrollTop : 0;
   const ds=S.dealers.filter(d=>d.active!==false || String(d.id)===String(c.dealer_id));
   const R=curRound(), idx=s=>E.steps.indexOf(s);
-  let rounds='';
-  for(let r=1;r<=R;r++){
-    const of=k=>E.steps.filter(s=>s.kind===k&&s.round===r);
-    const asm=of('assemble')[0], tst=of('test')[0], dg=of('diag')[0], ai=idx(asm), ti=idx(tst), gi=idx(dg);
-    rounds+=`<section class="fs round"><h4><span class="no">${r}</span>${L('ครั้งที่','Round')} ${r}${r>1?` <span class="mut sm" style="font-weight:400">${L('(ซ่อมครั้งก่อนอาการไม่หาย → เปิด JS ใหม่)','(previous repair did not fix it → new JS)')}</span>`:''}</h4>
-      <div class="fg"><label class="drow">${L('ช่างวิเคราะห์ (วันที่)','Diagnosis date')}${dateIn(`data-s="${gi}" data-sf="d1"`,dg.d1)}</label>
-        <label class="drow">${L('ผลวิเคราะห์','Diagnosis result')}<select data-s="${gi}" data-sf="result"><option value="">${L('— ยังไม่จบ —','— In progress —')}</option><option value="parts" ${dg.result==='parts'?'selected':''}>${L('จบ – ต้องใช้อะไหล่','Done – parts needed')}</option><option value="noparts" ${dg.result==='noparts'?'selected':''}>${L('จบ – ไม่ใช้อะไหล่','Done – no parts')}</option><option value="js" ${dg.result==='js'?'selected':''}>${L('ไม่จบ – เปิด JS','Not solved – open JS')}</option></select></label></div>
-      <div class="stamp" data-step="${dg.id}"></div>
-      ${[...of('js'),...of('ys'),...of('parts')].map((s,o)=>({s,o})).sort((a,b)=>{ const x=a.s.d1||'9999', y=b.s.d1||'9999'; return x===y?a.o-b.o:(x<y?-1:1); }).map(({s})=>stepBlock(s,idx(s))).join('')}
-      <div class="addrow"><button type="button" class="btn sm" data-addstep="js" data-r="${r}">+ JS</button><button type="button" class="btn sm" data-addstep="ys" data-r="${r}">+ YS</button><button type="button" class="btn sm" data-addstep="parts" data-r="${r}">+ PO / BO</button>
-        ${c.cost_band==='gt10k'&&!of('ys').length?`<span class="hint" style="margin:0">${L('ค่าซ่อมเกิน 10,000 ต้องขอ YS ก่อนซ่อม','Over 10,000 THB requires YS before repair')}</span>`:''}</div>
-      <div class="fg" style="margin-top:10px">
-        <label class="drow">${L('ช่างประกอบ','Assembly date')}${dateIn(`data-s="${ai}" data-sf="d1"`,asm.d1)}</label>
-        <label class="drow">${L('ช่างทดสอบ','Test date')}${dateIn(`data-s="${ti}" data-sf="d1"`,tst.d1)}</label>
-      </div>
-      <label class="drow" style="margin-top:10px">${L('ผลทดสอบ','Test result')}${radio('tr_'+ti,`data-s="${ti}" data-sf="result"`,[['testing',L('อยู่ระหว่างทดสอบ / เก็บข้อมูล','Testing / collecting data')],['pass',L('ผ่าน','Pass')],['fail',L('ไม่ผ่าน (อาการไม่หาย)','Fail (issue persists)')],['other',L('อื่นๆ','Other')]],tst.result||'')}</label>
-      ${tst.result==='testing'||tst.result==='other'?`<label class="drow" style="margin-top:8px">${tst.result==='other'?L('ระบุ *','Please specify *'):L('รายละเอียด (ถ้ามี)','Details (optional)')}<input data-s="${ti}" data-sf="note" value="${esc(tst.note||'')}" placeholder="${L('เช่น รอลูกค้าขับทดสอบ 1 สัปดาห์','e.g. customer road test for 1 week')}"></label>`:''}
-      <div class="stamp" data-step="${asm.id}"></div><div class="stamp" data-step="${tst.id}"></div>
-    </section>`;
-  }
-  m.innerHTML=`<div class="sheet">
-    <div class="mh"><b>${E.id?'SP '+esc(c.sp):L('เพิ่มรถค้างซ่อม','Add vehicle')}</b>${E.id&&staff?`<span class="mut sm">${esc(dName(c.dealer_id))}</span>`:''}<button class="x" data-act="close" aria-label="close">✕</button></div>
-    <div class="mb">
-      ${!FULL()?`<div class="msg" style="margin-top:12px">${L('ตำแหน่งของคุณ','Your position')} (<b>${esc(catName(S.me.category))}</b>) ${L('กรอกได้เฉพาะ','can edit')}: ${esc(scopeText())}</div>`:''}
-      ${E.hint?`<div class="msg" style="margin-top:12px">${esc(E.hint)}</div>`:''}
-      <div id="pv"></div><div id="na"></div>
-      <section class="fs"><h4>${L('ข้อมูลรถ','Vehicle')}</h4><div class="fg">
+  /* ประวัติเส้นเดียว ไล่ตามวันที่: ช่างวิเคราะห์ (ครั้งเดียว) → JS/YS/PO ตามวันที่ → ซ่อม/ทดสอบ → (ไม่ผ่าน) → JS ครั้งต่อไป … */
+  const dg=E.steps.find(s=>s.kind==='diag'&&(s.round||1)===1), gi=idx(dg);
+  const items=[];
+  E.steps.forEach((s,o)=>{ const r=s.round||1;
+    if(['js','ys','parts'].includes(s.kind)) items.push({t:'s',s,r,k:(s.d1||'9999-12-30'),o});
+    if(s.kind==='diag'&&r>1&&(s.d1||s.result)) items.push({t:'d',s,r,k:'0000',o}); });
+  for(let r=1;r<=R;r++) items.push({t:'test',r,k:'9999-12-31',o:0});
+  items.sort((a,b)=>a.r-b.r || (a.k<b.k?-1:a.k>b.k?1:a.o-b.o));
+  const cnt={js:0,ys:0,parts:0};
+  const diagSel=(x,xi)=>`<div class="fg"><label class="drow">${L('วันที่','Date')}${dateIn(`data-s="${xi}" data-sf="d1"`,x.d1)}</label>
+        <label class="drow">${L('ผลวิเคราะห์','Diagnosis result')}<select data-s="${xi}" data-sf="result"><option value="">${L('— ยังไม่จบ —','— In progress —')}</option><option value="parts" ${x.result==='parts'?'selected':''}>${L('จบ – ต้องใช้อะไหล่','Done – parts needed')}</option><option value="noparts" ${x.result==='noparts'?'selected':''}>${L('จบ – ไม่ใช้อะไหล่','Done – no parts')}</option><option value="js" ${x.result==='js'?'selected':''}>${L('ไม่จบ – เปิด JS','Not solved – open JS')}</option></select></label></div><div class="stamp" data-step="${x.id}"></div>`;
+  let flow=`<div class="srow diag"><div class="rt">${L('ช่างวิเคราะห์','Diagnosis')}</div>${diagSel(dg,gi)}</div>`;
+  items.forEach(it=>{
+    if(it.t==='s'){ cnt[it.s.kind]++; flow+=stepBlock(it.s,idx(it.s),cnt[it.s.kind]); return; }
+    if(it.t==='d'){ flow+=`<div class="srow diag"><div class="rt">${L('ช่างวิเคราะห์ (หลังซ่อมไม่ผ่าน)','Diagnosis (after failed repair)')}</div>${diagSel(it.s,idx(it.s))}</div>`; return; }
+    const r=it.r, of=k=>E.steps.find(s=>s.kind===k&&s.round===r), asm=of('assemble'), tst=of('test'), ai=idx(asm), ti=idx(tst);
+    flow+=`<div class="srow test">${r>1&&r===R&&canStep('test')?`<button type="button" class="rm" data-rmround="${r}" title="${L('ยกเลิกรอบซ่อมนี้ (กดผิด)','Undo this repair round')}">↺ ${L('ยกเลิกรอบนี้','Undo round')}</button>`:''}
+      <div class="rt">${L('ซ่อม / ทดสอบ','Repair / test')}${R>1?` <small>· ${L('รอบซ่อมที่','repair round')} ${r}</small>`:''}</div>
+      <label class="drow">${L('ช่างประกอบ','Assembly date')}${dateIn(`data-s="${ai}" data-sf="d1"`,asm.d1)}</label>
+      <label class="drow">${L('ช่างทดสอบ','Test date')}${dateIn(`data-s="${ti}" data-sf="d1"`,tst.d1)}</label>
+      <label class="drow" style="grid-column:1/-1">${L('ผลทดสอบ','Test result')}${radio('tr_'+ti,`data-s="${ti}" data-sf="result"`,[['testing',L('อยู่ระหว่างทดสอบ / เก็บข้อมูล','Testing / collecting data')],['pass',L('ผ่าน','Pass')],['fail',L('ไม่ผ่าน (อาการไม่หาย)','Fail (issue persists)')],['other',L('อื่นๆ','Other')]],tst.result||'')}</label>
+      ${tst.result==='testing'||tst.result==='other'?`<label class="drow" style="grid-column:1/-1">${tst.result==='other'?L('ระบุ *','Please specify *'):L('รายละเอียด (ถ้ามี)','Details (optional)')}<input data-s="${ti}" data-sf="note" value="${esc(tst.note||'')}" placeholder="${L('เช่น รอลูกค้าขับทดสอบ 1 สัปดาห์','e.g. customer road test for 1 week')}"></label>`:''}
+      <div class="stamp" data-step="${asm.id}"></div><div class="stamp" data-step="${tst.id}"></div></div>`;
+  });
+  const openJs=E.steps.find(s=>s.kind==='js'&&s.d1&&!s.d3);
+  const tools=`<div class="newbar"><span class="mut sm">${L('เปิดใบใหม่','Open new')}</span>
+      <button type="button" class="btn sm" data-na="njs" ${openJs?`disabled title="${L('ปิด','Close')} ${esc(openJs.ref_no||'JS')} ${L('ก่อน','first')}"`:''}>+ ${L('เปิด JS ใหม่','New JS')}</button>
+      <button type="button" class="btn sm" data-na="nys">+ ${L('เปิด YS','New YS')}</button>
+      <button type="button" class="btn sm" data-na="npo">+ ${L('เปิด PO / BO','New PO / BO')}</button>
+      ${openJs?`<span class="mut sm">${L('ปิด','Close')} ${esc(openJs.ref_no||'JS')} ${L('ก่อนเปิด JS ใหม่','before opening a new JS')}</span>`:''}
+      ${c.cost_band==='gt10k'&&!E.steps.some(s=>s.kind==='ys')?`<span class="hint" style="margin:0">${L('เกิน 10,000 ต้องขอ YS ก่อนซ่อม','Over 10,000 needs YS')}</span>`:''}</div>`;
+  const rounds=`<section class="fs flow"><h4>${L('ขั้นตอน (ไล่ตามวันที่)','Steps (by date)')}</h4>${flow}</section>`;
+  const VEH=`      <section class="fs"><h4>${L('ข้อมูลรถ','Vehicle')}</h4><div class="fg">
         ${staff?`<label>${L('ศูนย์บริการ (PS)','Dealer (PS)')}<select data-c="dealer_id"><option value="">${L('— เลือก —','— Select —')}</option>${ds.map(d=>`<option value="${d.id}" ${String(c.dealer_id)===String(d.id)?'selected':''}>${esc(d.name)}</option>`).join('')}</select></label>`:''}
         <label>${L('SP (เลข RO) *','SP (RO no.) *')}<input data-c="sp" value="${esc(c.sp||'')}" placeholder="SP…" autocapitalize="characters"></label>
         <label>VIN<input data-c="vin" value="${esc(c.vin||'')}" maxlength="17" autocapitalize="characters"></label>
@@ -1633,6 +1650,16 @@ function renderModal(){
         <label>${L('สาเหตุที่พบ','Root cause found')}<textarea data-c="cause" rows="2">${esc(c.cause||'')}</textarea></label>
       </div><div class="stamp" data-sec="problem"></div>
       </section>
+`;
+  m.innerHTML=`<div class="sheet">
+    <div class="mh"><div class="mht"><div><b>${E.id?'SP '+esc(c.sp):L('เพิ่มรถค้างซ่อม','Add vehicle')}</b>${E.id?` <span class="mut sm">· ${esc(dName(c.dealer_id))}</span>`:''}</div>
+      ${E.id&&(c.vin||c.model)?`<div class="mhv">${c.vin?`<span class="mono">VIN ${esc(c.vin)}</span> <button type="button" class="btn xs" data-copytext="${esc(c.vin)}" title="${L('คัดลอก VIN','Copy VIN')}">📋</button> <button type="button" class="btn xs" data-vin="${esc(c.vin)}">🕘 ${L('ประวัติ VIN','VIN history')}</button>`:''}${c.model?` <span class="mut sm">· ${esc(c.model)}</span>`:''}</div>`:''}</div>
+      <button class="x" data-act="close" aria-label="close">✕</button></div>
+    <div class="mb">
+      ${!FULL()?`<div class="msg" style="margin-top:12px">${L('ตำแหน่งของคุณ','Your position')} (<b>${esc(catName(S.me.category))}</b>) ${L('กรอกได้เฉพาะ','can edit')}: ${esc(scopeText())}</div>`:''}
+      ${E.hint?`<div class="msg" style="margin-top:12px">${esc(E.hint)}</div>`:''}
+      ${VEH}
+      <div id="pv"></div><div id="na"></div>${tools}
       ${rounds}
       <section class="fs"><h4><span class="no" style="background:${DONE_C}">✓</span>${L('ติดตามลูกค้า / ส่งมอบ','Customer follow-up / delivery')}</h4><div class="fg">${dateRow('customer_contact_date',L('โทรแจ้ง / นัดหมายลูกค้า','Customer contacted / appointment'),c.customer_contact_date)}${dateRow('delivered_date',L('ส่งมอบเสร็จสมบูรณ์','Delivered'),c.delivered_date)}</div><div class="stamp" data-sec="delivery"></div></section>
       ${E.id&&c.cancelled_date?`<section class="fs" style="border-color:#e5a3a3"><h4 style="color:#b42318">✕ ${L('SP นี้ถูกยกเลิกแล้ว','This SP was cancelled')}</h4>
@@ -1667,6 +1694,7 @@ function applyPerms(){ // ปิดช่องที่ตำแหน่งน
   if(!canField('model')) m.querySelectorAll('[data-msel]').forEach(lock);
   m.querySelectorAll('[data-s]').forEach(el=>{ const s=S.edit.steps[+el.dataset.s]; if(s && !canStep(s.kind)) lock(el); });
   m.querySelectorAll('[data-addstep]').forEach(b=>{ if(!canStep(b.dataset.addstep)) b.remove(); });
+  m.querySelectorAll('.newbar [data-na]').forEach(b=>{ if(!canStep({njs:'js',nys:'ys',npo:'parts'}[b.dataset.na])) b.remove(); });
   m.querySelectorAll('[data-act="newround"]').forEach(b=>{ if(!canStep('js')) b.remove(); });
 }
 function lock(el){ el.disabled=true; const w=el.closest('.dwrap'); if(w) w.querySelectorAll('button').forEach(b=>b.disabled=true);
@@ -1712,7 +1740,7 @@ function updatePreview(){
   $('#pv').innerHTML=`<div class="pv">
     <div class="mut sm">${L('สถานะปัจจุบัน','Current status')}</div>
     <div class="stg big"><span class="dot" style="background:${oc(t.cur.o)}"></span>${esc(curLabel(t))}${t.cur.o?` <span class="own ${t.cur.o}">${t.cur.o==='G'?'GWM':'PS'}</span>`:''}${!t.done&&t.ev.length?` <span class="mut sm" style="font-weight:400">· ${days(t.curDays)}</span>`:''}</div>
-    ${tlBar(t)}
+    ${tlBar(t)}${!t.done&&t.ev.length&&!t.total?`<div class="mut sm" style="margin-top:4px">${L('ทุกขั้นลงวันที่วันนี้ · ระบบเริ่มนับวันตั้งแต่พรุ่งนี้','All steps are dated today · day counting starts tomorrow')}</div>`:''}
     <div class="nums"><span>${L('รวม','Total')} <b>${t.total}</b> ${L('วัน','days')}</span><span style="color:${OWN.P.c}">Partner <b style="color:inherit">${t.own.P}</b></span><span style="color:${OWN.G.c}">GWM <b style="color:inherit">${t.own.G}</b></span></div>
     ${f.map(x=>`<span class="flag">⚠ ${esc(x)}</span>`).join('')}
     ${(()=>{ const td=todoList(c,ss); return td.length?`<div class="todo">✎ ${L('ยังขาด (บันทึกได้ เติมทีหลังได้)','Still missing (you can save and fill later)')}: ${esc(td.join(' · '))}</div>`:''; })()}
@@ -1747,21 +1775,25 @@ function actionsFor(c,ss){
     a('pass',L('✓ ทดสอบผ่าน','✓ Test passed'),canStep('test'),[],'pri'); a('fail',L('✕ ไม่ผ่าน (อาการไม่หาย) → เปิด JS ใหม่','✕ Not fixed → open new JS'),canStep('test'),['ref','note']); a('testing',L('ระหว่างทดสอบ / เก็บข้อมูล','Testing / collecting data'),canStep('test'),['note']); }
   if(k==='follow'){ if(!c.customer_contact_date) a('contact',L('แจ้งลูกค้าแล้ว','Customer informed'),canField('customer_contact_date'),[],'pri'); a('deliver',L('✓ ส่งมอบแล้ว','✓ Delivered'),canField('delivered_date'),[],c.customer_contact_date?'pri':''); }
   if(c.id && FULL()) a('cancel',L('ยกเลิก SP','Cancel SP'),true,['reason','newsp','note'],'danger');
+  const hid=(key,label,perm,need)=>{ if(perm) out.push({key,label,need,cls:'',hide:true}); };
+  hid('njs',L('เปิด JS ใหม่','Open new JS'),canStep('js'),['ref','note']);
+  hid('nys',L('เปิด YS','Open YS'),canStep('ys'),['ref']);
+  hid('npo',L('เปิด PO / BO','Open PO / BO'),canStep('parts'),['type','ref','eta']);
   return out;
 }
 function renderActions(){
   const E=S.edit, box=$('#na'); if(!E||!box) return;
-  if(!E.id){ box.innerHTML=''; return; }
-  const c=normCase(E.c), ss=normSteps(E.steps), acts=actionsFor(c,ss);
-  if(!acts.length){ box.innerHTML=''; return; }
+  if(!E.id&&!E.act){ box.innerHTML=''; return; }
+  const c=normCase(E.c), ss=normSteps(E.steps), acts=actionsFor(c,ss), vis=acts.filter(x=>!x.hide);
   const cur=E.act&&acts.find(x=>x.key===E.act);
-  if(!cur){ box.innerHTML=`<div class="na"><div class="mut sm">${L('ขั้นถัดไป','Next step')}</div><div class="nab">${acts.map(x=>`<button type="button" class="btn ${x.cls}" data-na="${x.key}">${esc(x.label)}</button>`).join('')}</div></div>`; return; }
+  if(!cur&&!vis.length){ box.innerHTML=''; return; }
+  if(!cur){ box.innerHTML=`<div class="na"><div class="mut sm">${L('ขั้นถัดไป','Next step')}</div><div class="nab">${vis.map(x=>`<button type="button" class="btn ${x.cls}" data-na="${x.key}">${esc(x.label)}</button>`).join('')}</div></div>`; return; }
   const f=cur.need;
   box.innerHTML=`<div class="na on"><div><b>${esc(cur.label)}</b></div><div class="fg" style="margin-top:8px">
     <label class="drow">${L('วันที่','Date')}${dateIn('data-naf="d"',today())}</label>
     ${f.includes('pay')?`<label class="drow">${L('การชำระ (เช็กก่อนบันทึก)','Payment (check before saving)')}${radio('na_pay','data-naf="pay"',Object.keys(PAY).map(k=>[k,payName(k)]),E.c.cost_band||'le10k')}</label>`:''}
     ${f.includes('type')?`<label class="drow">${L('ประเภท','Type')}${radio('na_type','data-naf="type"',[['PO','PO'],['BO','BO']],'PO')}</label>`:''}
-    ${f.includes('ref')?`<label class="drow">${E.act==='order'?L('เลข PO / BO','PO / BO no.'):E.act==='ys_req'?L('เลข YS','YS no.'):L('เลข JS','JS no.')}<input data-naf="ref" autocapitalize="characters"></label>`:''}
+    ${f.includes('ref')?`<label class="drow">${E.act==='order'||E.act==='npo'?L('เลข PO / BO','PO / BO no.'):E.act==='ys_req'||E.act==='nys'?L('เลข YS','YS no.'):L('เลข JS','JS no.')}<input data-naf="ref" autocapitalize="characters"></label>`:''}
     ${f.includes('eta')?`<label class="drow">ETA${dateIn('data-naf="eta"','')}</label>`:''}
     ${f.includes('reason')?`<label class="drow">${L('เหตุผล *','Reason *')}<select data-naf="reason"><option value="">—</option>${Object.keys(CANCEL_R).map(k=>`<option value="${k}">${esc(cancelName(k))}</option>`).join('')}</select></label>`:''}
     ${f.includes('newsp')?`<label class="drow">${L('SP ใหม่ที่เปิดแทน','New SP')}<input data-naf="newsp" autocapitalize="characters" placeholder="SP…"></label>`:''}
@@ -1791,6 +1823,11 @@ async function doAction(){
     case 'approve': { const s=find(A.ysG); if(s){ s.result='approved'; s.d2=v.d; } break; }
     case 'nocover': { const s=find(A.ysG||A.ysP); if(s){ s.result='nocover'; s.d2=v.d; } c.cost_band='customer'; break; }
     case 'nocover0': ss.push(newStep('ys',r,{d1:v.d,result:'nocover',d2:v.d,ev:[]})); c.cost_band='customer'; break;
+    case 'njs': { const R=curRound(); if(ss.some(s=>s.kind==='js'&&s.d1&&!s.d3)) return toast(L('ปิด JS ใบเดิมก่อน','Close the open JS first'));
+      const g=ss.find(x=>x.kind==='diag'&&(x.round||1)===1); if(g&&!g.result&&R===1){ g.d1=g.d1||v.d; g.result='js'; }
+      ss.push(newStep('js',R,{ref_no:v.ref||null,d1:v.d,ev:[],note:v.note||null})); break; }
+    case 'nys': ss.push(newStep('ys',curRound(),{ref_no:v.ref||null,d1:v.d,ev:[]})); if(c.cost_band!=='customer') c.cost_band='gt10k'; break;
+    case 'npo': ss.push(newStep('parts',curRound(),{parts_type:v.type||'PO',ref_no:v.ref||null,d1:v.d,d2:v.eta||null})); break;
     case 'order': ss.push(newStep('parts',r,{parts_type:v.type||'PO',ref_no:v.ref,d1:v.d,d2:v.eta||null})); break;
     case 'noparts': { const g=step('diag'); g.d1=g.d1||v.d; g.result='noparts'; break; }
     case 'arrive': A.openParts.forEach(p=>{ const s=find(p); if(s) s.d3=v.d; }); break;
@@ -1803,7 +1840,7 @@ async function doAction(){
     case 'deliver': c.delivered_date=v.d; break;
     case 'cancel': c.cancelled_date=v.d; c.cancel_reason=v.reason; c.new_sp=v.newsp||null; c.cancel_note=v.note||null; break;
   }
-  E.act=null; await saveCase(true);
+  E.act=null; if(!E.id){ ensureRoundSteps(); renderModal(); return; } await saveCase(true);
 }
 function closeModal(){ $('#modal').classList.add('hidden'); $('#modal').innerHTML=''; S.edit=null; if(S.drill) renderDrill(); }
 function validate(c,ss){   // ห้ามบันทึกเฉพาะ 3 ช่องหลัก + ส่งมอบทั้งที่ทดสอบไม่ผ่าน (นอกนั้นเป็นแค่ "ยังขาด")
@@ -2076,7 +2113,7 @@ function tempPw(){ const a='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz2345
 /* ===================== Events ===================== */
 document.addEventListener('click', async e=>{
   if(e.target.closest('[data-stop]')) return;
-  const t=e.target.closest('[data-reopen],[data-rq],[data-bopen],[data-mren],[data-mtog],[data-madd],[data-qa],[data-mt],[data-na],[data-naok],[data-nax],[data-addev],[data-rmev],[data-ucs],[data-bdrill],[data-ufd],[data-lvlrsm],[data-side2],[data-drill],[data-dside],[data-dset],[data-bucket],[data-dealer-dash],[data-dealer-board],[data-drf],[data-vin],[data-deluser],[data-follow],[data-copy],[data-copytext],[data-deldealer],[data-svm],[data-temppw],[data-delallowed],[data-clear],[data-toggle],[data-tab],[data-act],[data-open],[data-today],[data-rmstep],[data-addstep],[data-auth],[data-dealer],[data-saveuser],[data-reject],[data-savedealer],[data-demo],[data-lang]');
+  const t=e.target.closest('[data-rmround],[data-copytext],[data-reopen],[data-rq],[data-bopen],[data-mren],[data-mtog],[data-madd],[data-qa],[data-mt],[data-na],[data-naok],[data-nax],[data-addev],[data-rmev],[data-ucs],[data-bdrill],[data-ufd],[data-lvlrsm],[data-side2],[data-drill],[data-dside],[data-dset],[data-bucket],[data-dealer-dash],[data-dealer-board],[data-drf],[data-vin],[data-deluser],[data-follow],[data-copy],[data-copytext],[data-deldealer],[data-svm],[data-temppw],[data-delallowed],[data-clear],[data-toggle],[data-tab],[data-act],[data-open],[data-today],[data-rmstep],[data-addstep],[data-auth],[data-dealer],[data-saveuser],[data-reject],[data-savedealer],[data-demo],[data-lang]');
   if(!t) return;
   const d=t.dataset;
   if(d.drill){ openDrill(d.drill); return; }
@@ -2095,7 +2132,7 @@ document.addEventListener('click', async e=>{
   if(d.dealerDash!==undefined){ if(S.drill){ S.drill=null; $('#modal').classList.add('hidden'); $('#modal').innerHTML=''; } S.df.dealer=d.dealerDash; S.d.side=null; S.tab='dash'; renderApp(); window.scrollTo(0,0); return; }
   if(d.dealerBoard){ S.f.dealer=d.dealerBoard; S.tab='board'; renderApp(); return; }
   if(d.drf){ S.drill[d.drf]=d.v; renderDrill(); return; }
-  if(d.vin){ e.stopPropagation(); openVin(d.vin); return; }
+  if(d.vin){ e.stopPropagation(); if(S.edit&&$('#modal [data-c]')){ readForm(); S.edit.fromVin=true; } openVin(d.vin); return; }
   if(d.deluser){ if(!confirmDel()) return; try{ await api.deleteUser(d.deluser); S.profiles=await api.profiles(); renderMain(); toast(L('ลบผู้ใช้ถาวรแล้ว','User deleted')); }catch(err){ toast(errMsg(err)); } return; }
   if(d.toggle){ e.stopPropagation(); const c=S.cases.find(x=>x.id===d.cid); if(!c) return;
     const v=!c[d.toggle]; try{ await api.saveCase({id:c.id,[d.toggle]:v}); c[d.toggle]=v; renderView();
@@ -2141,12 +2178,14 @@ document.addEventListener('click', async e=>{
   if(d.reopen!==undefined){ if(!isAdmin()||!S.edit) return; if(!confirm(L('เปิด SP นี้กลับมาเป็นรถค้าง?','Reopen this SP?'))) return; readForm();
     Object.assign(S.edit.c,{cancelled_date:null,cancel_reason:null,new_sp:null,cancel_note:null}); await saveCase(true); return; }
   if(d.rmstep!==undefined){ readForm(); const s=S.edit.steps.splice(+d.rmstep,1)[0]; if(s&&!isNew(s.id)) S.edit.removed.push(s.id); renderModal(); return; }
-  if(d.addstep){ readForm(); let r=+d.r; const ss=S.edit.steps;
-    if(d.addstep==='js' && repairPoint(ss,r) && !ss.some(x=>x.kind==='test'&&x.round===r&&x.result==='fail')){
-      if(!confirm(L('ครั้งนี้อะไหล่มาถึง / ประกอบแล้ว ถ้าเปิด JS ใหม่ = ซ่อมแล้วอาการไม่หาย\nระบบจะบันทึก "ทดสอบไม่ผ่าน" แล้วเปิดเป็นครั้งที่ '+(r+1)+' ต่อด้านล่าง','Parts already fitted in this round. Opening a new JS = not fixed.\nThe round is marked failed and round '+(r+1)+' starts below.'))) return;
-      const t=ss.find(x=>x.kind==='test'&&x.round===r); t.result='fail'; t.d1=t.d1||today(); ss.forEach(x=>{ if((x.round||1)>r) x.round++; }); r++; }
-    if(d.addstep==='js' && ss.some(x=>x.kind==='test'&&x.round===r&&x.result==='fail')) r++;
-    ss.push(newStep(d.addstep,r,{d1:today()})); ensureRoundSteps(); renderModal(); return; }
+  if(d.rmround){ const r=+d.rmround; if(!confirm(L('ยกเลิกรอบซ่อมที่ '+r+'?\n• ยกเลิก "ทดสอบไม่ผ่าน" ของรอบก่อน\n• JS / YS / PO ในรอบนี้ย้ายกลับไปรอบก่อน (ไม่ถูกลบ ถ้าไม่ใช้ค่อยกด 🗑 ทีละใบ)','Undo repair round '+r+'? JS / YS / PO move back to the previous round.'))) return;
+    readForm(); const E=S.edit;
+    E.steps.filter(x=>(x.round||1)===r&&['assemble','test','diag'].includes(x.kind)).forEach(x=>{ if(!isNew(x.id)) E.removed.push(x.id); });
+    E.steps=E.steps.filter(x=>!((x.round||1)===r&&['assemble','test','diag'].includes(x.kind)));
+    E.steps.forEach(x=>{ if((x.round||1)>=r) x.round=(x.round||1)-1; });
+    const t=E.steps.find(x=>x.kind==='test'&&x.round===r-1); if(t&&t.result==='fail') t.result='';
+    renderModal(); return; }
+  if(d.addstep){ readForm(); S.edit.steps.push(newStep(d.addstep,curRound(),{d1:today()})); renderModal(); return; }
   if(d.open && !S.edit){ openCase(d.open); return; }
   if(d.dealer){ S.f.dealer=d.dealer; S.tab='board'; renderApp(); return; }
   if(d.saveuser){ const uid=d.saveuser, role=$(`[data-ur="${uid}"]`).value, dl=$(`[data-ud="${uid}"]`).value, cat=$(`[data-uc="${uid}"]`).value;
@@ -2191,7 +2230,7 @@ document.addEventListener('click', async e=>{
         <div class="mb" style="padding-bottom:16px">${CHANGELOG.map(c=>`<div class="seg-row" style="align-items:flex-start"><b style="min-width:44px">v${c.v}</b><div><div class="mut sm">${fmt(c.d)}</div>${c[S.lang].map(x=>`<div>• ${esc(x)}</div>`).join('')}</div></div>`).join('')}
         <div class="mut sm" style="margin-top:12px;text-align:center">${CREDIT}</div></div></div>`; m.classList.remove('hidden'); break; }
     case 'drillclose': S.drill=null; $('#modal').classList.add('hidden'); $('#modal').innerHTML=''; break;
-    case 'vinback': if(S.drill) renderDrill(); else { $('#modal').classList.add('hidden'); $('#modal').innerHTML=''; } break;
+    case 'vinback': if(S.edit&&S.edit.fromVin){ S.edit.fromVin=false; renderModal(); } else if(S.drill) renderDrill(); else { $('#modal').classList.add('hidden'); $('#modal').innerHTML=''; } break;
     case 'bell': openBell(); break;
     case 'reqs': { const m=$('#modal'); S.edit=null; m.innerHTML=viewRequests(); m.classList.remove('hidden'); break; }
     case 'addmodel': { const v=($('#newModel')||{}).value; if(!v||!v.trim()) return; try{ await api.addModel(v.trim()); await reload(); toast(L('เพิ่มรุ่นแล้ว','Model added')); }catch(err){ toast(errMsg(err)); } break; }
