@@ -228,8 +228,9 @@ const CONFIG = {
   SUPABASE_ANON_KEY: 'sb_publishable_RESqSgvp97Bh5thFluhs0w_M1LYS4dk'
 };
 // ===== เวอร์ชัน: อัปเกรดทุกครั้ง ให้เพิ่มเลข + เพิ่มรายการไว้บนสุดของ CHANGELOG =====
-const APP_VERSION = '1.7.3';
+const APP_VERSION = '1.7.4';
 const CHANGELOG = [
+  {v:'1.7.4', d:'2026-11-19', th:['สถานะรถอยู่บนสุดของหน้ารถ ต่อด้วยข้อมูลรถ → ปัญหา → ขั้นถัดไป → ขั้นตอน'], en:['Vehicle status at the top of the case page']},
   {v:'1.7.3', d:'2026-11-18', th:['หน้ารถเรียงตามลำดับการกรอก: ข้อมูลรถ → ปัญหา → สถานะ → ขั้นถัดไป → ขั้นตอน → ส่งมอบ'], en:['Case page follows filling order: vehicle → problem → status → next step → steps → delivery']},
   {v:'1.7.2', d:'2026-11-18', th:['เลือกวันที่ในอนาคตได้ทุกช่องเหมือนเดิม'], en:['Future dates allowed again']},
   {v:'1.7.1', d:'2026-11-18', th:['ซ่อมไม่ผ่านแต่ยังไม่ได้เปิด JS ใหม่ ขึ้นว่า "รอเปิด JS ใหม่"','ลงวันที่วันนี้ทั้งหมด ขึ้นข้อความว่าเริ่มนับวันพรุ่งนี้'], en:['Clear status when waiting for a new JS','Note when all steps are dated today']},
@@ -1658,8 +1659,9 @@ function renderModal(){
     <div class="mb">
       ${!FULL()?`<div class="msg" style="margin-top:12px">${L('ตำแหน่งของคุณ','Your position')} (<b>${esc(catName(S.me.category))}</b>) ${L('กรอกได้เฉพาะ','can edit')}: ${esc(scopeText())}</div>`:''}
       ${E.hint?`<div class="msg" style="margin-top:12px">${esc(E.hint)}</div>`:''}
+      <div id="pv"></div>
       ${VEH}
-      <div id="pv"></div><div id="na"></div>${tools}
+      <div id="na"></div>${tools}
       ${rounds}
       <section class="fs"><h4><span class="no" style="background:${DONE_C}">✓</span>${L('ติดตามลูกค้า / ส่งมอบ','Customer follow-up / delivery')}</h4><div class="fg">${dateRow('customer_contact_date',L('โทรแจ้ง / นัดหมายลูกค้า','Customer contacted / appointment'),c.customer_contact_date)}${dateRow('delivered_date',L('ส่งมอบเสร็จสมบูรณ์','Delivered'),c.delivered_date)}</div><div class="stamp" data-sec="delivery"></div></section>
       ${E.id&&c.cancelled_date?`<section class="fs" style="border-color:#e5a3a3"><h4 style="color:#b42318">✕ ${L('SP นี้ถูกยกเลิกแล้ว','This SP was cancelled')}</h4>
