@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--red:#c8102e;--red50:#fdecef;--ink:#1f2328;--mut:#6b7280;--line:#e5e7eb;--bg:#f5f6f8;--P:#2563eb;--G:#c8102e;--C:#9ca3af;--warn:#b45309;--warnbg:#fef3c7}
+:root{--red:#c8102e;--red50:#fdecef;--ink:#111827;--mut:#4b5563;--line:#e5e7eb;--bg:#f5f6f8;--P:#2563eb;--G:#c8102e;--C:#9ca3af;--warn:#b45309;--warnbg:#fef3c7}
 *{box-sizing:border-box}
 body{margin:0;font-family:'IBM Plex Sans Thai',system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;-webkit-text-size-adjust:100%}
 button{font:inherit;cursor:pointer}
@@ -146,6 +146,40 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .newbar .btn{font-weight:700;color:#111}.newbar .btn:disabled{opacity:.45;cursor:not-allowed}
 .srow.diag{border-left-color:#6b7280}.srow.test{border-left-color:#059669}.srow.ys{border-left-color:#d97706}
 .fs.flow .srow .fg{grid-column:1/-1}.srow.test .rm{font-size:12px;border:1px solid var(--line);border-radius:6px;padding:3px 8px;background:#fff;top:8px;right:8px}
+/* sortable tables */
+.tw.st{max-height:none;margin-top:6px}.tw.st th{padding:0;position:sticky;top:0;background:#f8fafc}.thb{all:unset;cursor:pointer;display:block;width:100%;box-sizing:border-box;padding:8px 10px;font-weight:700;color:#111827;white-space:nowrap}
+.thb:hover{background:#eef2f7}.sar{color:#94a3b8;font-weight:400}.tw.st td,.tw.st th{text-align:left}.tw.st .n{text-align:right}
+.tw.st td{padding:7px 10px;border-top:1px solid var(--line);color:#111827}.tw.st tr.click{cursor:pointer}.tw.st tr.click:hover td{background:#f8fafc}
+.bc{min-width:110px}.bcv{display:inline-block;min-width:34px;font-weight:700}.bcb{display:inline-block;vertical-align:middle;width:70px;height:8px;background:#eef0f3;border-radius:4px;margin-left:6px;overflow:hidden}.bcb i{display:block;height:100%;border-radius:4px}
+.pill{display:inline-block;padding:1px 8px;border-radius:10px;font-size:12px;font-weight:700;color:#fff}
+/* report */
+.report h4{margin:16px 0 4px;font-size:14px}.rph{display:flex;justify-content:space-between;gap:10px;margin-top:12px;padding-bottom:8px;border-bottom:2px solid var(--red)}
+@media print{ body{background:#fff} #app,#toast,.noprint{display:none!important} .modal{position:static;background:none;padding:0;display:block} .sheet{max-height:none!important;height:auto!important;width:100%!important;box-shadow:none;border-radius:0} .mb{overflow:visible} .mh{border:0}
+  .tw{border:1px solid #ddd;overflow:visible;max-height:none!important} .thb .sar{display:none} tr{break-inside:avoid} .tw.st table{font-size:10.5px} .tw.st td,.thb{padding:4px 5px!important} .bcb{width:40px} .stats{grid-template-columns:repeat(5,1fr)} @page{size:A4 landscape;margin:10mm} }
+.plate{display:inline-block;border:1.5px solid #111827;border-radius:5px;padding:0 6px;font-weight:700;font-size:12.5px;background:#fff}
+@media(min-width:900px){ body{font-size:15px} .sm{font-size:13px} .stat .l{font-size:13px} .fg label,.drow{font-size:13.5px} th{font-size:13px} }
+/* case tabs */
+.ctabs{position:sticky;top:0;z-index:6;display:flex;gap:4px;background:#fff;padding:10px 0 8px;border-bottom:1px solid var(--line);margin:0 -2px}
+.ctabs button{flex:1;border:1px solid var(--line);background:#f8fafc;border-radius:8px;padding:8px 4px;font-weight:600;color:#374151;font-size:13.5px}
+.ctabs button.on{background:var(--red);border-color:var(--red);color:#fff}
+.cpane{display:none}.cpane.on{display:block}
+.cpane .newbar{top:52px}
+/* performance */
+.rads{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}.rad{border:1px solid var(--line);border-radius:10px;padding:8px}.radh{font-weight:700;font-size:13.5px}
+.tw.st tr.me td{background:#fdecef;font-weight:700}
+.radar{width:100%;max-width:380px;display:block;margin:auto}.pfh{font-size:15px}.hm{display:inline-block;min-width:34px;text-align:center;border-radius:5px;padding:1px 6px;font-weight:700;color:#111827}
+/* timeline rows */
+.vwt{float:right;display:inline-flex;gap:2px;margin-left:8px}.vwt button{border:1px solid var(--line);background:#fff;border-radius:6px;padding:2px 7px;font-size:13px;opacity:.55}.vwt button.on{opacity:1;border-color:#111827}
+.tlrs{margin-top:8px}.tlr{display:grid;grid-template-columns:260px minmax(0,1fr);gap:10px;align-items:center;padding:8px 4px;border-bottom:1px solid var(--line);cursor:pointer}.tlr:hover{background:#f8fafc}
+.tlh{display:flex;gap:8px;align-items:center;min-width:0}.tlm{flex:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.tlt{text-align:right;white-space:nowrap}.tlt>b{font-size:16px}
+.tlx{display:flex;height:26px;border-radius:5px;overflow:hidden;min-width:28px}.tlx.big{height:34px}.tlx i{display:flex;align-items:center;justify-content:center;font-style:normal;font-size:11.5px;font-weight:600;white-space:nowrap;overflow:hidden;min-width:3px;border-right:2px solid #fff}.tlx i:last-child{border-right:0}
+.tlx i.now{box-shadow:inset 0 0 0 2px #111827}.tlx.empty2{font-size:12px;color:var(--mut);align-items:center}
+.tll{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;margin-top:8px}.tll i{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:4px;vertical-align:-1px}.tll i.now{box-shadow:inset 0 0 0 2px #111827;background:#fff}
+.tlsc{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.tlsc select{padding:6px 8px;font-size:13px}
+.tla{display:grid;grid-template-columns:260px minmax(0,1fr);gap:10px;margin-top:8px}.tlat{position:relative;height:16px;font-size:11px;color:var(--mut);border-bottom:1px solid var(--line)}.tlat span{position:absolute;transform:translateX(-50%)}.tlat span:first-child{transform:none}.tlat span:last-child{transform:translateX(-100%)}
+.tlcal .tlx{width:100%!important}
+@media(max-width:899px){ .tlr,.tla{grid-template-columns:1fr;gap:6px} }
+.pv .tlx{margin:8px 0 4px}
 /* rsm upload */
 .rsmup{margin-top:14px;padding-top:12px;border-top:1px solid var(--line,#e5e7eb)}
 /* dashboard v1.2 */
@@ -228,8 +262,10 @@ const CONFIG = {
   SUPABASE_ANON_KEY: 'sb_publishable_RESqSgvp97Bh5thFluhs0w_M1LYS4dk'
 };
 // ===== เวอร์ชัน: อัปเกรดทุกครั้ง ให้เพิ่มเลข + เพิ่มรายการไว้บนสุดของ CHANGELOG =====
-const APP_VERSION = '1.7.4';
+const APP_VERSION = '1.8';
 const CHANGELOG = [
+  {v:'1.8', d:'2026-11-25', th:['หน้าภาพรวม: ตัวกรอง ยังไม่ส่งมอบ / ส่งมอบแล้ว / ทั้งหมด (เปิดเว็บใหม่กลับเป็น ยังไม่ส่งมอบ)','ผลงานพนักงาน: อันดับแยก 5 ตำแหน่ง (จำนวน job ต่อวัน / สัปดาห์ / เดือน · เวลาปิดงานเฉลี่ย) · radar ผลงานรวม + radar ความชำนาญ Foreman · พนักงานเห็นอันดับไม่เห็นชื่อ · SVM / RSM / Admin เห็นชื่อ','หน้าตามงาน: เลือกราย PS และกรอง จอด / ไม่จอด / ทั้งหมด','ขั้นสุดท้ายเปลี่ยนเป็น "SA แจ้งลูกค้า" (งานค้างขึ้นที่ SA)','Timeline แนวนอนรายคัน: ท่อนตามขั้นตอน ยาวตามจำนวนวัน แดง = รอ GWM น้ำเงิน = รอ PS · เรียงตามวันรวม / GWM / PS / ขั้นปัจจุบัน / รออะไหล่ ฯลฯ มาก↔น้อย · จอคอมดูแบบตามปฏิทินได้','หน้ารถแบ่งแท็บ: สถานะ · ข้อมูลรถ · ขั้นตอน · ส่งมอบ (จำแท็บล่าสุด) · เพิ่มรถใหม่กรอกเฉพาะข้อมูลรถเข้า','การชำระเริ่มเป็น "ยังไม่ทราบ" · ขึ้นเตือนถ้าถึงขั้นอะไหล่แล้วยังไม่ระบุ','หน้าภาพรวม: ทุกกล่องสลับ 📊 กราฟ / 📋 ตาราง (ตารางกดหัวคอลัมน์เรียงได้) · ตัวกรองเดือน','📄 รายงานรถเข้า – ออก: อัตราเคลียร์ แยกวัน / สัปดาห์ / เดือน / ปี · RSM / ศูนย์ · พิมพ์ PDF / Excel','ช่องเลขทะเบียน (ค้นหาได้) · ตัวหนังสือเข้มขึ้น'],
+   en:['Per-vehicle horizontal timeline by step, sortable; calendar view on desktop','Case page tabs: Status · Vehicle · Steps · Delivery; short new-vehicle form','Payment starts as "not known yet"','Overview panels switch chart / sortable table; month filter','📄 In/out report with clearance rate; print PDF / Excel','License plate field; darker text']},
   {v:'1.7.4', d:'2026-11-19', th:['สถานะรถอยู่บนสุดของหน้ารถ ต่อด้วยข้อมูลรถ → ปัญหา → ขั้นถัดไป → ขั้นตอน'], en:['Vehicle status at the top of the case page']},
   {v:'1.7.3', d:'2026-11-18', th:['หน้ารถเรียงตามลำดับการกรอก: ข้อมูลรถ → ปัญหา → สถานะ → ขั้นถัดไป → ขั้นตอน → ส่งมอบ'], en:['Case page follows filling order: vehicle → problem → status → next step → steps → delivery']},
   {v:'1.7.2', d:'2026-11-18', th:['เลือกวันที่ในอนาคตได้ทุกช่องเหมือนเดิม'], en:['Future dates allowed again']},
@@ -308,7 +344,7 @@ const ST = {
   parts_order: {th:'รอสั่งอะไหล่',           en:'Awaiting parts order',       o:'P'},
   eta:         {th:'รออะไหล่ (ETA)',         en:'Awaiting parts (ETA)',       o:'G'},
   test:        {th:'ซ่อม / ทดสอบ',           en:'Repair / test',              o:'P'},
-  follow:      {th:'CR แจ้งลูกค้า',          en:'CR to contact customer',     o:'P'},
+  follow:      {th:'SA แจ้งลูกค้า',          en:'SA to inform customer',      o:'P'},
   decide:      {th:'ต้องตัดสินใจ',           en:'Decision needed',            o:'P'},
   done:        {th:'ส่งมอบแล้ว',            en:'Delivered',                  o:null},
   cancel:      {th:'ยกเลิก SP',             en:'SP cancelled',               o:null}
@@ -331,7 +367,7 @@ const langBtn = () => `<button class="btn sm lang" data-lang="${S.lang==='en'?'t
 /* ===================== ค่าคงที่ ===================== */
 const DEMO = !CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY;
 const CASE_DATES = ['arrival_date','est_delivery','analysis_date','customer_contact_date','delivered_date','cancelled_date'];
-const CASE_FIELDS = ['id','dealer_id','sp','vin','model','parked','loaner','cost_band','remark','problem_cat','symptom','cause','cancel_reason','cancel_note','new_sp',...CASE_DATES];
+const CASE_FIELDS = ['id','dealer_id','sp','vin','plate','model','parked','loaner','cost_band','remark','problem_cat','symptom','cause','cancel_reason','cancel_note','new_sp',...CASE_DATES];
 const STEP_FIELDS = ['id','round','kind','ref_no','d1','d2','d3','result','parts_type','note','ev'];
 
 /* ===================== utils ===================== */
@@ -494,9 +530,9 @@ const PROBLEMS = {
   ac:{th:'แอร์',en:'A/C'}, software:{th:'ซอฟต์แวร์ / จอ / ADAS',en:'Software / display / ADAS'}, body:{th:'ตัวถัง / อุปกรณ์ภายใน',en:'Body / trim'}, other:{th:'อื่นๆ',en:'Other'}
 };
 const probName = k => PROBLEMS[k] ? PROBLEMS[k][S.lang] : (k||'');
-const FOLLOW_CATS = { diag:['foreman'], js_wait:['foreman'], js_close:['foreman'], ys_open:['warranty','owner_svm'], ys_wait:['warranty'], parts_order:['parts'], eta:['parts'], test:['foreman'], follow:['cr','sa'], decide:['owner_svm','sa'], done:['cr'], cancel:['owner_svm'] };
+const FOLLOW_CATS = { diag:['foreman'], js_wait:['foreman'], js_close:['foreman'], ys_open:['warranty','owner_svm'], ys_wait:['warranty'], parts_order:['parts'], eta:['parts'], test:['foreman'], follow:['sa','owner_svm'], decide:['owner_svm','sa'], done:['sa'], cancel:['owner_svm'] };
 // งานของฉัน: สถานะที่แต่ละตำแหน่งต้องเคลียร์ (owner_svm / sa เห็นทุกงานฝั่ง PS)
-const MY_Q = { foreman:['diag','js_close','test'], warranty:['ys_open'], parts:['parts_order'], cr:['follow'] };
+const MY_Q = { foreman:['diag','js_close','test'], warranty:['ys_open'], parts:['parts_order'], sa:['follow'] };
 // รอ GWM: ศูนย์เป็นคนบันทึกวันที่ GWM ตอบ / อนุมัติ / อะไหล่มา
 const MY_WAIT = { foreman:['js_wait'], warranty:['ys_wait'], parts:['eta'], owner_svm:['js_wait','ys_wait','eta'], sa:['js_wait','ys_wait','eta'] };
 const PS_STAGES = ['diag','js_close','ys_open','parts_order','test','follow'], GWM_STAGES = ['js_wait','ys_wait','eta'];
@@ -586,6 +622,7 @@ function supaApi(){
     async addModel(name){ ok(await sb.from('vor_models').insert({name})); },
     async updModel(id,p){ ok(await sb.from('vor_models').update(p).eq('id',id)); },
     async renameModelOnCases(ids,model){ for(let i=0;i<ids.length;i+=100) ok(await sb.from('vor_cases').update({model}).in('id',ids.slice(i,i+100))); },
+    async logsSince(since){ return pageAll(()=>sb.from('vor_log').select('id,case_id,dealer_id,step_id,kind,action,fields,actor,actor_name,actor_cat,at').gte('at',since).order('id')); },
     async feed(since){ const r=await sb.from('vor_log').select('id,case_id,dealer_id,kind,action,fields,actor,actor_name,actor_cat,at').gte('at',since).order('id',{ascending:false}).limit(300); return r.error?[]:r.data; },
     async allowed(){ return ok(await sb.from('allowed_emails').select('*').order('created_at',{ascending:false})); },
     async saveAllowed(rows){ ok(await sb.from('allowed_emails').upsert(rows)); },
@@ -622,6 +659,9 @@ function demoApi(){
       {user_id:'u8',email:'ton.tech@gmail.com',full_name:'ต้น ช่างใหม่',role:'pending',category:'foreman',requested_role:'ps',requested_dealer_id:1}],
     allowed:[{email:'sa2@chanroad.example',full_name:'เบล SA',role:'ps',category:'sa',dealer_id:1},{email:'svm@chanroad.example',full_name:'สมชาย ใจดี',role:'ps',category:'owner_svm',dealer_id:1},{email:'svm@hatyai.example',full_name:'วิชัย',role:'ps',category:'owner_svm',dealer_id:10}] };
   const who={case:DEMO_USERS.owner_svm, js:DEMO_USERS.foreman, assemble:DEMO_USERS.foreman, test:DEMO_USERS.foreman, ys:DEMO_USERS.warranty, parts:DEMO_USERS.parts};
+  const FM2={user_id:'u10',full_name:'โอ๊ต หัวหน้าช่าง',role:'ps',category:'foreman',dealer_id:1};
+  const CATK={case:'owner_svm',js:'foreman',assemble:'foreman',test:'foreman',ys:'warranty',parts:'parts'}, CATN={owner_svm:'SVM',foreman:'Foreman',warranty:'Warranty',parts:'Parts',sa:'SA'};
+  let flip=0; const actor=(k,dl)=>{ if(dl==1) return k==='js'||k==='test'?((flip++%3===0)?FM2:who[k]):who[k]; const c=CATK[k]; return {user_id:'d'+dl+c,full_name:CATN[c]+' '+(SEED_DEALERS[dl-1]||['#'+dl])[0].split(' ')[0],role:'ps',category:c,dealer_id:dl}; };
   const log=(cid,dealer,kind,action,fields,u,step_id,at)=>db.logs.push({id:lid++,case_id:cid,dealer_id:dealer,step_id:step_id||null,kind,action,fields:fields||null,actor:u.user_id,
     actor_name:u.full_name,actor_cat:u.category||u.role,at:at||new Date().toISOString()});
   const D=n=>n==null?null:dAgo(n);
@@ -632,9 +672,10 @@ function demoApi(){
   const X=(a,res,r)=>({kind:'test',d1:D(a),result:res,round:r||1});
   const C=(dealer_id,sp,model,vin,parked,x,steps)=>{ const id='c'+(seq++);
     db.cases.push(Object.assign({id,dealer_id,sp,model,vin,parked,cost_band:'le10k'},x));
-    log(id,dealer_id,'case','insert',['created'],who.case,null,x.arrival_date+'T09:15:00');
+    log(id,dealer_id,'case','insert',['created'],actor('case',dealer_id),null,x.arrival_date+'T09:15:00');
+    if(x.customer_contact_date) log(id,dealer_id,'case','update',['customer_contact_date'],{user_id:'d'+dealer_id+'sa',full_name:'SA '+(SEED_DEALERS[dealer_id-1]||['#'])[0].split(' ')[0],role:'ps',category:'sa',dealer_id},null,x.customer_contact_date+'T16:00:00');
     (steps||[]).forEach(s=>{ const st=Object.assign({id:'s'+(seq++),case_id:id,dealer_id},s); db.steps.push(st);
-      log(id,dealer_id,s.kind,'insert',null,who[s.kind],st.id,(s.d3||s.d2||s.d1)+'T14:30:00'); }); };
+      log(id,dealer_id,s.kind,'insert',null,actor(s.kind,dealer_id),st.id,(s.d3||s.d2||s.d1)+'T14:30:00'); }); };
   C(1,'SP2611-0412','Haval H6 HEV','LGWEF6A51RH000412',true,{arrival_date:D(2)});
   C(2,'SP2611-0388','Tank 300','LGWFF7A59RJ000388',true,{problem_cat:'electrical',symptom:'ไฟเตือนระบบไฟฟ้าโชว์ สตาร์ทไม่ติดเป็นบางครั้ง',arrival_date:D(12),analysis_date:D(11)},[J('JS-2611021',10)]);
   C(14,'SP2611-0333','POER','LGWDB2A55RH000333',true,{arrival_date:D(5),analysis_date:D(5)},[J('JS-2611030',4,2)]);
@@ -701,6 +742,7 @@ function demoApi(){
     async addModel(name){ db.models.push({id:db.models.length+100,name,active:true,sort:100}); },
     async updModel(id,p){ Object.assign(db.models.find(x=>x.id===id),p); },
     async renameModelOnCases(ids,model){ db.cases.filter(c=>ids.includes(c.id)).forEach(c=>c.model=model); },
+    async logsSince(since){ const v=vis(); return cp(db.logs.filter(l=>v.includes(l.case_id)&&l.at>=since)); },
     async feed(since){ const v=vis(); return cp((db.logs||[]).filter(l=>v.includes(l.case_id)&&(!since||l.at>=since)).slice().sort((a,b)=>b.id-a.id)); },
     async svmSetMember(uid,role,cat){ const p=db.profiles.find(x=>x.user_id===uid);
       if(uid===S.me.user_id) throw {message:'NOT_SELF'};
@@ -833,7 +875,7 @@ function renderPending(){
 function renderApp(){
   computeAll();
   const nMine=myTasks().length, mineTab=['mine',(isStaff()?L('ตามงาน GWM','GWM follow-up'):L('งานของฉัน','My tasks'))+(nMine?` <span class="badge">${nMine}</span>`:'')];
-  const tabs=isStaff()?[['dash',L('ภาพรวม','Overview')],['board','Board'],mineTab,['list',L('รายการ','List')]]:[mineTab,['dash',L('ภาพรวม','Overview')],['board','Board'],['list',L('รายการ','List')]];
+  const tabs=isStaff()?[['dash',L('ภาพรวม','Overview')],['board','Board'],mineTab,['list',L('รายการ','List')],['perf',L('ผลงานพนักงาน','Staff performance')]]:[mineTab,['dash',L('ภาพรวม','Overview')],['board','Board'],['list',L('รายการ','List')]].concat(POS.includes(S.me.category)?[['perf',S.me.category==='owner_svm'?L('ผลงานทีม','Team performance'):L('ผลงาน','My performance')]]:[]);
   if(isAdmin()){ const n=(S.profiles||[]).filter(p=>p.role==='pending').length; tabs.push(['admin',L('ผู้ใช้ & PS','Users & PS')+(n?` <span class="badge">${n}</span>`:'')]); }
   if(isSvm()){ const n=(S.profiles||[]).filter(p=>p.role==='pending').length; tabs.push(['team',L('ทีมงานศูนย์','Team')+(n?` <span class="badge">${n}</span>`:'')]); }
   if(!tabs.some(t=>t[0]===S.tab)) S.tab='board';
@@ -858,6 +900,7 @@ function renderMain(){
   if(S.tab==='team'){ m.innerHTML=contactBanner()+viewTeam(); return; }
   if(S.tab==='dash'){ m.innerHTML=contactBanner()+viewDash(); return; }
   if(S.tab==='mine'){ m.innerHTML=contactBanner()+viewMine(); return; }
+  if(S.tab==='perf'){ m.innerHTML=viewPerf(); return; }
   m.innerHTML=contactBanner()+filterBar()+'<div id="view"></div>';
   renderView();
 }
@@ -898,7 +941,7 @@ function filtered(){
     if(f.loaner==='y' && !c.loaner) return false;
     if(f.loaner==='n' && c.loaner) return false;
     if(q){ const refs=(S.stepsBy[c.id]||[]).map(s=>s.ref_no||'').join(' ');
-      if(![c.sp,c.vin,c.model,refs,c.symptom,c.cause,probName(c.problem_cat)].join(' ').toLowerCase().includes(q)) return false; }
+      if(![c.sp,c.vin,c.plate,c.model,refs,c.symptom,c.cause,probName(c.problem_cat)].join(' ').toLowerCase().includes(q)) return false; }
     return true; });
 }
 
@@ -906,6 +949,38 @@ function filtered(){
 const oc = o => o ? OWN[o].c : DONE_C;
 function tlBar(t){ const s=t.segs.filter(x=>x.days>0); if(!s.length) return '<div class="tl"></div>';
   return `<div class="tl">${s.map(x=>`<i style="flex:${x.days};background:${oc(x.o)}" title="${esc(stName(x.k))} ${days(x.days)}"></i>`).join('')}</div>`; }
+/* ===== timeline แนวนอนรายคัน: ท่อนตามขั้นตอน ยาวตามจำนวนวัน ===== */
+const SEGC = { diag:'#bfdbfe', js_close:'#93c5fd', ys_open:'#7cb3f7', parts_order:'#60a5fa', test:'#3b82f6', follow:'#1d4ed8', decide:'#93c5fd',
+               js_wait:'#f4a3a3', ys_wait:'#f7c1c1', eta:'#dc3c3c' };
+const segTxt = k => ['test','follow','eta'].includes(k)?'#fff':'#111827';
+const SEGS = { diag:['วิเคราะห์','Diag'], js_wait:['รอ GWM JS','GWM JS'], js_close:['Foreman','Foreman'], ys_open:['เปิด/แก้ YS','YS prep'], ys_wait:['Warranty','Warranty'],
+               parts_order:['สั่งอะไหล่','Order'], eta:['รออะไหล่','Parts ETA'], test:['ซ่อม/ทดสอบ','Repair/test'], follow:['SA แจ้งลูกค้า','SA informs'], decide:['ตัดสินใจ','Decide'] };
+function tlSegs(c,scale,big){ const t=c._t, segs=t.segs.filter(x=>x.days>0), tot=Math.max(1,t.total), w=Math.max(4,tot/Math.max(1,scale)*100);
+  if(!segs.length) return `<div class="tlx empty2">${L('ยังไม่นับวัน','no days yet')}</div>`;
+  return `<div class="tlx${big?' big':''}" style="width:${w}%">${segs.map((x,i)=>{ const nm=L(...(SEGS[x.k]||[stName(x.k),stName(x.k)]));
+    const lab=x.days/tot*w>=(big?9:14)?`${nm} ${x.days}`:x.days/tot*w>=3?x.days:'';
+    return `<i data-seg="${esc(stName(x.k))}${x.detail?' · '+esc(x.detail):''}|${x.from}|${x.to}|${x.days}" class="${x.open&&!t.done?'now':''}" style="flex:${x.days};background:${SEGC[x.k]||oc(x.o)};color:${segTxt(x.k)}" title="${esc(stName(x.k))} · ${x.days} ${L('วัน','d')} (${fmt(x.from)} – ${fmt(x.to)})"><span>${lab}</span></i>`; }).join('')}</div>`; }
+function tlLegend(){ return `<div class="tll"><span><i style="background:#dc3c3c"></i>${L('รอ GWM','Waiting on GWM')}</span><span><i style="background:#3b82f6"></i>${L('รอ PS','Waiting on PS')}</span><span><i class="now"></i>${L('ขั้นปัจจุบัน','Current step')}</span><span class="mut">${L('แตะท่อนเพื่อดูชื่อขั้นและวันที่','Tap a block for step and dates')}</span></div>`; }
+const TL_SORT = [['total',L('วันรวม','Total days')],['G',L('วันที่รอ GWM','Days at GWM')],['P',L('วันที่รอ PS','Days at PS')],['cur',L('วันในขั้นปัจจุบัน','Days in current step')],['eta',L('วันรออะไหล่','Days awaiting parts')],['js_wait',L('วันรอ GWM ตอบ JS','Days awaiting JS')],['ys_wait',L('วันรอ Warranty','Days awaiting Warranty')]];
+function tlVal(c,k){ const t=c._t; return k==='total'?t.total:k==='G'?t.own.G:k==='P'?t.own.P:k==='cur'?t.curDays:t.segs.filter(x=>x.k===k).reduce((a,x)=>a+x.days,0); }
+function tlSortCtl(id){ const st=S.tls[id]||{k:'total',d:'desc'};
+  return `<div class="tlsc"><select data-tlk="${id}">${TL_SORT.map(([k,l])=>`<option value="${k}" ${st.k===k?'selected':''}>${L('เรียงตาม','Sort by')}: ${l}</option>`).join('')}</select>
+    <div class="segc sm2">${[['desc',L('มาก→น้อย','High→low')],['asc',L('น้อย→มาก','Low→high')]].map(([d,l])=>`<button data-tld="${id}" data-v="${d}" class="${st.d===d?'on':''}">${l}</button>`).join('')}</div>
+    ${window.innerWidth>=900?`<div class="segc sm2">${[['rel',L('เริ่มจุดเดียวกัน','Same start')],['cal',L('ตามปฏิทิน','Calendar')]].map(([v,l])=>`<button data-tlv="${v}" class="${(S.tlv||'rel')===v?'on':''}">${l}</button>`).join('')}</div>`:''}</div>`; }
+S.tls = S.tls || {};
+function tlSort(id,list){ const st=S.tls[id]||{k:'total',d:'desc'}, d=st.d==='asc'?1:-1; return [...list].sort((a,b)=>(tlVal(a,st.k)-tlVal(b,st.k))*d || (b._t.total-a._t.total)); }
+function tlCal(list){ // มุมมองปฏิทิน: ตำแหน่งตามวันที่จริง
+  const T=today(), s0=list.reduce((m,c)=>c.arrival_date&&c.arrival_date<m?c.arrival_date:m,T), span=Math.max(1,dd(s0,T));
+  const ticks=[]; for(let i=0;i<=5;i++){ const d=new Date(s0+'T00:00:00'); d.setDate(d.getDate()+Math.round(span*i/5)); ticks.push(ymd(d)); }
+  return {s0,span,axis:`<div class="tla"><div></div><div class="tlat">${ticks.map((d,i)=>`<span style="left:${i*20}%">${fmt(d).slice(0,5)}</span>`).join('')}</div></div>`}; }
+function tlRows(id,list,opt={}){
+  const L2=tlSort(id,list).slice(0,opt.limit||1e9), scale=Math.max(1,...L2.map(c=>c._t.total)), staff=isStaff(), cal=(S.tlv==='cal'&&window.innerWidth>=900)?tlCal(L2):null;
+  return `${opt.noctl?'':tlSortCtl(id)}${cal?cal.axis:''}<div class="tlrs">${L2.map((c,i)=>{ const t=c._t;
+    const bar = cal ? `<div class="tlcal"><div style="margin-left:${dd(cal.s0,c.arrival_date)/cal.span*100}%;width:${Math.max(1.5,t.total/cal.span*100)}%">${tlSegs(c,t.total||1)}</div></div>` : tlSegs(c,scale);
+    return `<div class="tlr" data-open="${c.id}"><div class="tlh"><span class="rkn">${i+1}</span><div class="tlm"><b>${esc(c.sp)}</b>${t.round>1?` <span class="rnd">${L('รอบ','R')} ${t.round}</span>`:''}${c.plate?` <span class="plate sm">${esc(c.plate)}</span>`:''}
+      <div class="mut sm">${staff?esc(dName(c.dealer_id))+' · ':''}${t.done?L('ส่งมอบแล้ว','Delivered'):esc(stName(t.cur.k))}</div></div>
+      <div class="tlt"><b>${t.total}</b> ${L('วัน','d')}<div class="sm"><span style="color:var(--G)">GWM ${t.own.G}</span> · <span style="color:var(--P)">PS ${t.own.P}</span></div></div></div>${bar}</div>`; }).join('')||`<div class="mut" style="padding:12px 0">${L('ไม่มีรถ','No vehicles')}</div>`}</div>${opt.nolegend?'':tlLegend()}`;
+}
 function card(c){
   const t=c._t;
   const tog=(f,on,cls,txtOn,txtOff)=>{ const can=canField(f);
@@ -973,7 +1048,7 @@ function rowsForExport(list){
   return list.map(c=>{ const t=c._t, ss=S.stepsBy[c.id]||[];
     const openEta=ss.filter(s=>s.kind==='parts'&&!s.d3&&s.d2).map(s=>s.d2).sort()[0]||'';
     const r={}; const put=(th,en,v)=>r[L(th,en)]=v;
-    put('ศูนย์ (PS)','Dealer (PS)',dName(c.dealer_id)); put('SP','SP',c.sp); put('VIN','VIN',c.vin||''); put('รุ่น','Model',c.model||'');
+    put('ศูนย์ (PS)','Dealer (PS)',dName(c.dealer_id)); put('SP','SP',c.sp); put('VIN','VIN',c.vin||''); put('ทะเบียน','Plate',c.plate||''); put('รุ่น','Model',c.model||'');
     put('วันที่มาถึง','Arrival date',c.arrival_date); put('จอด','Parked',c.parked?L('จอด','Yes'):L('ไม่จอด','No')); put('รถใช้ระหว่างซ่อม','Loaner car',c.loaner?L('มี','Yes'):L('ไม่มี','No')); put('รอบการซ่อม','Repair round',t.round);
     put('สถานะปัจจุบัน','Current status',stName(t.cur.k)); put('รายละเอียด','Detail',t.cur.detail||''); put('ผู้รับผิดชอบ','Owner',t.cur.o?ownName(t.cur.o):'');
     put('ค้างสถานะนี้ (วัน)','Days in status',t.done?'':t.curDays); put('รวม (วัน)','Total days',t.total);
@@ -1132,7 +1207,7 @@ function viewStats(base){
 
 /* ===================== v1.6: การชำระ · รุ่นรถ · กระดิ่ง · คำขอสมัคร ===================== */
 const PAY = { le10k:['เคลม ≤ 10,000','Claim ≤ 10,000'], gt10k:['เคลม > 10,000 (ขอ YS)','Claim > 10,000 (YS)'], customer:['ลูกค้าชำระเอง','Customer pays'] };
-const payName = k => PAY[k] ? L(...PAY[k]) : '';
+const payName = k => PAY[k] ? L(...PAY[k]) : L('ยังไม่ทราบ','Not known yet');
 const normModel = s => String(s||'').toLowerCase().replace(/[\s\-_]+/g,'');
 function modelList(){ const m=(S.models&&S.models.length?S.models.filter(x=>x.active!==false).sort((a,b)=>(a.sort-b.sort)||a.name.localeCompare(b.name)).map(x=>x.name):MODELS); return m; }
 function officialModel(name){ const n=normModel(name); return modelList().find(m=>normModel(m)===n)||null; }
@@ -1245,22 +1320,140 @@ function mtRow(c,withActs){ const t=c._t, ss=S.stepsBy[c.id]||[], staff=isStaff(
     <div class="mut sm">${L('ค้างขั้นนี้','In this step')} <b style="color:${t.curDays>14?'#c8102e':t.curDays>7?'#ea580c':'inherit'}">${t.curDays}</b> ${L('วัน','d')} · ${L('รวม','total')} ${t.total} ${L('วัน','d')}</div></div>
     ${acts.length?`<div class="nab">${acts.map(a=>`<button type="button" class="btn sm ${a.cls}" data-qa="${c.id}" data-qk="${a.key}">${esc(a.label)}</button>`).join('')}</div>`:''}${staff?'':lastLine(c)}</div>`; }
 function viewMine(){
-  const all=myTasks(), staff=isStaff(), st=myStages(), multi=st.length>1, wait=myWaiting();
+  const staff=isStaff(), st=myStages(), multi=st.length>1, M=S.mt;
+  const pk=c=>!M.parked||(M.parked==='y')===!!c.parked, dl=c=>!M.dealer||String(c.dealer_id)===String(M.dealer);
+  const raw=myTasks(), base=raw.filter(dl), all=base.filter(pk), wait=myWaiting().filter(pk);
+  const dcnt={}; raw.forEach(c=>dcnt[c.dealer_id]=(dcnt[c.dealer_id]||0)+1);
+  const filt=`<div class="ctl" style="margin:8px 0 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      ${staff?`<select data-mtsel="dealer"><option value="">${L('ทุกศูนย์ (PS)','All dealers')} (${raw.length})</option>${Object.keys(dcnt).sort((a,b)=>dcnt[b]-dcnt[a]||dName(a).localeCompare(dName(b))).map(id=>`<option value="${id}" ${String(M.dealer)===id?'selected':''}>${esc(dName(id))} (${dcnt[id]})</option>`).join('')}</select>`:''}
+      ${chips('mtpark',[['',L('ทั้งหมด','All')+' '+base.length],['y',L('จอด','Parked')+' '+base.filter(c=>c.parked).length],['n',L('ไม่จอด','Not parked')+' '+base.filter(c=>!c.parked).length]],M.parked||'','data-mt')}</div>`;
   const list=S.mt.stage&&st.includes(S.mt.stage)?all.filter(c=>c._t.cur.k===S.mt.stage):all;
   const cnt=k=>all.filter(c=>c._t.cur.k===k).length;
   const who=staff?L('รถที่ศูนย์รอ GWM อยู่ (Technical / Warranty / อะไหล่) ไว้ตามภายใน GWM — ศูนย์เป็นคนบันทึกเมื่อ GWM ตอบ','Vehicles the dealers are waiting on GWM for — dealers record the reply'):`${L('งานที่รอ','Waiting on')} ${esc(catName(S.me.category))}${['owner_svm','sa'].includes(S.me.category)?' · '+L('ทุกงานฝั่งศูนย์','all dealer-side items'):''}`;
   return `<div class="panel" style="margin-bottom:12px"><h3 style="margin:0 0 4px">${staff?L('ตามงาน GWM','GWM follow-up'):L('งานของฉัน','My tasks')} <span class="mut">(${all.length})</span></h3><div class="mut sm">${who} · ${L('เรียงจากค้างในขั้นนี้นานสุด','longest in this step first')}</div>
     ${staff&&S.myRsm?`<div class="ctl" style="margin:8px 0 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap">${rsmSetSel()}${chips('mtall',[['',L('PS ของฉัน','My PS')],['1',L('ทุกศูนย์','All dealers')]],S.mt.all?'1':'','data-mt')}</div>`:''}
+    ${filt}
     ${multi?`<div class="ctl" style="margin:8px 0 0">${chips('stage',[['',L('ทั้งหมด','All')+' '+all.length],...st.map(k=>[k,stName(k)+' '+cnt(k)])],S.mt.stage||'','data-mt')}</div>`:''}</div>
-  ${list.map(c=>mtRow(c,!staff)).join('') || `<div class="panel mut" style="text-align:center;padding:30px">🎉 ${L('ไม่มีงานค้างที่คุณ','Nothing waiting on you')}</div>`}
+  ${list.map(c=>mtRow(c,!staff)).join('') || `<div class="panel mut" style="text-align:center;padding:30px">${M.parked||M.dealer?L('ไม่มีรถในตัวกรองนี้','No vehicles in this filter'):'🎉 '+L('ไม่มีงานค้างที่คุณ','Nothing waiting on you')}</div>`}
   ${wait.length?`<div class="panel" style="margin:16px 0 12px;border-color:#fecaca;background:#fff7f7"><h3 style="margin:0 0 4px;color:#9f1239">${L('รอ GWM ตอบ','Waiting on GWM')} <span class="mut">(${wait.length})</span></h3><div class="mut sm">${L('ได้คำตอบจาก GWM แล้ว (Technical ตอบ JS / Warranty อนุมัติหรือ Reject YS / อะไหล่มาถึง) ให้กดบันทึกพร้อมวันที่ที่ได้รับ','When GWM replies (JS answer / YS approved or rejected / parts arrived), record it here with the date')}</div></div>
     ${wait.map(c=>mtRow(c,true)).join('')}`:''}`;
 }
+/* ===================== ผลงานพนักงาน (Performance) ===================== */
+const POS = ['foreman','warranty','parts','sa','owner_svm'];
+const POS_L = { foreman:['Foreman','Foreman'], warranty:['Warranty','Warranty'], parts:['Spare part','Spare part'], sa:['SA','SA'], owner_svm:['SVM','SVM'] };
+const posName = k => L(...(POS_L[k]||[k,k]));
+const STAGE_CAT = { diag:'foreman', js_close:'foreman', test:'foreman', ys_open:'warranty', parts_order:'parts', follow:'sa' };
+S.pf = S.pf || { per:'m0', unit:'day', pos:'foreman', rank:'jobs', sel:null, dealer:'' };
+function perfRange(){ const T=new Date(), y=T.getFullYear(), m=T.getMonth(), f=x=>ymd(x), t=today(); let s0=f(new Date(y,m,1)), e0=t;
+  if(S.pf.per==='w0'){ const a=new Date(T); a.setDate(a.getDate()-((a.getDay()+6)%7)); s0=f(a); }
+  if(S.pf.per==='m1'){ s0=f(new Date(y,m-1,1)); e0=f(new Date(y,m,0)); }
+  if(S.pf.per==='d30'){ const a=new Date(T); a.setDate(a.getDate()-29); s0=f(a); }
+  if(S.pf.per==='q0') s0=f(new Date(y,Math.floor(m/3)*3,1));
+  return {s:s0,e:e0,days:Math.max(1,dd(s0,e0)+1)}; }
+const ldate = at => ymd(new Date(at));
+const avgN = a => a.length ? a.reduce((x,y)=>x+y,0)/a.length : null;
+function perfCompute(cases,logs,s,e){
+  const inR=d=>d>=s&&d<=e, byId={}, stepById={}, lbc={}, ppl={};
+  cases.forEach(c=>{ byId[c.id]=c; (S.stepsBy[c.id]||[]).forEach(x=>stepById[x.id]=x); });
+  const P=l=>ppl[l.actor]||(ppl[l.actor]={uid:l.actor,name:l.actor_name||'?',cat:l.actor_cat,dealer:l.dealer_id,jobs:new Set(),cases:new Set(),segs:[],lags:[],q:[0,0],cats:{}});
+  logs.forEach(l=>{ if(!l.actor||!POS.includes(l.actor_cat)||l.action==='delete') return; const c=byId[l.case_id]; if(!c) return;
+    (lbc[l.case_id]=lbc[l.case_id]||[]).push(l); const d=ldate(l.at); if(!inR(d)) return;
+    const p=P(l); p.jobs.add(l.case_id+'|'+d); p.cases.add(l.case_id);
+    const src=l.step_id?stepById[l.step_id]:c, fs=l.fields||(l.step_id?['d1']:[]);
+    if(src) ['d1','d2','d3','analysis_date','customer_contact_date','delivered_date'].forEach(f=>{ if(!fs.includes(f)||!src[f]||(src.kind==='parts'&&f==='d2')) return; const g=dd(src[f],d); if(g>=0&&g<=60) p.lags.push(g); }); });
+  cases.forEach(c=>{ const ls=lbc[c.id]||[];
+    c._t.segs.forEach(x=>{ if(x.open||x.o!=='P'||!inR(x.to)) return; const cat=STAGE_CAT[x.k]; if(!cat) return;
+      let cand=ls.filter(l=>l.actor_cat===cat); if(!cand.length) cand=ls.filter(l=>l.actor_cat==='owner_svm'||l.actor_cat==='sa'); if(!cand.length) return;
+      const pick=cand.find(l=>ldate(l.at)>=x.from)||cand[cand.length-1], p=P(pick); p.segs.push(x.days);
+      if(pick.actor_cat==='foreman'){ const k=c.problem_cat||'none'; (p.cats[k]=p.cats[k]||new Set()).add(c.id); }
+      if(cat==='sa'&&pick.actor_cat==='sa'){ p.q[1]++; if(x.days<=2) p.q[0]++; } });
+    (S.stepsBy[c.id]||[]).forEach(st=>{ if(!st.d1||!inR(st.d1)) return; const want={test:'foreman',ys:'warranty',parts:'parts'}[st.kind]; if(!want) return;
+      const l=ls.find(x=>x.step_id===st.id&&x.actor_cat===want); if(!l) return; const p=P(l);
+      if(st.kind==='test'){ if(st.result==='pass'||st.result==='fail'){ p.q[1]++; if(st.result==='pass') p.q[0]++; } }
+      if(st.kind==='ys'){ p.q[1]++; if(!(st.ev||[]).some(v=>v.t==='reject')&&st.result!=='rejected') p.q[0]++; }
+      if(st.kind==='parts'){ p.q[1]++; const ok=st.d3?(!st.d2||st.d3<=st.d2):(!st.d2||st.d2>=today()); if(ok) p.q[0]++; } }); });
+  const todoOf=c=>todoList(c,S.stepsBy[c.id]||[]).length>0;
+  return Object.values(ppl).map(p=>{ const cs=[...p.cases].map(id=>byId[id]).filter(Boolean), comp=cs.length?Math.round(cs.filter(c=>!todoOf(c)).length/cs.length*100):null;
+    let q=p.q[1]?Math.round(p.q[0]/p.q[1]*100):null;
+    if(p.cat==='owner_svm'){ const dl=cases.filter(c=>String(c.dealer_id)===String(p.dealer)&&!c._t.done); q=dl.length?Math.round(dl.filter(c=>!todoOf(c)).length/dl.length*100):null; }
+    return {...p,jobsN:p.jobs.size,close:p.segs.length?Math.round(avgN(p.segs)*10)/10:null,nSeg:p.segs.length,lag:p.lags.length?Math.round(avgN(p.lags)*10)/10:null,comp,qual:q}; });
+}
+const QUAL_L = { foreman:['% ทดสอบผ่าน','% tests passed'], warranty:['% YS ไม่โดน Reject','% YS not rejected'], parts:['% ETA ไม่เลยกำหนด','% ETA on time'], sa:['% แจ้งลูกค้าภายใน 2 วัน','% informed within 2 days'], owner_svm:['% รถในศูนย์ข้อมูลครบ','% dealer cases complete'] };
+function perfScores(p,days){ const cl=x=>Math.max(0,Math.min(100,Math.round(x)));
+  return [cl(p.jobsN/days/3*100), p.close==null?0:cl(100-p.close*10), p.lag==null?0:cl(100-p.lag*20), p.comp==null?0:p.comp, p.qual==null?0:p.qual]; }
+const RADAR_L = () => [L('ปริมาณงาน','Volume'),L('ความเร็ว','Speed'),L('บันทึกทันเวลา','On-time entry'),L('ข้อมูลครบ','Complete data'),L('คุณภาพ','Quality')];
+function radarSvg(labels,series,max=100){ const N=labels.length, R=92, cx=150, cy=118, pt=(i,v)=>{ const a=-Math.PI/2+i*2*Math.PI/N, r=R*Math.max(0,Math.min(1,v/max)); return [cx+r*Math.cos(a),cy+r*Math.sin(a)]; };
+  const ring=f=>labels.map((_,i)=>pt(i,max*f).join(',')).join(' ');
+  return `<svg viewBox="0 0 300 250" class="radar" role="img"><title>radar</title>
+    ${[.25,.5,.75,1].map(f=>`<polygon points="${ring(f)}" fill="none" stroke="#e5e7eb"/>`).join('')}
+    ${labels.map((_,i)=>{ const [x,y]=pt(i,max); return `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#e5e7eb"/>`; }).join('')}
+    ${series.map(se=>`<polygon points="${se.vals.map((v,i)=>pt(i,v).join(',')).join(' ')}" fill="${se.fill||'none'}" stroke="${se.color}" stroke-width="${se.dash?1.5:2.2}" ${se.dash?'stroke-dasharray="5 4"':''}/>`).join('')}
+    ${series.filter(se=>!se.dash).map(se=>se.vals.map((v,i)=>{ const [x,y]=pt(i,v); return `<circle cx="${x}" cy="${y}" r="3" fill="${se.color}"><title>${esc(labels[i])}: ${se.raw?se.raw[i]:v}</title></circle>`; }).join('')).join('')}
+    ${labels.map((l,i)=>{ const [x,y]=pt(i,max*1.16); return `<text x="${x}" y="${y+4}" text-anchor="${Math.abs(x-cx)<8?'middle':x<cx?'end':'start'}" font-size="11" fill="#374151">${esc(l)}${series[0]&&series[0].raw?` (${series[0].raw[i]})`:''}</text>`; }).join('')}</svg>`; }
+function perfPanel(p,group,days,anon){ const sc=perfScores(p,days), peers=group.filter(x=>x.cat===p.cat);
+  const avgSc=peers.length>1?[0,1,2,3,4].map(i=>Math.round(avgN(peers.map(x=>perfScores(x,days)[i])))):null;
+  const r1=radarSvg(RADAR_L(),[{vals:sc,color:'#185FA5',fill:'rgba(55,138,221,.22)'}].concat(avgSc?[{vals:avgSc,color:'#6b7280',dash:1}]:[]));
+  let r2='';
+  if(p.cat==='foreman'){ const ks=Object.keys(PROBLEMS), cnt=k=>(p.cats[k]?p.cats[k].size:0), mx=Math.max(1,...ks.map(cnt));
+    const pav=ks.map(k=>avgN(peers.map(x=>x.cats[k]?x.cats[k].size:0))||0);
+    r2=`<div class="rad"><div class="radh">${L('ความชำนาญ (จำนวนงานตามกลุ่มปัญหา)','Expertise (jobs by problem group)')}</div>${radarSvg(ks.map(k=>probName(k).split(' /')[0]),[{vals:ks.map(cnt),raw:ks.map(cnt),color:'#993C1D',fill:'rgba(216,90,48,.2)'}].concat(peers.length>1?[{vals:pav,color:'#6b7280',dash:1}]:[]),Math.max(mx,...pav,1))}</div>`; }
+  const u=S.pf.unit, per=u==='day'?p.jobsN/days:u==='week'?p.jobsN/days*7:p.jobsN/days*30;
+  return `<div class="pfp"><div class="pfh"><b>${anon?esc(anon):esc(p.name)}</b> <span class="mut sm">· ${esc(posName(p.cat))}${isStaff()?' · '+esc(dName(p.dealer)):''}</span></div>
+    <div class="stats" style="margin:8px 0">${[[p.jobsN,L('job ทั้งหมด','Jobs')],[per.toFixed(1),L('job ต่อ','Jobs per ')+unitName()],[p.close==null?'–':p.close+L(' วัน',' d'),L('เวลาปิดงานเฉลี่ย','Avg close time')],[p.qual==null?'–':p.qual+'%',L(...QUAL_L[p.cat])],[p.lag==null?'–':p.lag+L(' วัน',' d'),L('บันทึกช้าเฉลี่ย','Avg entry delay')],[p.comp==null?'–':p.comp+'%',L('ข้อมูลครบ','Complete data')]].map(([v,l])=>`<div class="stat"><div class="v">${v}</div><div class="l">${l}</div></div>`).join('')}</div>
+    <div class="rads"><div class="rad"><div class="radh">${L('ผลงานรวม','Overall')} <span class="mut sm">${avgSc?L('· เส้นประ = ค่าเฉลี่ย ','· dashed = average ')+esc(posName(p.cat)):''}</span></div>${r1}</div>${r2}</div></div>`; }
+const unitName = () => S.pf.unit==='day'?L('วัน','day'):S.pf.unit==='week'?L('สัปดาห์','week'):L('เดือน','month');
+function viewPerf(){
+  const R=perfRange(), staff=isStaff(), svm=isSvm(), me=S.me, myCat=me.category;
+  if(!staff && !POS.includes(myCat)) return `<div class="panel mut">${L('ตำแหน่งนี้ยังไม่มีการวัดผลงาน','No performance measures for this position yet')}</div>`;
+  const since=R.s+'T00:00:00';
+  if(!S.perfLogs||S.perfLogs.since>since){ if(!S.perfLoading){ S.perfLoading=true; api.logsSince(new Date(R.s+'T00:00:00').toISOString()).then(r=>{ S.perfLogs={since,rows:r||[]}; }).catch(e=>{ toast(errMsg(e)); S.perfLogs={since,rows:[]}; }).finally(()=>{ S.perfLoading=false; if(S.tab==='perf') renderMain(); }); }
+    return `<div class="panel mut">${L('กำลังโหลดข้อมูลผลงาน…','Loading performance data…')}</div>`; }
+  let cases=S.cases; if(staff){ if(S.pf.rsm) cases=cases.filter(c=>dRsm(dealerById(c.dealer_id))===S.pf.rsm); if(S.pf.dealer) cases=cases.filter(c=>String(c.dealer_id)===String(S.pf.dealer)); }
+  const ppl=perfCompute(cases,S.perfLogs.rows,R.s,R.e), days=R.days;
+  const ctl=`<div class="panel" style="padding:10px 14px"><div class="ctl" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+    ${chips('per',[['w0',L('สัปดาห์นี้','This week')],['m0',L('เดือนนี้','This month')],['m1',L('เดือนก่อน','Last month')],['d30',L('30 วัน','30 days')],['q0',L('ไตรมาสนี้','This quarter')]],S.pf.per,'data-pf')}
+    ${chips('unit',[['day',L('ต่อวัน','Per day')],['week',L('ต่อสัปดาห์','Per week')],['month',L('ต่อเดือน','Per month')]],S.pf.unit,'data-pf')}
+    ${staff?`${rsmSetSel()}<select data-pfsel="rsm"><option value="">${L('ทุก RSM','All RSMs')}</option>${rsmList().map(r=>`<option ${S.pf.rsm===r?'selected':''}>${esc(r)}</option>`).join('')}</select>
+      <select data-pfsel="dealer"><option value="">${L('ทุกศูนย์ (PS)','All dealers')}</option>${S.dealers.filter(d=>d.active!==false&&(!S.pf.rsm||dRsm(d)===S.pf.rsm)).map(d=>`<option value="${d.id}" ${String(S.pf.dealer)===String(d.id)?'selected':''}>${esc(d.name)}</option>`).join('')}</select>`:''}
+    </div><div class="mut sm" style="margin-top:6px">${fmt(R.s)} – ${fmt(R.e)} · ${L('job = รถ 1 คันที่บันทึกในวันนั้น · เวลาปิดงาน = วันที่งานอยู่ในมือตำแหน่งนั้น (ไม่นับเวลารอ GWM)','job = one vehicle updated that day · close time = days the work sat with that position (GWM waiting excluded)')}</div></div>`;
+  // แถวจัดอันดับ
+  const rankTbl=(list,anonFn,id)=>{ const key=S.pf.rank; const sorted=[...list].sort((a,b)=>key==='close'?((a.close??1e9)-(b.close??1e9)):(b.jobsN-a.jobsN)); const rk={}; sorted.forEach((p,i)=>rk[p.uid]=i+1);
+    const u=S.pf.unit, per=p=>Math.round((u==='day'?p.jobsN/days:u==='week'?p.jobsN/days*7:p.jobsN/days*30)*10)/10;
+    return `<div class="ctl" style="margin:6px 0">${chips('rank',[['jobs',L('อันดับตามจำนวน job','Rank by jobs')],['close',L('อันดับตามเวลาปิดงาน','Rank by close time')]],key,'data-pf')}</div>`+
+      stbl(id,[{k:'rk',l:L('อันดับ','Rank'),num:1},{k:'n',l:L('ชื่อ','Name')}].concat(staff?[{k:'d',l:L('ศูนย์','Dealer')}]:[]).concat([{k:'pj',l:L('job ต่อ','Jobs per ')+unitName(),num:1,bar:1,color:'#185FA5'},{k:'j',l:L('job ทั้งหมด','Jobs'),num:1},{k:'c',l:L('เวลาปิดงานเฉลี่ย (วัน)','Avg close (d)'),num:1},{k:'q',l:'%'+L(' คุณภาพ',' quality'),num:1,fmt:v=>v==null?'–':v+'%'},{k:'g',l:L('บันทึกช้า (วัน)','Entry delay (d)'),num:1}]),
+        list.map(p=>({rk:rk[p.uid],n:anonFn(p,rk[p.uid]),d:dName(p.dealer),pj:per(p),j:p.jobsN,c:p.close,q:p.qual,g:p.lag,_c:p.uid===me.user_id?'#c8102e':null,_cls:p.uid===me.user_id?'me':'',_a:`data-pfsel2="${p.uid}"`})),{k:'rk',d:'asc'}); };
+  // พนักงาน PS (ไม่ใช่ SVM): ของตัวเอง + อันดับแบบไม่มีชื่อ
+  if(!staff && !svm){ const mine=ppl.find(p=>p.uid===me.user_id)||{uid:me.user_id,name:meName(),cat:myCat,dealer:me.dealer_id,jobsN:0,close:null,lag:null,comp:null,qual:null,cats:{}};
+    const grp=ppl.filter(p=>p.cat===myCat&&String(p.dealer)===String(me.dealer_id)); if(!grp.includes(mine)) grp.push(mine);
+    const anon=(p,r)=>p.uid===me.user_id?L('คุณ','You'):posName(p.cat)+' #'+r;
+    const rj=[...grp].sort((a,b)=>b.jobsN-a.jobsN).indexOf(mine)+1, rc=[...grp].sort((a,b)=>(a.close??1e9)-(b.close??1e9)).indexOf(mine)+1;
+    return ctl+`<div class="panel"><h3>${L('ผลงานของฉัน','My performance')}</h3>
+      <div class="msg" style="margin:0 0 6px">🏅 ${L('อันดับจำนวน job','Jobs rank')} <b>${rj}</b> / ${grp.length} · ${L('อันดับเวลาปิดงาน','Close-time rank')} <b>${rc}</b> / ${grp.length} <span class="mut">(${esc(posName(myCat))} ${L('ในศูนย์','in your dealer')})</span></div>
+      ${perfPanel(mine,grp,days,L('คุณ','You'))}</div>
+      <div class="panel"><h3>${L('อันดับ','Ranking')} ${esc(posName(myCat))} ${L('ในศูนย์','in your dealer')}</h3>${rankTbl(grp,anon,'pfr')}
+      <div class="mut sm" style="margin-top:6px">${L('ไม่แสดงชื่อคนอื่น · แถวสีแดง = คุณ','Other names hidden · red row = you')}</div></div>`+perfNote(); }
+  // SVM / RSM / Admin: เห็นชื่อ
+  const pos=S.pf.pos, list=ppl.filter(p=>p.cat===pos&&(staff||String(p.dealer)===String(me.dealer_id)));
+  const cnt=k=>ppl.filter(p=>p.cat===k&&(staff||String(p.dealer)===String(me.dealer_id))).length;
+  const sel=list.find(p=>p.uid===S.pf.sel);
+  let ov='';
+  if(staff){ const ds={}; ppl.forEach(p=>{ (ds[p.dealer]=ds[p.dealer]||{}); (ds[p.dealer][p.cat]=ds[p.dealer][p.cat]||[]).push(p); });
+    const cols=[{k:'n',l:L('ศูนย์','Dealer')}].concat(POS.map(k=>({k,l:posName(k)+L(' (วัน)',' (d)'),num:1,fmt:v=>v==null?'–':`<span class="hm" style="background:${v<=2?'#dcfce7':v<=5?'#fef9c3':v<=10?'#fed7aa':'#fecaca'}">${v}</span>`})));
+    ov=`<div class="panel"><h3>${L('ภาพรวมตำแหน่ง · เวลาปิดงานเฉลี่ย (วัน)','Positions overview · avg close time (days)')}</h3>${stbl('pfo',cols,Object.entries(ds).map(([id,m])=>{ const r={n:dName(id),_a:`data-pfdealer="${id}"`}; POS.forEach(k=>{ const a=(m[k]||[]).flatMap(p=>p.segs); r[k]=a.length?Math.round(avgN(a)*10)/10:null; }); return r; }),{k:'n',d:'asc'})}
+      <div class="mut sm" style="margin-top:6px">🟩 ≤2 · 🟨 3–5 · 🟧 6–10 · 🟥 >10 ${L('วัน','days')} · ${L('แตะแถวเพื่อเลือกศูนย์','tap a row to pick that dealer')}</div></div>`; }
+  return ctl+ov+`<div class="panel"><h3>${L('อันดับพนักงาน','Staff ranking')}</h3>
+    <div class="ctl" style="margin-bottom:4px">${chips('pos',POS.map(k=>[k,posName(k)+' '+cnt(k)]),pos,'data-pf')}</div>
+    ${rankTbl(list,p=>p.name,'pfr')}<div class="mut sm" style="margin-top:6px">${L('แตะชื่อเพื่อดู radar','Tap a name to see the radar')}</div></div>
+    ${sel?`<div class="panel">${perfPanel(sel,list,days)}</div>`:''}${perfNote()}`;
+}
+function perfNote(){ return `<details class="mut sm" style="margin:4px 2px 16px"><summary>${L('คะแนน radar คิดยังไง','How radar scores work')}</summary>
+  ${L('ปริมาณงาน: 3 job/วัน = 100 · ความเร็ว: 0 วัน = 100, 10 วันขึ้นไป = 0 · บันทึกทันเวลา: วันเดียวกัน = 100, ช้า 5 วันขึ้นไป = 0 · ข้อมูลครบ: % รถที่ดูแลไม่มีป้าย "ยังขาด" · คุณภาพ: ตามตำแหน่ง (Foreman % ทดสอบผ่าน · Warranty % YS ไม่โดน Reject · Spare part % ETA ไม่เลยกำหนด · SA % แจ้งลูกค้าภายใน 2 วัน · SVM % รถในศูนย์ข้อมูลครบ)',
+     'Volume: 3 jobs/day = 100 · Speed: 0 days = 100, 10+ days = 0 · On-time entry: same day = 100, 5+ days late = 0 · Complete data: % of handled vehicles with no missing info · Quality depends on the position')}</details>`; }
 /* ===================== ภาพรวม (Dashboard) ===================== */
 // แผนกที่รับผิดชอบแต่ละสถานะ (แก้การจับคู่ได้ที่นี่)
-const DEPTS = { P:[['foreman',['diag','js_close','test']],['sa',['ys_open']],['parts',['parts_order']],['cr',['follow']]],
+const DEPTS = { P:[['foreman',['diag','js_close','test']],['wty',['ys_open']],['parts',['parts_order']],['sa',['follow']]],
                 G:[['tech',['js_wait']],['warranty',['ys_wait']],['parts',['eta']]] };
-const DEPT_L = { foreman:['ช่าง / Foreman','Technician'], sa:['Warranty / SVM','Warranty / SVM'], parts:['อะไหล่','Spare parts'], cr:['CR','CR'], tech:['Technical','Technical'], warranty:['Warranty','Warranty'] };
+const DEPT_L = { foreman:['ช่าง / Foreman','Technician'], wty:['Warranty (PS)','Warranty (PS)'], sa:['SA','SA'], parts:['อะไหล่','Spare parts'], cr:['CR','CR'], tech:['Technical','Technical'], warranty:['Warranty','Warranty'] };
 function deptOf(k){ const o=ST[k]&&ST[k].o; if(!o) return null; const d=DEPTS[o].find(x=>x[1].includes(k)); return d?{o,key:d[0]}:null; }
 const deptName = (o,key,side=true) => L(...DEPT_L[key])+(side?' ('+(o==='G'?'GWM':'PS')+')':'');
 const qtl = (arr,q) => { if(!arr.length) return 0; const a=[...arr].sort((x,y)=>x-y), i=(a.length-1)*q, lo=Math.floor(i), hi=Math.ceil(i); return Math.round(a[lo]+(a[hi]-a[lo])*(i-lo)); };
@@ -1269,8 +1462,14 @@ const ageColor = d => (AGE.find(a=>d>=a[1]&&d<=a[2])||AGE[3])[3];
 const ageBadge = d => `<span class="age" style="background:${ageColor(d)}">${d}${L(' วัน','d')}</span>`;
 const carKey = c => (c.vin||'').trim().toUpperCase() || 'SP:'+c.dealer_id+':'+c.sp;
 S.d = { own:'cars', side:null, per:'week', bucket:null, lvl:'ps', met:'case', sort:'desc', side2:null, topN:10, tsort:'desc' };
-S.df = { rsm:'', dealer:'', parked:'', prob:'', age:'', pay:'', model:'' };   // ตัวกรองหน้า ภาพรวม (แยกจาก Board)
+S.df = { rsm:'', dealer:'', parked:'', prob:'', age:'', pay:'', model:'', month:'' };   // ตัวกรองหน้า ภาพรวม (แยกจาก Board)
 
+const MON = () => S.lang==='en'?['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']:['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+function monthRange(m){ const [y,mo]=m.split('-').map(Number); return [m+'-01', ymd(new Date(y,mo,0))]; }
+const monthName = m => { const [y,mo]=m.split('-'); return MON()[+mo-1]+' '+(S.lang==='en'?y:(+y+543)); };
+function monthOpts(){ const T=today().slice(0,7), ms=new Set([T]); S.cases.forEach(c=>{ if(c.arrival_date) ms.add(c.arrival_date.slice(0,7)); if(c.delivered_date) ms.add(c.delivered_date.slice(0,7)); });
+  const a=[...ms].sort().reverse(); const lo=a[a.length-1]; let [y,m]=T.split('-').map(Number); const out=[];
+  while(true){ const k=y+'-'+String(m).padStart(2,'0'); out.push(k); if(k<=lo||out.length>36) break; m--; if(!m){ m=12; y--; } } return out; }
 function dashScope(){ // ตัวกรองของหน้า ภาพรวม: RSM / ศูนย์ / จอด / กลุ่มปัญหา / วันค้าง
   const f=S.df, ag=f.age!==''?AGE[+f.age]:null;
   return S.cases.filter(c=>{ const d=dealerById(c.dealer_id)||{};
@@ -1280,24 +1479,27 @@ function dashScope(){ // ตัวกรองของหน้า ภาพร
     if(f.parked==='n' && c.parked) return false;
     if(f.prob && (c.problem_cat||'none')!==f.prob) return false;
     if(ag && !(c._t.total>=ag[1] && c._t.total<=ag[2])) return false;
-    if(f.pay && (c.cost_band||'le10k')!==f.pay) return false;
+    if(f.pay && (c.cost_band||'unk')!==f.pay) return false;
     if(f.model && (officialModel(c.model)||(c.model||'').trim()||'—')!==f.model) return false;
+    if(f.month){ const [ms,me]=monthRange(f.month); if(!(c.arrival_date<=me && (!c.delivered_date||c.delivered_date>=ms))) return false; }
     return true; });
 }
 const chips = (key,opts,cur,attr='data-dset') => `<div class="segc sm2">${opts.map(o=>`<button ${attr}="${key}" data-v="${o[0]}" class="${String(cur)===String(o[0])?'on':''}">${o[1]}</button>`).join('')}</div>`;
 function dqResults(){ // ผลค้นหา SP / VIN (รวมรถที่ส่งมอบแล้ว)
   const q=(S.dq||'').trim().toUpperCase().replace(/\s+/g,''); if(q.length<3) return q?`<div class="mut sm" style="margin:-4px 0 10px">${L('พิมพ์อย่างน้อย 3 ตัว','Type at least 3 characters')}</div>`:'';
-  const l=S.cases.filter(c=>(c.sp||'').toUpperCase().includes(q)||(c.vin||'').toUpperCase().includes(q)).sort((a,b)=>(a._t.done-b._t.done)||b.arrival_date.localeCompare(a.arrival_date)).slice(0,30);
+  const l=S.cases.filter(c=>(c.sp||'').toUpperCase().includes(q)||(c.vin||'').toUpperCase().includes(q)||(c.plate||'').toUpperCase().replace(/\s+/g,'').includes(q)).sort((a,b)=>(a._t.done-b._t.done)||b.arrival_date.localeCompare(a.arrival_date)).slice(0,30);
   return `<div class="panel" style="padding:8px 14px"><div class="mut sm">${L('ผลค้นหา','Results')} ${l.length}${l.length===30?'+':''}</div>${l.map(c=>{ const t=c._t;
     return `<div class="dr"><div class="drm" data-open="${c.id}"><div><b>${esc(c.sp)}</b> ${c.parked?`<span class="tag park" style="margin:0">${L('จอด','Parked')}</span>`:''}</div>
-      <div class="mut sm">${isStaff()?esc(dName(c.dealer_id))+' · ':''}${esc(c.model||'-')}${c.vin?' · '+esc(c.vin):''}</div>
+      <div class="mut sm">${isStaff()?esc(dName(c.dealer_id))+' · ':''}${esc(c.model||'-')}${c.vin?' · '+esc(c.vin):''}${c.plate?' · '+esc(c.plate):''}</div>
       <div class="sm">${t.done?`✅ ${L('ส่งมอบ','Delivered')} ${fmt(c.delivered_date)}`:`<span class="dot" style="background:${oc(t.cur.o)}"></span> ${esc(stName(t.cur.k))}`}</div></div>
       <div class="drr">${t.done?'':ageBadge(t.total)}${c.vin?`<button class="lnk" data-vin="${esc(c.vin)}">VIN ›</button>`:''}</div></div>`; }).join('')||`<div class="mut" style="padding:8px 0">${L('ไม่พบ SP / VIN นี้','No matching SP / VIN')}</div>`}</div>`;
 }
 function dashBar(){
   const staff=isStaff(), f=S.df, rsms=rsmList(), ds=S.dealers.filter(d=>!f.rsm||dRsm(d)===f.rsm);
-  return `<div class="bar"><input type="search" data-dq placeholder="🔍 ${L('ค้นหา SP หรือ VIN','Search SP or VIN')}" value="${esc(S.dq||'')}" style="flex:1 1 100%" autocapitalize="characters"></div>
+  return `<div class="bar"><input type="search" data-dq placeholder="🔍 ${L('ค้นหา SP / VIN / ทะเบียน','Search SP / VIN / plate')}" value="${esc(S.dq||'')}" style="flex:1 1 100%" autocapitalize="characters"></div>
   <div id="dqres">${dqResults()}</div>
+  <div class="bar"><div class="segc sm2 dst">${[['open',L('ยังไม่ส่งมอบ','Not delivered')],['done',L('ส่งมอบแล้ว','Delivered')],['all',L('ทั้งหมด','All')]].map(([k,l])=>`<button data-dst="${k}" class="${(f.st||'open')===k?'on':''}">${l}</button>`).join('')}</div>
+    ${(f.st||'open')!=='open'?`<span class="mut sm">${L('ส่งมอบช่วง','Delivered in')} ${f.month?monthName(f.month):L('30 วันล่าสุด','last 30 days')}</span>`:''}</div>
   <div class="bar">
     ${staff&&S.myRsm?chips('mine',[['',L('ทั้งหมด','All')],[S.myRsm,L('PS ของฉัน','My PS')]],f.rsm===S.myRsm?S.myRsm:''):''}
     ${staff?`${rsmSetSel()}<select data-df="rsm"><option value="">${L('ทุก RSM','All RSMs')}</option>${rsms.map(r=>`<option ${f.rsm===r?'selected':''}>${esc(r)}</option>`).join('')}</select>
@@ -1305,9 +1507,10 @@ function dashBar(){
     ${chips('parked',[['',L('จอด+ไม่จอด','All')],['y',L('จอด','Parked')],['n',L('ไม่จอด','Not parked')]],f.parked)}
     ${chips('age',[['',L('ทุกวันค้าง','Any age')],...AGE.map((a,i)=>[i,(i===0?'≤7':a[0])+L(' วัน','d')])],f.age)}
     <select data-df="prob"><option value="">${L('ทุกกลุ่มปัญหา','All problems')}</option>${Object.keys(PROBLEMS).map(k=>`<option value="${k}" ${f.prob===k?'selected':''}>${esc(probName(k))}</option>`).join('')}<option value="none" ${f.prob==='none'?'selected':''}>${L('ยังไม่ระบุ','Not set')}</option></select>
-    <select data-df="pay"><option value="">${L('ทุกการชำระ','All payment types')}</option>${Object.keys(PAY).map(k=>`<option value="${k}" ${f.pay===k?'selected':''}>${esc(payName(k))}</option>`).join('')}</select>
+    <select data-df="pay"><option value="">${L('ทุกการชำระ','All payment types')}</option>${[...Object.keys(PAY),'unk'].map(k=>`<option value="${k}" ${f.pay===k?'selected':''}>${esc(payName(k))}</option>`).join('')}</select>
+    <select data-df="month"><option value="">${L('ทุกเดือน','All months')}</option>${monthOpts().map(m=>`<option value="${m}" ${S.df.month===m?'selected':''}>${monthName(m)}</option>`).join('')}</select>
     <select data-df="model"><option value="">${L('ทุกรุ่น','All models')}</option>${[...new Set(S.cases.map(c=>officialModel(c.model)||(c.model||'').trim()||'—'))].sort().map(m=>`<option ${f.model===m?'selected':''}>${esc(m)}</option>`).join('')}</select>
-    <span class="sp"></span><button class="btn" data-act="manual" title="${L('ไฟล์ Excel พร้อม Dashboard ให้ Partner ใช้ต่อเอง','Excel file with dashboard for partners to keep using')}">📊 VOR Manual</button><button class="btn" data-act="refresh" title="${L('โหลดใหม่','Reload')}">↻</button>
+    <span class="sp"></span><button class="btn" data-act="report">📄 ${L('รายงาน','Report')}</button><button class="btn" data-act="manual" title="${L('ไฟล์ Excel พร้อม Dashboard ให้ Partner ใช้ต่อเอง','Excel file with dashboard for partners to keep using')}">📊 VOR Manual</button><button class="btn" data-act="refresh" title="${L('โหลดใหม่','Reload')}">↻</button>
   </div>`;
 }
 function donut(parts,total,center,sub){ // parts: [{key,v,color,label}]
@@ -1319,6 +1522,22 @@ function donut(parts,total,center,sub){ // parts: [{key,v,color,label}]
     <circle r="${R}" cx="70" cy="70" fill="none" stroke="#eef0f3" stroke-width="22"/>${arcs}
     <text x="70" y="68" text-anchor="middle" class="dn-v">${esc(center)}</text><text x="70" y="86" text-anchor="middle" class="dn-l">${esc(sub)}</text></svg>`;
 }
+/* ตารางเรียงได้ทุกคอลัมน์: cols [{k,l,num,bar,color,fmt,w}] rows [{...,_a:attr,_c:barColor}] */
+S.ts = S.ts || {};
+function stbl(id,cols,rows,def){
+  const st=S.ts[id]||def||{}, col=cols.find(c=>c.k===st.k);
+  if(col){ const d=st.d==='asc'?1:-1;
+    rows=[...rows].sort((a,b)=>{ const x=a[col.k], y=b[col.k];
+      if(x==null&&y==null) return 0; if(x==null) return 1; if(y==null) return -1;
+      return (col.num ? (x-y) : String(x).localeCompare(String(y),'th'))*d; }); }
+  const mx={}; cols.filter(c=>c.bar).forEach(c=>mx[c.k]=Math.max(1,...rows.map(r=>+r[c.k]||0)));
+  const arrow=c=>st.k===c.k?(st.d==='asc'?' ▲':' ▼'):' <span class="sar">⇅</span>';
+  const cell=(c,r)=>{ const v=r[c.k], t=c.fmt?c.fmt(v,r):(v==null?'–':esc(String(v)));
+    if(!c.bar) return `<td class="${c.num?'n':''}">${t}</td>`;
+    return `<td class="n bc"><span class="bcv">${t}</span><span class="bcb"><i style="width:${(+v||0)/mx[c.k]*100}%;background:${r['_c_'+c.k]||r._c||c.color||'#64748b'}"></i></span></td>`; };
+  return `<div class="tw st"><table><thead><tr>${cols.map(c=>`<th class="${c.num?'n':''}"><button class="thb" data-ts="${id}" data-tk="${c.k}" data-tn="${c.num?1:''}">${c.l}${arrow(c)}</button></th>`).join('')}</tr></thead>
+    <tbody>${rows.length?rows.map(r=>`<tr class="${r._a?'click':''} ${r._cls||''}" ${r._a||''}>${cols.map(c=>cell(c,r)).join('')}</tr>`).join(''):`<tr><td colspan="${cols.length}" class="mut">${L('ไม่มีข้อมูล','No data')}</td></tr>`}</tbody></table></div>`;
+}
 function vbars(items,opt={}){ // แท่งแนวตั้ง แตะได้ (items: {label,v,color | segs:[{v,color}],attr,tip,top,sub})
   const max=Math.max(1,...items.map(i=>i.v));
   return `<div class="vb ${opt.wide?'wide':''}">${items.map(i=>{ const segs=(i.segs||[{v:i.v,color:i.color}]).filter(g=>g.v>0), tot=segs.reduce((a,g)=>a+g.v,0)||1;
@@ -1326,6 +1545,7 @@ function vbars(items,opt={}){ // แท่งแนวตั้ง แตะไ�
     <span class="vbv">${i.top!=null?i.top:i.v}</span><span class="vbt"><span class="vbs" style="height:${i.v?Math.max(3,i.v/max*100):0}%">${[...segs].reverse().map(g=>`<i style="flex:${g.v/tot};background:${g.color}"></i>`).join('')}</span></span><span class="vbl">${esc(i.label)}</span>${i.sub?`<span class="vbsub">${esc(i.sub)}</span>`:''}</button>`; }).join('')||`<div class="mut sm" style="padding:20px 0">—</div>`}</div>`;
 }
 function periods(mode){ // ช่วงเวลาของกราฟ เคลียรถออก
+  if(S.df.month){ const [ms,me]=monthRange(S.df.month); return periodsIn(mode,ms,me>today()?today():me); }
   const T=new Date(), out=[]; const d0=x=>ymd(x);
   if(mode==='day'){ for(let i=13;i>=0;i--){ const d=new Date(T); d.setDate(d.getDate()-i); const s=d0(d); out.push({key:s,label:s.slice(8,10)+'/'+s.slice(5,7),s,e:s}); } }
   if(mode==='week'){ const m=new Date(T); m.setDate(m.getDate()-((m.getDay()+6)%7));
@@ -1336,20 +1556,50 @@ function periods(mode){ // ช่วงเวลาของกราฟ เค�
     for(let y=y0;y<=T.getFullYear();y++) out.push({key:y+'',label:y+'',s:y+'-01-01',e:y+'-12-31'}); }
   return out;
 }
+function periodsIn(mode,s,e){ // ช่วงย่อยระหว่าง s..e (ใช้กับตัวกรองเดือน และรายงาน)
+  const out=[], d=x=>ymd(x), P=x=>new Date(x+'T00:00:00'); let a=P(s); const E=P(e);
+  if(mode==='day'){ for(;a<=E;a.setDate(a.getDate()+1)){ const k=d(a); out.push({key:k,label:k.slice(8,10)+'/'+k.slice(5,7),s:k,e:k}); } }
+  else if(mode==='week'){ a.setDate(a.getDate()-((a.getDay()+6)%7)); for(;a<=E;a.setDate(a.getDate()+7)){ const b=new Date(a); b.setDate(b.getDate()+6); const ks=d(a), ke=d(b);
+      const S0=ks<s?s:ks, E0=ke>e?e:ke; out.push({key:ks,label:S0.slice(8,10)+'/'+S0.slice(5,7)+'–'+E0.slice(8,10)+'/'+E0.slice(5,7),s:S0,e:E0}); } }
+  else if(mode==='month'){ a=new Date(a.getFullYear(),a.getMonth(),1); for(;a<=E;a=new Date(a.getFullYear(),a.getMonth()+1,1)){ const k=d(a).slice(0,7), [ms,me]=monthRange(k); out.push({key:k,label:monthName(k),s:ms<s?s:ms,e:me>e?e:me}); } }
+  else { for(let y=a.getFullYear();y<=E.getFullYear();y++){ const ys=y+'-01-01', ye=y+'-12-31'; out.push({key:y+'',label:y+'',s:ys<s?s:ys,e:ye>e?e:ye}); } }
+  return out;
+}
 function throughput(list){
   const P=periods(S.d.per);
   return P.map(p=>{ const del=list.filter(c=>c.delivered_date&&c.delivered_date>=p.s&&c.delivered_date<=p.e);
     return {...p, del, arr:list.filter(c=>c.arrival_date>=p.s&&c.arrival_date<=p.e),
       back:list.filter(c=>c.arrival_date<=p.e&&(!c.delivered_date||c.delivered_date>p.e)).length,
-      med:qtl(del.map(c=>dd(c.arrival_date,c.delivered_date)),.5)}; });
+      b0:list.filter(c=>c.arrival_date<p.s&&(!c.delivered_date||c.delivered_date>=p.s)).length,
+      med:qtl(del.map(c=>dd(c.arrival_date,c.delivered_date)),.5)}; }).map(p=>({...p,rate:(p.b0+p.arr.length)?Math.round(p.del.length/(p.b0+p.arr.length)*100):null}));
 }
 function viewDash(){
-  const all=dashScope(), open=all.filter(c=>!c._t.done), staff=isStaff(), n=open.length;
+  const all=dashScope(), staff=isStaff(), MODE=S.df.st||'open', openNow=all.filter(c=>!c._t.done);
+  const [rs0,re0]=S.df.month?monthRange(S.df.month):[(()=>{ const a=new Date(); a.setDate(a.getDate()-29); return ymd(a); })(),today()];
+  const dlv=all.filter(c=>c.delivered_date&&c.delivered_date>=rs0&&c.delivered_date<=re0);
+  const open=MODE==='open'?openNow:MODE==='done'?dlv:openNow.concat(dlv), n=open.length;
+  if(MODE!=='open') S.d.own='days';
   const cars=new Set(open.map(carKey)).size, ages=open.map(c=>c._t.total);
   const G=open.filter(c=>c._t.cur.o==='G'), Pn=open.filter(c=>c._t.cur.o==='P');
   const rep=open.filter(c=>c._t.round>1).length;
   const kpi=(v,l,cls,attr,sub)=>`<button class="stat kp ${cls||''}" ${attr||''}><div class="v">${v}${sub?` <span class="mut sm">${sub}</span>`:''}</div><div class="l">${l}</div></button>`;
-  const head=`<div class="stats">
+  const dl=dlv.map(c=>c._t.total), gS=open.reduce((a,c)=>a+c._t.own.G,0), pS=open.reduce((a,c)=>a+c._t.own.P,0);
+  const head=MODE==='done'?`<div class="stats">
+    ${kpi(dlv.length,L('ส่งมอบ (คัน)','Delivered'),'','data-drill="del"')}
+    ${kpi(qtl(dl,.5),L('ค่ากลางวันซ่อม','Median repair days'))}
+    ${kpi(qtl(dl,.9),L('90% ส่งมอบภายใน (วัน)','90% within (days)'))}
+    ${kpi((gS+pS)?Math.round(gS/(gS+pS)*100)+'%':'–',L('วันที่รอ GWM','Days at GWM'),'g')}
+    ${kpi((gS+pS)?Math.round(pS/(gS+pS)*100)+'%':'–',L('วันที่รอ PS','Days at PS'),'p')}
+    ${kpi(dlv.length?Math.round(gS/dlv.length*10)/10:'–',L('วัน GWM เฉลี่ย / คัน','Avg GWM days / veh'))}
+    ${kpi(dlv.length?Math.round(pS/dlv.length*10)/10:'–',L('วัน PS เฉลี่ย / คัน','Avg PS days / veh'))}</div>`
+  : MODE==='all'?`<div class="stats">
+    ${kpi(n,L('รถทั้งหมด (เคส)','All cases'))}
+    ${kpi(openNow.length,L('ยังไม่ส่งมอบ','Not delivered'),'','data-drill="open"')}
+    ${kpi(dlv.length,L('ส่งมอบแล้ว','Delivered'),'','data-drill="del"')}
+    ${kpi(qtl(open.map(c=>c._t.total),.5),L('ค่ากลางวัน','Median days'))}
+    ${kpi((gS+pS)?Math.round(gS/(gS+pS)*100)+'%':'–',L('วันที่รอ GWM','Days at GWM'),'g')}
+    ${kpi((gS+pS)?Math.round(pS/(gS+pS)*100)+'%':'–',L('วันที่รอ PS','Days at PS'),'p')}</div>`
+  : `<div class="stats">
     ${kpi(cars,L('รถค้าง (คัน)','Vehicles (VIN)'),'','data-drill="open"')}
     ${kpi(n,L('เคส (SP)','Cases (SP)'),'','data-drill="open"')}
     ${kpi(G.length,L('ค้างที่ GWM','Waiting on GWM'),'g','data-drill="own:G"')}
@@ -1360,8 +1610,8 @@ function viewDash(){
   if(!all.length) return dashBar()+head+`<div class="panel mut">${L('ยังไม่มีข้อมูลรถในตัวกรองนี้','No vehicles in this filter yet')}</div>`;
   // แจ้งเตือน
   const al=[['past_due',L('เลยวันนัดส่งมอบ','Past est. delivery')],['past_eta',L('อะไหล่เลย ETA','Parts past ETA')],['no_ys',L('เกิน 10,000 ยังไม่มี YS','Over 10k, no YS')],['todo',L('ข้อมูลยังไม่ครบ','Incomplete info')]]
-    .map(a=>[a[0],a[1],open.filter(c=>alertHit(c,a[0])).length]).filter(a=>a[2]);
-  const alerts=al.length?`<div class="alrow">${al.map(a=>`<button class="flag big" data-drill="alert:${a[0]}">⚠ ${esc(a[1])} <b>${a[2]}</b></button>`).join('')}</div>`:'';
+    .map(a=>[a[0],a[1],openNow.filter(c=>alertHit(c,a[0])).length]).filter(a=>a[2]);
+  const alerts=al.length&&MODE!=='done'?`<div class="alrow">${al.map(a=>`<button class="flag big" data-drill="alert:${a[0]}">⚠ ${esc(a[1])} <b>${a[2]}</b></button>`).join('')}</div>`:'';
   // โดนัท GWM / PS
   const pv=S.d.own==='cars'?{P:Pn.length,G:G.length}:{P:open.reduce((s,c)=>s+c._t.own.P,0),G:open.reduce((s,c)=>s+c._t.own.G,0)};
   const ps=pv.P+pv.G||1, pct=k=>Math.round(pv[k]/ps*100);
@@ -1369,12 +1619,70 @@ function viewDash(){
   const deptRows=side?DEPTS[side].map(([key,ks])=>{ const lst=open.filter(c=>ks.includes(c._t.cur.k));
       const v=S.d.own==='cars'?lst.length:open.reduce((s,c)=>s+c._t.segs.filter(g=>ks.includes(g.k)).reduce((a,g)=>a+g.days,0),0);
       return {label:deptName(side,key,false),v,color:OWN[side].c,attr:`data-drill="dept:${side}:${key}"`,tip:deptName(side,key)+': '+v}; }):[];
-  const donutP=`<div class="panel"><h3>${L('ค้างที่ฝั่งไหน','Who holds the vehicles')}</h3>
-    <div class="segc sm2" style="margin:0 0 10px"><button data-dset="own" data-v="cars" class="${S.d.own==='cars'?'on':''}">${L('จำนวนคัน (ตอนนี้)','Vehicles (now)')}</button><button data-dset="own" data-v="days" class="${S.d.own==='days'?'on':''}">${L('จำนวนวัน (สะสม)','Days (accumulated)')}</button></div>
+  const donutP=`<div class="panel"><h3>${MODE==='open'?L('ค้างที่ฝั่งไหน','Who holds the vehicles'):L('เวลาหมดไปที่ฝั่งไหน','Where the time went')}</h3>
+    ${MODE!=='open'?`<div class="mut sm" style="margin:-4px 0 10px">${L('รวมวันของรถทุกคัน แยกว่ารอ GWM หรือรอ PS','Total days of all vehicles split by GWM / PS')}</div>`:''}<div class="segc sm2" style="margin:0 0 10px;${MODE!=='open'?'display:none':''}"><button data-dset="own" data-v="cars" class="${S.d.own==='cars'?'on':''}">${L('จำนวนคัน (ตอนนี้)','Vehicles (now)')}</button><button data-dset="own" data-v="days" class="${S.d.own==='days'?'on':''}">${L('จำนวนวัน (สะสม)','Days (accumulated)')}</button></div>
     <div class="dnwrap">${donut([{key:'G',v:pv.G,color:OWN.G.c,label:'GWM'},{key:'P',v:pv.P,color:OWN.P.c,label:'Partner (PS)'}],ps,S.d.own==='cars'?n+'':ps+'',S.d.own==='cars'?L('เคส','cases'):L('วัน-คัน','veh-days'))}
       <div class="dnleg">${['G','P'].map(k=>`<button class="dlg ${side===k?'on':''}" data-dside="${k}"><span class="dot" style="background:${OWN[k].c}"></span><b>${k==='G'?'GWM':'Partner (PS)'}</b><span class="big2">${pct(k)}%</span><span class="mut sm">${pv[k]} ${S.d.own==='cars'?L('เคส','cases'):L('วัน','days')}</span></button>`).join('')}
       <div class="mut sm">${L('แตะฝั่งเพื่อดูแยกแผนก','Tap a side to split by department')}</div></div></div>
-    ${side?`<div class="sub"><b>${side==='G'?'GWM':'Partner (PS)'}</b> · ${L('แยกตามแผนก','by department')} <button class="lnk" data-dside="${side}">✕</button>${vbars(deptRows)}</div>`:''}</div>`;
+    ${side?`<div class="sub"><b>${side==='G'?'GWM':'Partner (PS)'}</b> · ${L('แยกตามแผนก','by department')} <button class="lnk" data-dside="${side}">✕</button>${stbl('dep',[{k:'label',l:L('แผนก','Department')},{k:'v',l:S.d.own==='cars'?L('คัน','Veh.'):L('วัน','Days'),num:1,bar:1,color:OWN[side].c}],deptRows.map(r=>({...r,_a:r.attr})),{k:'v',d:'desc'})}</div>`:''}</div>`;
+  const dW=L(' ว',' d'), side2=k=>`<span class="pill" style="background:${OWN[k].c}">${k==='G'?'GWM':'PS'}</span>`;
+  const avg=a=>a.length?Math.round(a.reduce((x,y)=>x+y,0)/a.length):null;
+  // ค้างขั้นไหน
+  const stK=COL_ORDER.filter(k=>k!=='done');
+  let stP=`<div class="panel"><h3>${L('ค้างที่ขั้นไหน','Where vehicles are stuck')}</h3>
+    ${stbl('st',[{k:'i',l:'#',num:1},{k:'n',l:L('ขั้นตอน','Step')},{k:'o',l:L('ฝั่ง','Side'),fmt:v=>side2(v)},{k:'c',l:L('คัน','Veh.'),num:1,bar:1},{k:'mx',l:L('นานสุดในขั้น (วัน)','Max in step (d)'),num:1},{k:'av',l:L('เฉลี่ยในขั้น (วัน)','Avg in step (d)'),num:1}],
+      stK.map((k,i)=>{ const l=open.filter(c=>c._t.cur.k===k), ds=l.map(c=>c._t.curDays); return {i:i+1,n:stName(k),o:ST[k].o,c:l.length,mx:ds.length?Math.max(...ds):null,av:avg(ds),_c:oc(ST[k].o),_a:`data-drill="st:${k}"`}; }),{k:'i',d:'asc'})}</div>`;
+  // อายุรถค้าง
+  const ageP=`<div class="panel"><h3>${L('อายุรถค้าง (วัน)','Days open')}</h3>
+    ${stbl('age',[{k:'i',l:'#',num:1},{k:'n',l:L('ช่วงวัน','Range')},{k:'c',l:L('คัน','Veh.'),num:1,bar:1},{k:'p',l:'%',num:1,fmt:v=>v+'%'}],
+      AGE.map((a,i)=>{ const c=open.filter(x=>x._t.total>=a[1]&&x._t.total<=a[2]).length; return {i:i+1,n:a[0]+L(' วัน',' d'),c,p:n?Math.round(c/n*100):0,_c:a[3],_a:`data-drill="age:${i}"`}; }),{k:'i',d:'asc'})}
+    <div class="mut sm" style="margin-top:6px">${L('ค่ากลาง','Median')} <b>${qtl(ages,.5)}</b>${dW} · 90% ${L('ไม่เกิน','within')} <b>${qtl(ages,.9)}</b>${dW} · ${L('นานสุด','longest')} <b>${ages.length?Math.max(...ages):0}</b>${dW}</div></div>`;
+  // จำนวนรถค้าง ตามระดับ RSM / PS / แผนก
+  const lvl=staff?S.d.lvl:'side', grpRow=(l,base)=>{ const t=l.map(c=>c._t.total); return {...base,c:l.length,v:new Set(l.map(carKey)).size,g:l.filter(c=>c._t.cur.o==='G').length,p:l.filter(c=>c._t.cur.o==='P').length,mx:t.length?Math.max(...t):null,av:avg(t)}; };
+  const gcols=first=>[first,{k:'c',l:L('เคส (SP)','Cases'),num:1,bar:1,color:'#475569'},{k:'v',l:L('คัน','Veh.'),num:1},{k:'g',l:L('ค้างที่ GWM','At GWM'),num:1,bar:1,color:OWN.G.c},{k:'p',l:L('ค้างที่ PS','At PS'),num:1,bar:1,color:OWN.P.c},{k:'mx',l:L('นานสุด (วัน)','Max (d)'),num:1},{k:'av',l:L('เฉลี่ย (วัน)','Avg (d)'),num:1}];
+  let cntT='', cntNote='';
+  if(lvl==='rsm'){ const m={}; open.forEach(c=>{ const r=dRsm(dealerById(c.dealer_id))||'—'; (m[r]=m[r]||[]).push(c); });
+    cntT=stbl('cr',gcols({k:'n',l:'RSM'}).concat([{k:'ps',l:'PS',num:1}]),Object.entries(m).map(([r,l])=>({...grpRow(l,{n:r}),ps:new Set(l.map(c=>c.dealer_id)).size,_a:`data-lvlrsm="${esc(r)}"`})),{k:'c',d:'desc'});
+    cntNote=L('แตะแถว RSM เพื่อดู PS ของคนนั้น','Tap an RSM row to see their dealers'); }
+  else if(lvl==='ps'){ const m={}; open.forEach(c=>(m[c.dealer_id]=m[c.dealer_id]||[]).push(c));
+    cntT=stbl('cp',gcols({k:'n',l:L('ศูนย์ (PS)','Dealer (PS)')}).concat(staff?[{k:'r',l:'RSM'}]:[]),Object.entries(m).map(([id,l])=>({...grpRow(l,{n:dName(id),r:dRsm(dealerById(id))}),_a:`data-dealer-dash="${id}"`})),{k:'c',d:'desc'});
+    cntNote=L('แตะแถวเพื่อดูศูนย์นั้น','Tap a row to open that dealer'); }
+  else { const rows=[]; ['G','P'].forEach(k=>DEPTS[k].forEach(([key,ks])=>{ const l=open.filter(c=>ks.includes(c._t.cur.k)), t=l.map(c=>c._t.total); rows.push({s:k,n:deptName(k,key,false),c:l.length,mx:t.length?Math.max(...t):null,av:avg(t),_c:OWN[k].c,_a:`data-drill="dept:${k}:${key}"`}); }));
+    cntT=stbl('cd',[{k:'s',l:L('ฝั่ง','Side'),fmt:v=>side2(v)},{k:'n',l:L('แผนก','Department')},{k:'c',l:L('คัน','Veh.'),num:1,bar:1},{k:'mx',l:L('นานสุด (วัน)','Max (d)'),num:1},{k:'av',l:L('เฉลี่ย (วัน)','Avg (d)'),num:1}],rows,{k:'c',d:'desc'});
+    cntNote=L('แตะแถวเพื่อดูรายการรถ','Tap a row to see vehicles'); }
+  const cntP=`<div class="panel"><h3>${L('รถค้างแยกตาม','Open vehicles by')}</h3>
+    <div class="ctl">${chips('lvl',(staff?[['rsm','RSM'],['ps','PS']]:[]).concat([['side',L('แผนก','Department')]]),lvl)}</div>${cntT}
+    <div class="mut sm" style="margin-top:6px">${cntNote} · ${L('แตะหัวตารางเพื่อเรียง มาก↔น้อย','Tap a column header to sort')}</div></div>`;
+  // timeline รายคัน
+  const topP=`<div class="panel"><h3>${MODE==='open'?L('รถค้าง · timeline 5 อันดับแรก','Open vehicles · top 5 timeline'):L('รถ · timeline 5 อันดับแรก','Vehicles · top 5 timeline')} <button class="lnk" data-drill="open">${L('ดูทั้งหมด','View all')} ›</button></h3>
+    ${tlRows('dash',open,{limit:5})}<div style="text-align:center;margin-top:8px"><button class="btn sm" data-drill="${MODE==='done'?'del':'open'}">${L('ดูทั้งหมด','View all')} (${open.length}) ›</button></div></div>`;
+  // ปัญหาที่เจอบ่อย
+  const pm={}; open.forEach(c=>{ const k=c.problem_cat||'none'; (pm[k]=pm[k]||[]).push(c._t.total); });
+  const probP=`<div class="panel"><h3>${L('ปัญหาที่เจอบ่อย','Top problems')}</h3>${stbl('pb',[{k:'n',l:L('กลุ่มปัญหา','Problem')},{k:'c',l:L('คัน','Veh.'),num:1,bar:1,color:'#7c3aed'},{k:'p',l:'%',num:1,fmt:v=>v+'%'},{k:'mx',l:L('นานสุด (วัน)','Max (d)'),num:1},{k:'av',l:L('เฉลี่ย (วัน)','Avg (d)'),num:1}],
+    Object.entries(pm).map(([k,t])=>({n:k==='none'?L('ยังไม่ระบุ','Not set'):probName(k),c:t.length,p:n?Math.round(t.length/n*100):0,mx:Math.max(...t),av:avg(t),_a:`data-drill="prob:${k}"`})),{k:'c',d:'desc'})}</div>`;
+  // PS ไหนไม่อัปเดต
+  let actP='';
+  if(staff && !S.df.dealer){ const ds=new Set(S.dealers.filter(d=>!S.df.rsm||dRsm(d)===S.df.rsm).map(d=>String(d.id)));
+    const act=psActivity(S.profiles||[],'stale').filter(x=>ds.has(String(x.d.id))), hasD=act.filter(x=>x.days!=null), noD=act.filter(x=>x.days==null);
+    actP=`<div class="panel"><h3>${L('PS ไหนไม่อัปเดตข้อมูล','Dealers not updating')}</h3>
+      ${stbl('act',[{k:'n',l:L('ศูนย์','Dealer')},{k:'r',l:'RSM'},{k:'d',l:L('อัปเดตล่าสุด (วันก่อน)','Last update (days ago)'),num:1,bar:1,fmt:v=>v===0?L('วันนี้','today'):v},{k:'o',l:L('รถค้าง','Open'),num:1}],
+        hasD.map(x=>({n:x.d.name,r:dRsm(x.d),d:x.days,o:x.open,_c:x.days>14?'#c8102e':x.days>7?'#ea580c':'#16a34a',_a:`data-dealer-dash="${x.d.id}"`})),{k:'d',d:'desc'})}
+      ${noD.length?`<details class="mut sm" style="margin-top:8px"><summary>⚪ ${L('ยังไม่มีข้อมูลรถ','No vehicle data yet')} (${noD.length} ${L('ศูนย์','dealers')})</summary>${noD.map(x=>esc(x.d.name)).join(' · ')}</details>`:''}</div>`; }
+  // รถเข้า-ออก
+  const tp=throughput(all), sel=tp.find(p=>p.key===S.d.bucket);
+  const tpP=`<div class="panel"><h3>${L('รถเข้า – ออก (อัตราเคลียร์รถค้าง)','In / out (clearance rate)')} <button class="lnk" data-act="report">📄 ${L('สร้างรายงาน','Report')} ›</button></h3>
+    <div class="segc sm2" style="margin:0 0 6px">${[['day',L('วัน','Day')],['week',L('สัปดาห์','Week')],['month',L('เดือน','Month')],['year',L('ปี','Year')]].map(p=>`<button data-dset="per" data-v="${p[0]}" class="${S.d.per===p[0]?'on':''}">${p[1]}</button>`).join('')}</div>
+    ${stbl('tp',[{k:'i',l:'#',num:1},{k:'n',l:L('ช่วง','Period')},{k:'b0',l:L('ค้างต้นช่วง','Open at start'),num:1},{k:'a',l:L('เข้าใหม่','In'),num:1,bar:1,color:'#64748b'},{k:'d',l:L('ส่งมอบ','Out'),num:1,bar:1,color:'#16a34a'},{k:'b',l:L('ค้างปลายช่วง','Open at end'),num:1},{k:'r',l:L('อัตราเคลียร์','Clear rate'),num:1,fmt:v=>v==null?'–':v+'%'},{k:'m',l:L('ค่ากลางวันซ่อม','Median days'),num:1}],
+      tp.map((p,i)=>({i:i+1,n:p.label,b0:p.b0,a:p.arr.length,d:p.del.length,b:p.back,r:p.rate,m:p.del.length?p.med:null,_a:`data-bucket="${p.key}"`})),{k:'i',d:'desc'})}
+    <div class="mut sm" style="margin-top:6px">${L('อัตราเคลียร์ = ส่งมอบ ÷ (ค้างต้นช่วง + เข้าใหม่) · แตะแถวเพื่อดูแยกศูนย์','Clear rate = out ÷ (open at start + in) · tap a row for dealers')}</div>
+    ${(()=>{ if(!sel) return ''; const del=sel.del, arr=sel.arr;
+      let h=`<div class="msg" style="margin-top:10px">📦 <b>${esc(sel.label)}</b> · ${L('ส่งมอบ','out')} <b>${del.length}</b> · ${L('เข้าใหม่','in')} <b>${arr.length}</b>${del.length?` <button class="lnk" data-drill="del">${L('ดูรายการ','View list')} ›</button>`:''} <button class="lnk" data-bucket="${sel.key}">✕</button></div>`;
+      if(staff && !S.df.dealer){ const m={}; const g=id=>m[id]=m[id]||{id,del:0,arr:0,d:[]};
+        del.forEach(c=>{ const e=g(c.dealer_id); e.del++; e.d.push(dd(c.arrival_date,c.delivered_date)); }); arr.forEach(c=>g(c.dealer_id).arr++);
+        h+=stbl('tpd',[{k:'n',l:L('ศูนย์','Dealer')},{k:'a',l:L('เข้าใหม่','In'),num:1},{k:'d',l:L('ส่งมอบ','Out'),num:1,bar:1,color:'#16a34a'},{k:'m',l:L('ค่ากลางวันซ่อม','Median days'),num:1}],
+          Object.values(m).map(r=>({n:dName(r.id),a:r.arr,d:r.del,m:r.d.length?qtl(r.d,.5):null,_a:`data-dealer-dash="${r.id}"`})),{k:'d',d:'desc'}); }
+      return h; })()}</div>`;
+  const OLD=(()=>{
   // ค้างขั้นไหน
   const stK=COL_ORDER.filter(k=>k!=='done');
   const stP=`<div class="panel"><h3>${L('ค้างที่ขั้นไหนเยอะสุด','Where vehicles are stuck')}</h3>
@@ -1444,10 +1752,20 @@ function viewDash(){
           ${rows.map(r=>`<tr class="click" data-dealer-dash="${r.id}"><td>${esc(dName(r.id))}</td><td><b style="color:#15803d">${r.del}</b></td><td>${r.arr}</td><td>${r.back}</td><td>${r.d.length?qtl(r.d,.5):'–'}</td></tr>`).join('')}</tbody></table></div>`; }
       return h; })()}
     <div class="mut sm" style="margin-top:6px">${L('นับจากข้อมูลที่บันทึกใน VOR Live','Based on data recorded in VOR Live')}</div></div>`;
+  return {stP,ageP,cntP,probP,tpP,actP};
+  })();
+  if(MODE!=='open'){ // ค้างที่ขั้นไหน → วันเฉลี่ยแต่ละขั้น
+    const stK2=COL_ORDER.filter(k=>k!=='done'), rows=stK2.map((k,i)=>{ const ds=open.map(c=>c._t.segs.filter(g=>g.k===k).reduce((a,g)=>a+g.days,0)).filter(v=>v>0);
+      return {i:i+1,k,n:stName(k),o:ST[k].o,c:ds.length,av:ds.length?Math.round(avgN(ds)*10)/10:0,md:ds.length?qtl(ds,.5):0,sum:ds.reduce((a,b)=>a+b,0)}; });
+    OLD.stP=`<div class="panel"><h3>${L('วันเฉลี่ยแต่ละขั้น','Average days per step')}</h3>${vbars(rows.map(r=>({label:r.n,v:r.av,color:oc(r.o),tip:`${r.n}: ${r.av} ${L('วัน','d')} (${r.c} ${L('คัน','veh.')})`,sub:r.c+L(' คัน',' veh.')})))}<div class="mut sm" style="margin-top:6px">${L('เฉลี่ยจากรถที่ผ่านขั้นนั้น · ตัวเลขใต้แท่ง = จำนวนคัน','Average over vehicles that went through the step · number below = vehicles')}</div></div>`;
+    stP=`<div class="panel"><h3>${L('วันเฉลี่ยแต่ละขั้น','Average days per step')}</h3>${stbl('st2',[{k:'i',l:'#',num:1},{k:'n',l:L('ขั้นตอน','Step')},{k:'o',l:L('ฝั่ง','Side'),fmt:v=>side2(v)},{k:'c',l:L('คัน','Veh.'),num:1},{k:'av',l:L('เฉลี่ย (วัน)','Avg (d)'),num:1,bar:1},{k:'md',l:L('ค่ากลาง (วัน)','Median (d)'),num:1},{k:'sum',l:L('รวมวัน','Total days'),num:1}],rows.map(r=>({...r,_c:oc(r.o)})),{k:'i',d:'asc'})}</div>`; }
+  const MT=h=>MODE==='open'?h:h.replace(L('อายุรถค้าง (วัน)','Days open'),MODE==='done'?L('วันซ่อม รถเข้า → ส่งมอบ (วัน)','Repair days, arrival → delivery'):L('วันซ่อม / วันค้าง (วัน)','Repair / open days'));
+  const VW=(k,tbl)=>{ const t=(S.d.vw||{})[k]==='t', h=MT(t?tbl:OLD[k]); if(!h) return '';
+    return h.replace('</h3>',` <span class="vwt"><button data-vw="${k}" data-v="c" class="${t?'':'on'}" title="${L('กราฟ','Chart')}">📊</button><button data-vw="${k}" data-v="t" class="${t?'on':''}" title="${L('ตาราง','Table')}">📋</button></span></h3>`); };
   const dealerHead=staff&&S.df.dealer?`<div class="msg dh">🏢 <b>${esc(dName(S.df.dealer))}</b> <span class="sp"></span><button class="btn sm" data-dealer-board="${S.df.dealer}">${L('เปิด Board','Open board')}</button><button class="btn sm" data-dealer-dash="">✕ ${L('ทุกศูนย์','All dealers')}</button></div>`:'';
   const ltP=`<div class="sect">⏱ ${L('ระยะเวลาแต่ละขั้น','Time per step')}</div>
     <div class="ctl">${chips('lp',[['open',L('รถค้างตอนนี้','Open now')],['d30',L('ส่งมอบ 30 วัน','Delivered 30 d')],['d90',L('ส่งมอบ 90 วัน','Delivered 90 d')],['year',L('ปีนี้','This year')],['all',L('ทั้งหมด','All')]],S.d.lp||'open')}</div>${viewStats(dashScope())}`;
-  return dashBar()+dealerHead+head+alerts+`<div class="grid2">${donutP}${cntP}</div>${topP}<div class="grid2">${stP}${ageP}</div>${probP}${actP}${tpP}${ltP}`;
+  return dashBar()+dealerHead+head+alerts+`${topP}<div class="grid2">${donutP}${VW('ageP',ageP)}</div>${VW('cntP',cntP)}${VW('stP',stP)}${VW('tpP',tpP)}${VW('probP',probP)}${VW('actP',actP)}${ltP}`;
 }
 function alertHit(c,k){ const ss=S.stepsBy[c.id]||[], T=today();
   if(k==='past_due') return c.est_delivery && c.est_delivery<T;
@@ -1480,6 +1798,8 @@ function renderDrill(){
   const list=base.filter(c=>(!D.parked||(D.parked==='y')===!!c.parked)&&(!D.prob||(c.problem_cat||'none')===D.prob))
     .sort((a,b)=>isDel?b.delivered_date.localeCompare(a.delivered_date):b._t.total-a._t.total);
   const byPs = staff && D.sort==='ps';
+  if(!byPs && !isDel){ const st=tlSort('drill',list); list.length=0; list.push(...st); }
+  const scale=Math.max(1,...list.map(c=>isDel?dd(c.arrival_date,c.delivered_date):c._t.total));
   if(byPs){ const cnt={}; list.forEach(c=>cnt[c.dealer_id]=(cnt[c.dealer_id]||0)+1);
     list.sort((a,b)=>(cnt[b.dealer_id]-cnt[a.dealer_id])||dName(a.dealer_id).localeCompare(dName(b.dealer_id))||(b._t.total-a._t.total)); }
   const probs=[...new Set(base.map(c=>c.problem_cat||'none'))];
@@ -1489,17 +1809,88 @@ function renderDrill(){
       <div class="bar" style="margin-bottom:8px"><div class="segc sm2">${[['',L('ทั้งหมด','All')],['y',L('จอด','Parked')],['n',L('ไม่จอด','Not parked')]].map(s=>`<button data-drf="parked" data-v="${s[0]}" class="${D.parked===s[0]?'on':''}">${s[1]}</button>`).join('')}</div>
         ${staff?`<div class="segc sm2">${[['days',L('วันค้างมาก→น้อย','Longest first')],['ps',L('ราย PS','By dealer')]].map(x=>`<button data-drf="sort" data-v="${x[0]}" class="${(D.sort||'days')===x[0]?'on':''}">${x[1]}</button>`).join('')}</div>`:''}
         <select data-drsel="prob"><option value="">${L('ทุกกลุ่มปัญหา','All problems')}</option>${probs.map(k=>`<option value="${k}" ${D.prob===k?'selected':''}>${esc(k==='none'?L('ยังไม่ระบุ','Not set'):probName(k))}</option>`).join('')}</select></div>
+      ${!byPs&&!isDel?`<div class="drl" style="margin-bottom:6px">${tlSortCtl('drill')}</div>`:'<div class="drl"></div>'}
       ${list.map((c,i)=>{ const t=c._t, dep=deptOf(t.cur.k), dys=isDel?dd(c.arrival_date,c.delivered_date):t.total;
         const head = byPs && (i===0 || list[i-1].dealer_id!==c.dealer_id) ? (()=>{ const g=list.filter(x=>x.dealer_id===c.dealer_id); return `<div class="drh" data-dealer-dash="${c.dealer_id}">🏢 ${esc(dName(c.dealer_id))} <span class="mut">· ${g.length} ${L('คัน','veh.')} · ${L('ค้างที่ GWM','GWM')} ${g.filter(x=>x._t.cur.o==='G').length} · PS ${g.filter(x=>x._t.cur.o==='P').length}</span></div>`; })() : '';
         return head+`<div class="dr"><span class="rkn">${i+1}</span><div class="drm" data-open="${c.id}">
           <div><b>${esc(c.sp)}</b> ${t.round>1?`<span class="rnd">${L('รอบ','R')} ${t.round}</span>`:''} ${c.parked?`<span class="tag park" style="margin:0">${L('จอด','Parked')}</span>`:''}</div>
           <div class="mut sm">${staff?esc(dName(c.dealer_id))+' · ':''}${esc(c.model||'-')}${c.problem_cat?' · '+esc(probName(c.problem_cat)):''}</div>
-          <div class="sm">${isDel?`✅ ${L('ส่งมอบ','Delivered')} ${fmt(c.delivered_date)}`:`<span class="dot" style="background:${oc(t.cur.o)}"></span> ${esc(stName(t.cur.k))}${dep?` · <span class="mut">${L('ติดที่','with')} ${esc(deptName(dep.o,dep.key))}</span>`:''} · ${L('ขั้นนี้','in status')} ${t.curDays} ${L('วัน','d')}`}</div></div>
+          <div class="sm">${isDel?`✅ ${L('ส่งมอบ','Delivered')} ${fmt(c.delivered_date)}`:`<span class="dot" style="background:${oc(t.cur.o)}"></span> ${esc(stName(t.cur.k))}${dep?` · <span class="mut">${L('ติดที่','with')} ${esc(deptName(dep.o,dep.key))}</span>`:''} · ${L('ขั้นนี้','in status')} ${t.curDays} ${L('วัน','d')}`}</div>
+          ${tlSegs(c,scale)}</div>
           <div class="drr">${ageBadge(dys)}${c.vin?`<button class="lnk" data-vin="${esc(c.vin)}">VIN ›</button>`:''}</div></div>`; }).join('')||`<div class="mut" style="padding:14px 0">${L('ไม่มีรถในตัวกรองนี้','No vehicles in this filter')}</div>`}
       <div class="mut sm" style="margin-top:10px">${L('แตะ SP เพื่อเปิดดู/แก้ไข · แตะ VIN เพื่อดูประวัติการเข้าศูนย์','Tap an SP to open it · tap VIN to see its service history')}</div>
     </div></div>`;
   m.classList.remove('hidden');
 }
+/* ===================== รายงาน รถเข้า-ออก / ประสิทธิภาพปล่อยรถ ===================== */
+function repScope(){ const m=S.df.month; S.df.month=''; const l=dashScope(); S.df.month=m; return l; }
+function repCalc(list,s,e){
+  const openAt=(c,d,strict)=>(strict?c.arrival_date<d:c.arrival_date<=d) && !(c.delivered_date&&(strict?c.delivered_date<d:c.delivered_date<=d)) && !(c.cancelled_date&&(strict?c.cancelled_date<d:c.cancelled_date<=d));
+  const inn=list.filter(c=>c.arrival_date>=s&&c.arrival_date<=e), out=list.filter(c=>c.delivered_date&&c.delivered_date>=s&&c.delivered_date<=e),
+        cx=list.filter(c=>c.cancelled_date&&c.cancelled_date>=s&&c.cancelled_date<=e), b0=list.filter(c=>openAt(c,s,true)), b1=list.filter(c=>openAt(c,e,false));
+  const lt=out.map(c=>dd(c.arrival_date,c.delivered_date)), G=out.reduce((a,c)=>a+c._t.own.G,0), P=out.reduce((a,c)=>a+c._t.own.P,0);
+  const days=Math.max(1,dd(s,e)+1);
+  return {inn,out,cx,b0,b1,n:{b0:b0.length,in:inn.length,out:out.length,cx:cx.length,b1:b1.length,
+    rate:(b0.length+inn.length)?Math.round(out.length/(b0.length+inn.length)*100):null,
+    perDay:Math.round(out.length/days*10)/10, net:out.length+cx.length-inn.length,
+    med:lt.length?qtl(lt,.5):null, avg:lt.length?Math.round(lt.reduce((a,b)=>a+b,0)/lt.length):null, p90:lt.length?qtl(lt,.9):null,
+    gp:(G+P)?Math.round(G/(G+P)*100):null}};
+}
+function openReport(){
+  const m=$('#modal'), T=today(), r=S.rep||(S.rep={s:T.slice(0,8)+'01',e:T,g:'week',run:false});
+  const scopeTxt=[S.df.rsm&&('RSM '+S.df.rsm),S.df.dealer&&dName(S.df.dealer),S.df.prob&&probName(S.df.prob),S.df.pay&&payName(S.df.pay),S.df.model,S.df.parked&&(S.df.parked==='y'?L('จอด','Parked'):L('ไม่จอด','Not parked'))].filter(Boolean).join(' · ')||(isStaff()?L('ทุกศูนย์','All dealers'):dName(S.me.dealer_id));
+  const presets=[['m0',L('เดือนนี้','This month')],['m1',L('เดือนก่อน','Last month')],['d30',L('30 วันล่าสุด','Last 30 days')],['q',L('ไตรมาสนี้','This quarter')],['y',L('ปีนี้','This year')]];
+  let body=`<div class="noprint"><div class="fg" style="margin-top:12px">
+      <label>${L('ตั้งแต่','From')}<input type="date" data-rp="s" value="${r.s}"></label>
+      <label>${L('ถึง','To')}<input type="date" data-rp="e" value="${r.e}"></label>
+      <label>${L('แยกตาม','Group by')}<select data-rp="g">${[['day',L('วัน','Day')],['week',L('สัปดาห์','Week')],['month',L('เดือน','Month')],['year',L('ปี','Year')]].map(x=>`<option value="${x[0]}" ${r.g===x[0]?'selected':''}>${x[1]}</option>`).join('')}</select></label></div>
+    <div class="ctl" style="margin-top:8px">${presets.map(x=>`<button class="btn sm" data-rpp="${x[0]}">${x[1]}</button>`).join('')}</div>
+    <div class="mut sm" style="margin-top:8px">${L('ขอบเขต (ตามตัวกรองหน้าภาพรวม)','Scope (from Overview filters)')}: <b>${esc(scopeTxt)}</b></div>
+    <div class="nab" style="margin-top:10px"><button class="btn pri" data-act="reprun">📄 ${L('สร้างรายงาน','Generate report')}</button>${r.run?`<button class="btn" data-act="repprint">🖨 ${L('พิมพ์ / บันทึก PDF','Print / save PDF')}</button><button class="btn" data-act="repxls">⬇ Excel</button>`:''}</div></div>`;
+  if(r.run) body+=repHtml(scopeTxt);
+  m.innerHTML=`<div class="sheet rep" style="width:min(1100px,100%)"><div class="mh"><b>📄 ${L('รายงานรถเข้า – ออก (ประสิทธิภาพปล่อยรถค้างซ่อม)','In / out report (repair clearance performance)')}</b><button class="x noprint" data-act="close">✕</button></div><div class="mb">${body}</div></div>`;
+  m.classList.remove('hidden');
+}
+function repData(){ const r=S.rep, list=repScope(), staff=isStaff();
+  const tot=repCalc(list,r.s,r.e), per=periodsIn(r.g,r.s,r.e).map(p=>({p,...repCalc(list,p.s,p.e).n}));
+  const byD={}; list.forEach(c=>(byD[c.dealer_id]=byD[c.dealer_id]||[]).push(c));
+  const ps=Object.entries(byD).map(([id,l])=>({id,name:dName(id),rsm:dRsm(dealerById(id)),...repCalc(l,r.s,r.e).n})).filter(x=>x.b0||x.in||x.out||x.cx||x.b1);
+  const byR={}; list.forEach(c=>{ const k=dRsm(dealerById(c.dealer_id))||'—'; (byR[k]=byR[k]||[]).push(c); });
+  const rs=staff?Object.entries(byR).map(([k,l])=>({name:k,...repCalc(l,r.s,r.e).n})).filter(x=>x.b0||x.in||x.out||x.b1):[];
+  const old=tot.b1.map(c=>({c,age:dd(c.arrival_date,r.e)})).filter(x=>x.age>30).sort((a,b)=>b.age-a.age);
+  return {r,tot,per,ps,rs,old};
+}
+function repHtml(scopeTxt){
+  const D=repData(), {r,tot,per,ps,rs,old}=D, n=tot.n, staff=isStaff(), pc=v=>v==null?'–':v+'%', nv=v=>v==null?'–':v;
+  const kp=(v,l,cls)=>`<div class="stat ${cls||''}"><div class="v">${v}</div><div class="l">${l}</div></div>`;
+  const ncols=[{k:'b0',l:L('ค้างต้นช่วง','Open at start'),num:1},{k:'in',l:L('เข้าใหม่','In'),num:1,bar:1,color:'#64748b'},{k:'out',l:L('ส่งมอบ','Out'),num:1,bar:1,color:'#16a34a'},{k:'cx',l:L('ยกเลิก','Cancelled'),num:1},{k:'b1',l:L('ค้างปลายช่วง','Open at end'),num:1},{k:'rate',l:L('อัตราเคลียร์','Clear rate'),num:1,fmt:pc},{k:'med',l:L('ค่ากลางวันซ่อม','Median days'),num:1},{k:'avg',l:L('เฉลี่ยวันซ่อม','Avg days'),num:1},{k:'gp',l:L('% วันที่ GWM','GWM % of days'),num:1,fmt:pc}];
+  return `<div class="report">
+    <div class="rph"><div><b>VOR Live · ${L('รายงานรถเข้า – ออก','In / out report')}</b><div class="mut sm">${fmt(r.s)} – ${fmt(r.e)} · ${esc(scopeTxt)}</div></div><div class="mut sm" style="text-align:right">${L('สร้างเมื่อ','Generated')} ${fmt(today())}<br>${esc(meName())}</div></div>
+    <div class="stats" style="margin-top:10px">${kp(n.b0,L('ค้างต้นช่วง','Open at start'))}${kp(n.in,L('รถเข้าใหม่','Vehicles in'))}${kp(n.out,L('ส่งมอบ (ออก)','Delivered (out)'),'p')}${kp(n.cx,L('ยกเลิก SP','Cancelled'))}${kp(n.b1,L('ค้างปลายช่วง','Open at end'),'g')}
+      ${kp(pc(n.rate),L('อัตราเคลียร์','Clear rate'))}${kp(n.perDay,L('ส่งมอบเฉลี่ย / วัน','Out per day'))}${kp(nv(n.med),L('ค่ากลางวันซ่อม (รถที่ส่งมอบ)','Median repair days'))}${kp(nv(n.p90),L('90% ส่งมอบภายใน (วัน)','90% delivered within (d)'))}${kp(pc(n.gp),L('% วันที่รอ GWM','% of days at GWM'))}</div>
+    <div class="msg" style="margin:4px 0 10px">${n.net>=0?'✅':'⚠️'} ${L('ช่วงนี้รถออก','In this period')} ${n.out+n.cx} ${L('คัน เข้า','out vs')} ${n.in} ${L('คัน → ค้าง','in → backlog')} ${n.net>=0?L('ลดลง','down'):L('เพิ่มขึ้น','up')} <b>${Math.abs(n.b1-n.b0)}</b> ${L('คัน','veh.')} (${n.b0} → ${n.b1})</div>
+    <h4>${L('แยกตามช่วงเวลา','By period')}</h4>${stbl('rp',[{k:'i',l:'#',num:1},{k:'lab',l:L('ช่วง','Period')}].concat(ncols),per.map((x,i)=>({...x,i:i+1,lab:x.p.label})),{k:'i',d:'asc'})}
+    ${staff&&rs.length>1?`<h4>${L('แยกตาม RSM','By RSM')}</h4>${stbl('rr',[{k:'name',l:'RSM'}].concat(ncols),rs,{k:'out',d:'desc'})}`:''}
+    ${ps.length>1||staff?`<h4>${L('แยกตามศูนย์ (PS)','By dealer (PS)')}</h4>${stbl('rps',[{k:'name',l:L('ศูนย์','Dealer')}].concat(staff?[{k:'rsm',l:'RSM'}]:[]).concat(ncols),ps,{k:'rate',d:'asc'})}`:''}
+    <h4>${L('รถค้างเกิน 30 วัน ณ วันสิ้นช่วง','Open over 30 days at period end')} (${old.length})</h4>
+    ${stbl('rold',[{k:'sp',l:'SP'},{k:'vin',l:'VIN'},{k:'pl',l:L('ทะเบียน','Plate')}].concat(staff?[{k:'d',l:L('ศูนย์','Dealer')}]:[]).concat([{k:'st',l:L('สถานะตอนนี้','Status now')},{k:'age',l:L('วันค้าง','Days'),num:1}]),
+      old.slice(0,50).map(x=>({sp:x.c.sp,vin:x.c.vin||null,pl:x.c.plate||null,d:dName(x.c.dealer_id),st:x.c._t.done?L('ส่งมอบแล้ว','Delivered'):stName(x.c._t.cur.k),age:x.age,_a:`data-open="${x.c.id}"`})),{k:'age',d:'desc'})}
+    <div class="mut sm" style="margin-top:10px">${L('อัตราเคลียร์ = ส่งมอบ ÷ (ค้างต้นช่วง + เข้าใหม่) · วันซ่อม = วันที่รถมาถึง → วันส่งมอบ · % วันที่ GWM = สัดส่วนวันที่รอ GWM (JS / YS / อะไหล่) ของรถที่ส่งมอบในช่วงนี้','Clear rate = out ÷ (open at start + in) · repair days = arrival → delivery · GWM % = share of days waiting on GWM for vehicles delivered in the period')}</div>
+    <div class="credit">${CREDIT}</div></div>`;
+}
+async function repExcel(){ try{ const X=await loadXLSX(), D=repData(), {r,tot,per,ps,rs,old}=D, n=tot.n, wb=X.utils.book_new();
+  const H=[L('ค้างต้นช่วง','Open at start'),L('เข้าใหม่','In'),L('ส่งมอบ','Out'),L('ยกเลิก','Cancelled'),L('ค้างปลายช่วง','Open at end'),L('อัตราเคลียร์ %','Clear rate %'),L('ค่ากลางวันซ่อม','Median days'),L('เฉลี่ยวันซ่อม','Avg days'),L('% วันที่ GWM','GWM % of days')];
+  const V=x=>[x.b0,x.in,x.out,x.cx,x.b1,x.rate,x.med,x.avg,x.gp];
+  const add=(name,rows,w)=>{ const ws=X.utils.aoa_to_sheet(rows); ws['!cols']=(w||[]).map(x=>({wch:x})); X.utils.book_append_sheet(wb,ws,name); };
+  add(L('สรุป','Summary'),[[L('รายงานรถเข้า-ออก VOR Live','VOR Live in/out report')],[L('ช่วง','Period'),r.s+' – '+r.e],[L('สร้างเมื่อ','Generated'),today(),meName()],[],...H.map((h,i)=>[h,V(n)[i]]),[L('ส่งมอบเฉลี่ย/วัน','Out per day'),n.perDay],[L('90% ส่งมอบภายใน (วัน)','90% within (d)'),n.p90]],[28,22,18]);
+  add(L('แยกช่วงเวลา','By period'),[[L('ช่วง','Period'),L('ตั้งแต่','From'),L('ถึง','To'),...H],...per.map(x=>[x.p.label,x.p.s,x.p.e,...V(x)])],[16,12,12]);
+  if(rs.length) add('RSM',[['RSM',...H],...rs.map(x=>[x.name,...V(x)])],[16]);
+  add(L('แยกศูนย์','By dealer'),[[L('ศูนย์','Dealer'),'RSM',...H],...ps.map(x=>[x.name,x.rsm,...V(x)])],[30,14]);
+  add(L('รถที่ส่งมอบ','Delivered'),[['SP','VIN',L('ทะเบียน','Plate'),L('ศูนย์','Dealer'),L('วันที่รถมาถึง','Arrival'),L('วันส่งมอบ','Delivered'),L('วันซ่อม','Days'),L('วันที่ GWM','GWM days'),L('วันที่ PS','PS days')],
+    ...tot.out.map(c=>[c.sp,c.vin||'',c.plate||'',dName(c.dealer_id),c.arrival_date,c.delivered_date,dd(c.arrival_date,c.delivered_date),c._t.own.G,c._t.own.P])],[16,20,12,28,12,12,8,8,8]);
+  add(L('ค้างปลายช่วง','Open at end'),[['SP','VIN',L('ทะเบียน','Plate'),L('ศูนย์','Dealer'),L('วันที่รถมาถึง','Arrival'),L('วันค้าง ณ สิ้นช่วง','Days at end'),L('สถานะตอนนี้','Status now')],
+    ...tot.b1.map(c=>[c.sp,c.vin||'',c.plate||'',dName(c.dealer_id),c.arrival_date,dd(c.arrival_date,r.e),c._t.done?L('ส่งมอบแล้ว','Delivered'):stName(c._t.cur.k)])],[16,20,12,28,12,10,22]);
+  X.writeFile(wb,'VOR-Report_'+r.s+'_'+r.e+'.xlsx'); }catch(e){ toast(errMsg(e)); } }
 async function openVin(vin){
   const m=$('#modal'); let rows=[];
   try{ rows=await api.vinHistory(vin)||[]; }catch(e){ toast(errMsg(e)); return; }
@@ -1531,7 +1922,7 @@ function legacySteps(c,steps){ // แปลงข้อมูลแบบเด�
     steps.push(newStep('diag',1,{d1:c.analysis_date,result:steps.some(s=>s.kind==='js'&&(s.round||1)===1)?'js':'parts'}));
 }
 function openCase(id, dropCol){
-  const base = id ? S.cases.find(x=>x.id===id) : {dealer_id: S.me.role==='ps'?S.me.dealer_id:(S.f.dealer||''), arrival_date:today(), parked:true, loaner:false, cost_band:'le10k'};
+  const base = id ? S.cases.find(x=>x.id===id) : {dealer_id: S.me.role==='ps'?S.me.dealer_id:(S.f.dealer||''), arrival_date:today(), parked:true, loaner:false, cost_band:null};
   const c={}; Object.keys(base).forEach(k=>{ if(!k.startsWith('_')) c[k]=base[k]; });
   const steps=(id?((S.stepsRaw||{})[id]||S.stepsBy[id]||[]):[]).map(s=>({...s,ev:Array.isArray(s.ev)?s.ev.map(e=>({...e})):[]}));
   legacySteps(c,steps);
@@ -1630,10 +2021,13 @@ function renderModal(){
       ${openJs?`<span class="mut sm">${L('ปิด','Close')} ${esc(openJs.ref_no||'JS')} ${L('ก่อนเปิด JS ใหม่','before opening a new JS')}</span>`:''}
       ${c.cost_band==='gt10k'&&!E.steps.some(s=>s.kind==='ys')?`<span class="hint" style="margin:0">${L('เกิน 10,000 ต้องขอ YS ก่อนซ่อม','Over 10,000 needs YS')}</span>`:''}</div>`;
   const rounds=`<section class="fs flow"><h4>${L('ขั้นตอน (ไล่ตามวันที่)','Steps (by date)')}</h4>${flow}</section>`;
+  const CTABS=[['st','สถานะ','Status'],['info','ข้อมูลรถ','Vehicle'],['steps','ขั้นตอน','Steps'],['del','ส่งมอบ','Delivery']];
+  S.ctabBy=S.ctabBy||{}; const ctab=E.id?(S.ctabBy[E.id]||'st'):'info';
   const VEH=`      <section class="fs"><h4>${L('ข้อมูลรถ','Vehicle')}</h4><div class="fg">
         ${staff?`<label>${L('ศูนย์บริการ (PS)','Dealer (PS)')}<select data-c="dealer_id"><option value="">${L('— เลือก —','— Select —')}</option>${ds.map(d=>`<option value="${d.id}" ${String(c.dealer_id)===String(d.id)?'selected':''}>${esc(d.name)}</option>`).join('')}</select></label>`:''}
         <label>${L('SP (เลข RO) *','SP (RO no.) *')}<input data-c="sp" value="${esc(c.sp||'')}" placeholder="SP…" autocapitalize="characters"></label>
         <label>VIN<input data-c="vin" value="${esc(c.vin||'')}" maxlength="17" autocapitalize="characters"></label>
+        <label>${L('เลขทะเบียน','License plate')}<input data-c="plate" value="${esc(c.plate||'')}" maxlength="20" placeholder="${L('เช่น 1กข 1234 กรุงเทพฯ','e.g. 1AB 1234 Bangkok')}"></label>
         <label>${L('รุ่น','Model')}${(()=>{ const ml=modelList(), off=c.model?officialModel(c.model):null, other=(c.model&&!off)||E.modelOther;
           return `<select data-msel>${`<option value="">${L('— เลือก —','— Select —')}</option>`}${ml.map(m=>`<option ${off===m&&!E.modelOther?'selected':''}>${esc(m)}</option>`).join('')}<option value="__other" ${other?'selected':''}>${L('อื่นๆ (ระบุ)','Other (type it)')}</option></select>
           ${other?`<input data-c="model" value="${esc(c.model||'')}" placeholder="${L('พิมพ์ชื่อรุ่น','Type the model')}" style="margin-top:6px">`:`<input type="hidden" data-c="model" value="${esc(off||'')}">`}`; })()}</label>
@@ -1642,7 +2036,7 @@ function renderModal(){
         <label>${L('รถใช้ระหว่างซ่อม','Loaner car')}${radio('loaner','data-c="loaner"',[['1',L('มี','Yes')],['0',L('ไม่มี','No')]],c.loaner===true||c.loaner==='1'?'1':'0')}</label>
         ${dateRow('est_delivery',L('วันประมาณการส่งมอบ','Estimated delivery'),c.est_delivery)}
       </div>
-      <div style="margin-top:10px"><div class="mut sm" style="margin-bottom:4px">${L('การชำระ','Payment')}</div>${radio('cost_band','data-c="cost_band"',[['le10k',L('เคลม Warranty – ไม่เกิน 10,000','Warranty claim ≤ 10,000')],['gt10k',L('เคลม Warranty – เกิน 10,000 (ต้องขอ YS)','Warranty claim > 10,000 (YS)')],['customer',L('ลูกค้าชำระเอง','Customer pays')]],c.cost_band||'le10k')}</div>
+      <div style="margin-top:10px"><div class="mut sm" style="margin-bottom:4px">${L('การชำระ','Payment')}</div>${radio('cost_band','data-c="cost_band"',[['',L('ยังไม่ทราบ','Not known yet')],['le10k',L('เคลม Warranty – ไม่เกิน 10,000','Warranty claim ≤ 10,000')],['gt10k',L('เคลม Warranty – เกิน 10,000 (ต้องขอ YS)','Warranty claim > 10,000 (YS)')],['customer',L('ลูกค้าชำระเอง','Customer pays')]],c.cost_band||'')}</div>
       <div class="stamp" data-sec="vehicle"></div>
       </section>
       <section class="fs"><h4>${L('ปัญหา','Problem')}</h4><div class="fg">
@@ -1654,21 +2048,22 @@ function renderModal(){
 `;
   m.innerHTML=`<div class="sheet">
     <div class="mh"><div class="mht"><div><b>${E.id?'SP '+esc(c.sp):L('เพิ่มรถค้างซ่อม','Add vehicle')}</b>${E.id?` <span class="mut sm">· ${esc(dName(c.dealer_id))}</span>`:''}</div>
-      ${E.id&&(c.vin||c.model)?`<div class="mhv">${c.vin?`<span class="mono">VIN ${esc(c.vin)}</span> <button type="button" class="btn xs" data-copytext="${esc(c.vin)}" title="${L('คัดลอก VIN','Copy VIN')}">📋</button> <button type="button" class="btn xs" data-vin="${esc(c.vin)}">🕘 ${L('ประวัติ VIN','VIN history')}</button>`:''}${c.model?` <span class="mut sm">· ${esc(c.model)}</span>`:''}</div>`:''}</div>
+      ${E.id&&(c.vin||c.model||c.plate)?`<div class="mhv">${c.vin?`<span class="mono">VIN ${esc(c.vin)}</span> <button type="button" class="btn xs" data-copytext="${esc(c.vin)}" title="${L('คัดลอก VIN','Copy VIN')}">📋</button> <button type="button" class="btn xs" data-vin="${esc(c.vin)}">🕘 ${L('ประวัติ VIN','VIN history')}</button>`:''}${c.plate?` <span class="plate">${esc(c.plate)}</span>`:''}${c.model?` <span class="mut sm">· ${esc(c.model)}</span>`:''}</div>`:''}</div>
       <button class="x" data-act="close" aria-label="close">✕</button></div>
     <div class="mb">
       ${!FULL()?`<div class="msg" style="margin-top:12px">${L('ตำแหน่งของคุณ','Your position')} (<b>${esc(catName(S.me.category))}</b>) ${L('กรอกได้เฉพาะ','can edit')}: ${esc(scopeText())}</div>`:''}
       ${E.hint?`<div class="msg" style="margin-top:12px">${esc(E.hint)}</div>`:''}
-      <div id="pv"></div>
-      ${VEH}
-      <div id="na"></div>${tools}
-      ${rounds}
+      ${E.id?`<div class="ctabs">${CTABS.map(([k,th,en])=>`<button type="button" data-ctab="${k}" class="${ctab===k?'on':''}">${L(th,en)}</button>`).join('')}</div>`:`<div class="msg" style="margin-top:12px">${L('ขั้นที่ 1 · รถเข้า: กรอกเฉพาะที่รู้ตอนรับรถ แล้วกดบันทึก ขั้นตอนอื่นกรอกต่อหลังบันทึก','Step 1 · Vehicle in: fill what you know now and save; other steps come after saving')}</div>`}
+      <div class="cpane ${E.id&&ctab==='st'?'on':''}" data-pane="st"><div id="pv"></div><div id="na"></div></div>
+      <div class="cpane ${!E.id||ctab==='info'?'on':''}" data-pane="info">${VEH}</div>
+      <div class="cpane ${E.id&&ctab==='steps'?'on':''}" data-pane="steps">${E.id?tools:''}${rounds}</div>
+      <div class="cpane ${E.id&&ctab==='del'?'on':''}" data-pane="del">
       <section class="fs"><h4><span class="no" style="background:${DONE_C}">✓</span>${L('ติดตามลูกค้า / ส่งมอบ','Customer follow-up / delivery')}</h4><div class="fg">${dateRow('customer_contact_date',L('โทรแจ้ง / นัดหมายลูกค้า','Customer contacted / appointment'),c.customer_contact_date)}${dateRow('delivered_date',L('ส่งมอบเสร็จสมบูรณ์','Delivered'),c.delivered_date)}</div><div class="stamp" data-sec="delivery"></div></section>
       ${E.id&&c.cancelled_date?`<section class="fs" style="border-color:#e5a3a3"><h4 style="color:#b42318">✕ ${L('SP นี้ถูกยกเลิกแล้ว','This SP was cancelled')}</h4>
         <div class="sm">${L('วันที่','Date')} <b>${fmt(c.cancelled_date)}</b> · ${L('เหตุผล','Reason')} <b>${esc(cancelName(c.cancel_reason))}</b>${c.new_sp?` · ${L('SP ใหม่','New SP')} <b>${esc(c.new_sp)}</b>`:''}${c.cancel_note?`<br>${esc(c.cancel_note)}`:''}</div>
         ${isAdmin()?`<button type="button" class="btn" style="margin-top:8px" data-reopen>↺ ${L('เปิด SP นี้กลับมา (Admin)','Reopen this SP (Admin)')}</button>`:''}</section>`:''}
       <section class="fs"><h4>${L('หมายเหตุ','Remark')}</h4><textarea data-c="remark" rows="2" style="width:100%">${esc(c.remark||'')}</textarea><div class="stamp" data-sec="remark"></div></section>
-      <div id="hist"></div>
+      <div id="hist"></div></div>
       <datalist id="models">${MODELS.map(x=>`<option value="${esc(x)}">`).join('')}</datalist>
     </div>
     <div class="mf">${E.id&&staff?`<button class="btn danger" data-act="del">${L('ลบ','Delete')}</button>`:''}<span class="sp"></span><button class="btn" data-act="close">${L('ยกเลิก','Cancel')}</button><button class="btn pri" data-act="save">${L('บันทึก','Save')}</button></div>
@@ -1710,9 +2105,11 @@ function readForm(){
     if(el.type==='radio'){ if(el.checked) s[el.dataset.sf]=el.value; } else s[el.dataset.sf]=el.value; });
   m.querySelectorAll('[data-ev]').forEach(el=>{ const s=S.edit.steps[+el.dataset.ev]; if(!s||!s.ev) return; const e=s.ev[+el.dataset.ej]; if(e) e[el.dataset.ef]=el.value; });
 }
+const plateOK = () => DEMO || !S.cases.length || S.cases.some(c=>'plate' in c);  // ป้องกันบันทึกพัง ถ้ายังไม่ได้รัน SQL v1.8
 function normCase(src){
   const c={}; CASE_FIELDS.forEach(k=>{ if(src[k]!==undefined) c[k]=src[k]; });
-  ['sp','vin','model','remark','symptom','cause'].forEach(k=>{ if(typeof c[k]==='string') c[k]=c[k].trim(); });
+  if(!plateOK()) delete c.plate;
+  ['sp','vin','plate','model','remark','symptom','cause'].forEach(k=>{ if(typeof c[k]==='string') c[k]=c[k].trim(); });
   if(c.vin) c.vin=c.vin.toUpperCase(); if(c.sp) c.sp=c.sp.toUpperCase();
   Object.keys(c).forEach(k=>{ if(c[k]==='') c[k]=null; });
   c.parked = !(c.parked===false || c.parked==='0');
@@ -1742,7 +2139,7 @@ function updatePreview(){
   $('#pv').innerHTML=`<div class="pv">
     <div class="mut sm">${L('สถานะปัจจุบัน','Current status')}</div>
     <div class="stg big"><span class="dot" style="background:${oc(t.cur.o)}"></span>${esc(curLabel(t))}${t.cur.o?` <span class="own ${t.cur.o}">${t.cur.o==='G'?'GWM':'PS'}</span>`:''}${!t.done&&t.ev.length?` <span class="mut sm" style="font-weight:400">· ${days(t.curDays)}</span>`:''}</div>
-    ${tlBar(t)}${!t.done&&t.ev.length&&!t.total?`<div class="mut sm" style="margin-top:4px">${L('ทุกขั้นลงวันที่วันนี้ · ระบบเริ่มนับวันตั้งแต่พรุ่งนี้','All steps are dated today · day counting starts tomorrow')}</div>`:''}
+    ${t.segs.some(x=>x.days>0)?tlSegs({...c,_t:t},t.total,true)+tlLegend():tlBar(t)}${!t.done&&t.ev.length&&!t.total?`<div class="mut sm" style="margin-top:4px">${L('ทุกขั้นลงวันที่วันนี้ · ระบบเริ่มนับวันตั้งแต่พรุ่งนี้','All steps are dated today · day counting starts tomorrow')}</div>`:''}
     <div class="nums"><span>${L('รวม','Total')} <b>${t.total}</b> ${L('วัน','days')}</span><span style="color:${OWN.P.c}">Partner <b style="color:inherit">${t.own.P}</b></span><span style="color:${OWN.G.c}">GWM <b style="color:inherit">${t.own.G}</b></span></div>
     ${f.map(x=>`<span class="flag">⚠ ${esc(x)}</span>`).join('')}
     ${(()=>{ const td=todoList(c,ss); return td.length?`<div class="todo">✎ ${L('ยังขาด (บันทึกได้ เติมทีหลังได้)','Still missing (you can save and fill later)')}: ${esc(td.join(' · '))}</div>`:''; })()}
@@ -1793,7 +2190,7 @@ function renderActions(){
   const f=cur.need;
   box.innerHTML=`<div class="na on"><div><b>${esc(cur.label)}</b></div><div class="fg" style="margin-top:8px">
     <label class="drow">${L('วันที่','Date')}${dateIn('data-naf="d"',today())}</label>
-    ${f.includes('pay')?`<label class="drow">${L('การชำระ (เช็กก่อนบันทึก)','Payment (check before saving)')}${radio('na_pay','data-naf="pay"',Object.keys(PAY).map(k=>[k,payName(k)]),E.c.cost_band||'le10k')}</label>`:''}
+    ${f.includes('pay')?`<label class="drow">${L('การชำระ (เช็กก่อนบันทึก)','Payment (check before saving)')}${radio('na_pay','data-naf="pay"',Object.keys(PAY).map(k=>[k,payName(k)]),E.c.cost_band||'')}</label>`:''}
     ${f.includes('type')?`<label class="drow">${L('ประเภท','Type')}${radio('na_type','data-naf="type"',[['PO','PO'],['BO','BO']],'PO')}</label>`:''}
     ${f.includes('ref')?`<label class="drow">${E.act==='order'||E.act==='npo'?L('เลข PO / BO','PO / BO no.'):E.act==='ys_req'||E.act==='nys'?L('เลข YS','YS no.'):L('เลข JS','JS no.')}<input data-naf="ref" autocapitalize="characters"></label>`:''}
     ${f.includes('eta')?`<label class="drow">ETA${dateIn('data-naf="eta"','')}</label>`:''}
@@ -1860,6 +2257,7 @@ function validate(c,ss){   // ห้ามบันทึกเฉพาะ 3 �
 function todoList(c,ss){   // ข้อมูลที่ยังขาด: บันทึกได้ แต่ขึ้นป้ายให้กลับมาเติม
   const t=[], A=c.arrival_date, bad=d=>d&&A&&d<A, add=x=>{ if(!t.includes(x)) t.push(x); };
   if(bad(c.analysis_date)||bad(c.customer_contact_date)||bad(c.delivered_date)) add(L('วันที่ก่อนวันรถมาถึง','date before arrival'));
+  if(!c.cost_band && (ss||[]).some(s=>s.kind==='parts'||s.kind==='ys'||(s.kind==='diag'&&s.result&&s.result!=='js'))) add(L('ยังไม่ระบุการชำระ','payment not set'));
   { const T=today(), fut=[c.arrival_date,c.analysis_date,c.delivered_date,c.cancelled_date,...(ss||[]).flatMap(s=>[s.d1,s.kind==='parts'?null:s.d2,s.d3,...(s.ev||[]).map(e=>e.d)])].some(d=>d&&d>T);
     if(fut) add(L('มีวันที่ในอนาคต (ยกเว้น ETA / นัดลูกค้า / นัดส่งมอบ)','a date is in the future (except ETA / customer appointment / est. delivery)')); }
   (ss||[]).forEach(s=>{
@@ -2115,12 +2513,26 @@ function tempPw(){ const a='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz2345
 /* ===================== Events ===================== */
 document.addEventListener('click', async e=>{
   if(e.target.closest('[data-stop]')) return;
-  const t=e.target.closest('[data-rmround],[data-copytext],[data-reopen],[data-rq],[data-bopen],[data-mren],[data-mtog],[data-madd],[data-qa],[data-mt],[data-na],[data-naok],[data-nax],[data-addev],[data-rmev],[data-ucs],[data-bdrill],[data-ufd],[data-lvlrsm],[data-side2],[data-drill],[data-dside],[data-dset],[data-bucket],[data-dealer-dash],[data-dealer-board],[data-drf],[data-vin],[data-deluser],[data-follow],[data-copy],[data-copytext],[data-deldealer],[data-svm],[data-temppw],[data-delallowed],[data-clear],[data-toggle],[data-tab],[data-act],[data-open],[data-today],[data-rmstep],[data-addstep],[data-auth],[data-dealer],[data-saveuser],[data-reject],[data-savedealer],[data-demo],[data-lang]');
+  const t=e.target.closest('[data-dst],[data-pf],[data-pfsel2],[data-pfdealer],[data-vw],[data-seg],[data-tld],[data-tlv],[data-ctab],[data-rpp],[data-ts],[data-rmround],[data-copytext],[data-reopen],[data-rq],[data-bopen],[data-mren],[data-mtog],[data-madd],[data-qa],[data-mt],[data-na],[data-naok],[data-nax],[data-addev],[data-rmev],[data-ucs],[data-bdrill],[data-ufd],[data-lvlrsm],[data-side2],[data-drill],[data-dside],[data-dset],[data-bucket],[data-dealer-dash],[data-dealer-board],[data-drf],[data-vin],[data-deluser],[data-follow],[data-copy],[data-copytext],[data-deldealer],[data-svm],[data-temppw],[data-delallowed],[data-clear],[data-toggle],[data-tab],[data-act],[data-open],[data-today],[data-rmstep],[data-addstep],[data-auth],[data-dealer],[data-saveuser],[data-reject],[data-savedealer],[data-demo],[data-lang]');
   if(!t) return;
   const d=t.dataset;
   if(d.drill){ openDrill(d.drill); return; }
   if(d.bdrill){ openDrill(d.bdrill,'board'); return; }
   if(d.dside){ S.d.side=S.d.side===d.dside?null:d.dside; renderMain(); return; }
+  if(d.dst){ S.df.st=d.dst; S.d.side=null; if(d.dst==='open') S.d.own='cars'; renderMain(); return; }
+  if(d.pf){ S.pf[d.pf]=d.v; if(d.pf==='pos') S.pf.sel=null; renderMain(); return; }
+  if(d.pfsel2){ S.pf.sel=S.pf.sel===d.pfsel2?null:d.pfsel2; renderMain(); return; }
+  if(d.pfdealer){ S.pf.dealer=d.pfdealer; renderMain(); return; }
+  if(d.vw){ S.d.vw={...(S.d.vw||{}),[d.vw]:d.v}; renderMain(); return; }
+  if(d.seg){ const [nm,a,b,n]=d.seg.split('|'); toast(`${nm} · ${n} ${L('วัน','days')} (${fmt(a)} – ${fmt(b)})`); return; }
+  if(d.tld){ S.tls[d.tld]={...(S.tls[d.tld]||{k:'total'}),d:d.v}; S.drill&&$('#modal .drl')?renderDrill():renderMain(); return; }
+  if(d.tlv){ S.tlv=d.tlv; S.drill&&$('#modal .drl')?renderDrill():renderMain(); return; }
+  if(d.ctab){ const E=S.edit; if(!E) return; S.ctabBy[E.id]=d.ctab; document.querySelectorAll('#modal [data-ctab]').forEach(b=>b.classList.toggle('on',b.dataset.ctab===d.ctab)); document.querySelectorAll('#modal .cpane').forEach(p=>p.classList.toggle('on',p.dataset.pane===d.ctab)); $('#modal .mb').scrollTop=0; return; }
+  if(d.rpp){ const T=new Date(), y=T.getFullYear(), mo=T.getMonth(), f=x=>ymd(x); let s0,e0=today();
+    if(d.rpp==='m0') s0=f(new Date(y,mo,1)); if(d.rpp==='m1'){ s0=f(new Date(y,mo-1,1)); e0=f(new Date(y,mo,0)); }
+    if(d.rpp==='d30'){ const a=new Date(T); a.setDate(a.getDate()-29); s0=f(a); } if(d.rpp==='q') s0=f(new Date(y,Math.floor(mo/3)*3,1)); if(d.rpp==='y') s0=y+'-01-01';
+    S.rep={s:s0,e:e0,g:(d.rpp==='y'||d.rpp==='q')?'month':'week',run:true}; openReport(); return; }
+  if(d.ts){ const cur=S.ts[d.ts]||{}; S.ts[d.ts]={k:d.tk,d:cur.k===d.tk?(cur.d==='desc'?'asc':'desc'):(d.tn?'desc':'asc')}; if(d.ts.startsWith('r')&&$('#modal .rep')) openReport(); else renderMain(); return; }
   if(d.dset){ const k=d.dset, v=d.v;
     if(k==='parked'||k==='age') S.df[k]=v;
     else if(k==='mine'){ S.df.rsm=v; S.df.dealer=''; }
@@ -2173,7 +2585,7 @@ document.addEventListener('click', async e=>{
   if(d.mren){ const x=(S.models||[]).find(m=>String(m.id)===d.mren); if(!x) return; const nn=prompt(L('ชื่อรุ่นใหม่','New model name'),x.name); if(!nn||nn.trim()===x.name) return;
     try{ const ids=S.cases.filter(c=>c.model&&c.model.trim()===x.name).map(c=>c.id); await api.updModel(x.id,{name:nn.trim()}); if(ids.length) await api.renameModelOnCases(ids,nn.trim()); await reload(); toast(L('แก้ชื่อแล้ว','Renamed')); }catch(err){ toast(errMsg(err)); } return; }
   if(d.qa){ openCase(d.qa); S.edit.act=d.qk; renderActions(); setTimeout(()=>{ const b=$('#na'); if(b) b.scrollIntoView({block:'start'}); },50); return; }
-  if(d.mt){ if(d.mt==='mtall') S.mt.all=d.v==='1'; else S.mt.stage=d.v; renderMain(); return; }
+  if(d.mt){ if(d.mt==='mtall'){ S.mt.all=d.v==='1'; S.mt.dealer=''; } else if(d.mt==='mtpark') S.mt.parked=d.v; else S.mt.stage=d.v; renderMain(); return; }
   if(d.na){ readForm(); S.edit.act=d.na; renderActions(); const b=$('#na'); if(b) b.scrollIntoView({block:'nearest'}); return; }
   if(d.nax!==undefined){ S.edit.act=null; renderActions(); return; }
   if(d.naok!==undefined){ await doAction(); return; }
@@ -2207,6 +2619,10 @@ document.addEventListener('click', async e=>{
     case 'refresh': await reload(); toast(L('อัปเดตแล้ว','Updated')); break;
     case 'csv': exportCSV(); break;
     case 'manual': exportManual(); break;
+    case 'report': openReport(); break;
+    case 'reprun': { const g=k=>$(`#modal [data-rp="${k}"]`).value; S.rep={s:g('s'),e:g('e'),g:g('g'),run:true}; if(S.rep.s>S.rep.e) [S.rep.s,S.rep.e]=[S.rep.e,S.rep.s]; openReport(); break; }
+    case 'repprint': window.print(); break;
+    case 'repxls': await repExcel(); break;
     case 'close': closeModal(); break;
     case 'save': saveCase(); break;
     case 'newround': { readForm(); const r=curRound()+1; S.edit.steps.push(newStep('js',r,{d1:today()})); ensureRoundSteps(); renderModal();
@@ -2271,6 +2687,9 @@ document.addEventListener('change', e=>{
   if(el.dataset.uf){ S.uf[el.dataset.uf]=el.value; renderMain(); return; }
   if(el.dataset.msel!==undefined && S.edit){ readForm(); if(el.value==='__other'){ S.edit.modelOther=true; S.edit.c.model=''; } else { S.edit.modelOther=false; S.edit.c.model=el.value; } renderModal(); return; }
   if(el.dataset.mmerge && el.value){ if(confirm(L(`รวม "${el.dataset.mmerge}" เข้ากับ "${el.value}" ?`,`Merge "${el.dataset.mmerge}" into "${el.value}"?`))) mergeModel(el.dataset.mmerge, el.value); else el.value=''; return; }
+  if(el.dataset.pfsel){ S.pf[el.dataset.pfsel]=el.value; if(el.dataset.pfsel==='rsm') S.pf.dealer=''; renderMain(); return; }
+  if(el.dataset.mtsel){ S.mt[el.dataset.mtsel]=el.value; renderMain(); return; }
+  if(el.dataset.tlk){ S.tls[el.dataset.tlk]={...(S.tls[el.dataset.tlk]||{d:'desc'}),k:el.value}; S.drill&&$('#modal .drl')?renderDrill():renderMain(); return; }
   if(el.dataset.rsmset!==undefined){ S.rsmSet=el.value; try{ localStorage.setItem('vor_rsmset',el.value); }catch(_){}
     const L2=rsmList(); if(S.df.rsm&&!L2.includes(S.df.rsm)){ S.df.rsm=''; S.df.dealer=''; } if(S.f.rsm&&!L2.includes(S.f.rsm)){ S.f.rsm=''; S.f.dealer=''; } renderApp(); renderHeaderIcons(); return; }
   if(el.dataset.rsmfile!==undefined){ if(el.files[0]) rsmUpload(el.files[0]); el.value=''; return; }
@@ -2280,7 +2699,7 @@ document.addEventListener('change', e=>{
   if(el.closest('#modal')){ if(!S.edit) return; // ช่องที่เปลี่ยนหน้าตาฟอร์ม → วาดใหม่, ที่เหลือแค่อัปเดตตัวอย่างสถานะ
     if(el.dataset.c==='cost_band' || el.dataset.sf==='result' || el.dataset.sf==='parts_type'){ readForm(); renderModal(); } else updatePreview(); return; }
   if(el.id==='suCat'){ $('#suDealer').classList.toggle('hidden', el.value==='rsm'); return; }
-  if(el.dataset.demoSel!==undefined){ S.me={...DEMO_USERS[el.value]}; S.df={rsm:'',dealer:'',parked:'',prob:'',age:'',pay:'',model:''}; S.d.side2=null; S.f={rsm:'',dealer:'',q:'',parked:'',loaner:'',prob:'',showDone:false,period:'open'}; S.tab='board'; loadAll().then(renderApp); return; }
+  if(el.dataset.demoSel!==undefined){ S.me={...DEMO_USERS[el.value]}; S.df={rsm:'',dealer:'',parked:'',prob:'',age:'',pay:'',model:'',month:''}; S.d.side2=null; S.f={rsm:'',dealer:'',q:'',parked:'',loaner:'',prob:'',showDone:false,period:'open'}; S.tab='board'; loadAll().then(renderApp); return; }
   const k=el.dataset.f; if(!k || k==='q') return;
   S.f[k]= el.type==='checkbox'?el.checked:el.value;
   if(k==='rsm') S.f.dealer='';
