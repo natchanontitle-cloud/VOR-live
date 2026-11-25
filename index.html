@@ -156,7 +156,8 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .report h4{margin:16px 0 4px;font-size:14px}.rph{display:flex;justify-content:space-between;gap:10px;margin-top:12px;padding-bottom:8px;border-bottom:2px solid var(--red)}
 @media print{ body{background:#fff} #app,#toast,.noprint{display:none!important} .modal{position:static;background:none;padding:0;display:block} .sheet{max-height:none!important;height:auto!important;width:100%!important;box-shadow:none;border-radius:0} .mb{overflow:visible} .mh{border:0}
   .tw{border:1px solid #ddd;overflow:visible;max-height:none!important} .thb .sar{display:none} tr{break-inside:avoid} .tw.st table{font-size:10.5px} .tw.st td,.thb{padding:4px 5px!important} .bcb{width:40px} .stats{grid-template-columns:repeat(5,1fr)} @page{size:A4 landscape;margin:10mm} }
-.plate{display:inline-block;border:1.5px solid #111827;border-radius:5px;padding:0 6px;font-weight:700;font-size:12.5px;background:#fff}
+.plate{display:inline-block;border:1.2px solid #9ca3af;border-radius:5px;padding:0 6px;font-weight:600;font-size:12.5px;background:#fff;color:#4b5563;letter-spacing:.3px;line-height:1.45}
+.cplate{margin:-2px 0 4px}.cplate .plate{font-size:11.5px;padding:0 6px}
 @media(min-width:900px){ body{font-size:15px} .sm{font-size:13px} .stat .l{font-size:13px} .fg label,.drow{font-size:13.5px} th{font-size:13px} }
 /* case tabs */
 .ctabs{position:sticky;top:0;z-index:6;display:flex;gap:4px;background:#fff;padding:10px 0 8px;border-bottom:1px solid var(--line);margin:0 -2px}
@@ -986,7 +987,7 @@ function card(c){
   const tog=(f,on,cls,txtOn,txtOff)=>{ const can=canField(f);
     return `<span class="tag ${on?cls:''}" ${can?`data-toggle="${f}" data-cid="${c.id}" title="${L('แตะเพื่อสลับ','Tap to switch')}"`:''}>${on?txtOn:txtOff}</span>`; };
   return `<div class="card" style="--oc:${oc(t.cur.o)}" data-open="${c.id}" ${FULL()?'draggable="true"':''} data-id="${c.id}">
-    <div class="ct"><b>${esc(c.sp)}</b>${t.round>1?`<span class="rnd">${L('รอบ','Round')} ${t.round}</span>`:''}<span class="sp"></span>${tog('parked',c.parked,'park',L('จอด','Parked'),L('ไม่จอด','Not parked'))}</div>
+    ${c.plate?`<div class="cplate"><span class="plate">${esc(c.plate)}</span></div>`:''}<div class="ct"><b>${esc(c.sp)}</b>${t.round>1?`<span class="rnd">${L('รอบ','Round')} ${t.round}</span>`:''}<span class="sp"></span>${tog('parked',c.parked,'park',L('จอด','Parked'),L('ไม่จอด','Not parked'))}</div>
     <div class="tags2">${tog('loaner',c.loaner,'loan','🚗 '+L('มีรถใช้ระหว่างซ่อม','Loaner car'),'🚗 '+L('ไม่มีรถใช้','No loaner'))}</div>
     <div class="mut sm">${esc(c.model||'-')}${c.vin?' · …'+esc(c.vin.slice(-6)):''}</div>
     ${isStaff()?`<div class="mut sm">${esc(dName(c.dealer_id))}</div>`:''}
@@ -1355,7 +1356,8 @@ const avgN = a => a.length ? a.reduce((x,y)=>x+y,0)/a.length : null;
 function perfCompute(cases,logs,s,e){
   const inR=d=>d>=s&&d<=e, byId={}, stepById={}, lbc={}, ppl={};
   cases.forEach(c=>{ byId[c.id]=c; (S.stepsBy[c.id]||[]).forEach(x=>stepById[x.id]=x); });
-  const P=l=>ppl[l.actor]||(ppl[l.actor]={uid:l.actor,name:l.actor_name||'?',cat:l.actor_cat,dealer:l.dealer_id,jobs:new Set(),cases:new Set(),segs:[],lags:[],q:[0,0],cats:{}});
+  const pk=l=>String(l.dealer_id)+'|'+l.actor_cat+'|'+String(l.actor_name||l.actor).trim().toLowerCase().replace(/\s+/g,' ');
+  const P=l=>{ const k=pk(l), p=ppl[k]||(ppl[k]={uid:l.actor,uids:new Set(),name:l.actor_name||'?',cat:l.actor_cat,dealer:l.dealer_id,jobs:new Set(),cases:new Set(),segs:[],lags:[],q:[0,0],cats:{}}); p.uids.add(l.actor); if(l.actor===S.me.user_id) p.uid=l.actor; return p; };
   logs.forEach(l=>{ if(!l.actor||!POS.includes(l.actor_cat)||l.action==='delete') return; const c=byId[l.case_id]; if(!c) return;
     (lbc[l.case_id]=lbc[l.case_id]||[]).push(l); const d=ldate(l.at); if(!inR(d)) return;
     const p=P(l); p.jobs.add(l.case_id+'|'+d); p.cases.add(l.case_id);
@@ -1423,7 +1425,7 @@ function viewPerf(){
       stbl(id,[{k:'rk',l:L('อันดับ','Rank'),num:1},{k:'n',l:L('ชื่อ','Name')}].concat(staff?[{k:'d',l:L('ศูนย์','Dealer')}]:[]).concat([{k:'pj',l:L('job ต่อ','Jobs per ')+unitName(),num:1,bar:1,color:'#185FA5'},{k:'j',l:L('job ทั้งหมด','Jobs'),num:1},{k:'c',l:L('เวลาปิดงานเฉลี่ย (วัน)','Avg close (d)'),num:1},{k:'q',l:'%'+L(' คุณภาพ',' quality'),num:1,fmt:v=>v==null?'–':v+'%'},{k:'g',l:L('บันทึกช้า (วัน)','Entry delay (d)'),num:1}]),
         list.map(p=>({rk:rk[p.uid],n:anonFn(p,rk[p.uid]),d:dName(p.dealer),pj:per(p),j:p.jobsN,c:p.close,q:p.qual,g:p.lag,_c:p.uid===me.user_id?'#c8102e':null,_cls:p.uid===me.user_id?'me':'',_a:`data-pfsel2="${p.uid}"`})),{k:'rk',d:'asc'}); };
   // พนักงาน PS (ไม่ใช่ SVM): ของตัวเอง + อันดับแบบไม่มีชื่อ
-  if(!staff && !svm){ const mine=ppl.find(p=>p.uid===me.user_id)||{uid:me.user_id,name:meName(),cat:myCat,dealer:me.dealer_id,jobsN:0,close:null,lag:null,comp:null,qual:null,cats:{}};
+  if(!staff && !svm){ const mine=ppl.find(p=>p.uids&&p.uids.has(me.user_id))||{uid:me.user_id,name:meName(),cat:myCat,dealer:me.dealer_id,jobsN:0,close:null,lag:null,comp:null,qual:null,cats:{}};
     const grp=ppl.filter(p=>p.cat===myCat&&String(p.dealer)===String(me.dealer_id)); if(!grp.includes(mine)) grp.push(mine);
     const anon=(p,r)=>p.uid===me.user_id?L('คุณ','You'):posName(p.cat)+' #'+r;
     const rj=[...grp].sort((a,b)=>b.jobsN-a.jobsN).indexOf(mine)+1, rc=[...grp].sort((a,b)=>(a.close??1e9)-(b.close??1e9)).indexOf(mine)+1;
@@ -1453,7 +1455,7 @@ function perfNote(){ return `<details class="mut sm" style="margin:4px 2px 16px"
 // แผนกที่รับผิดชอบแต่ละสถานะ (แก้การจับคู่ได้ที่นี่)
 const DEPTS = { P:[['foreman',['diag','js_close','test']],['wty',['ys_open']],['parts',['parts_order']],['sa',['follow']]],
                 G:[['tech',['js_wait']],['warranty',['ys_wait']],['parts',['eta']]] };
-const DEPT_L = { foreman:['ช่าง / Foreman','Technician'], wty:['Warranty (PS)','Warranty (PS)'], sa:['SA','SA'], parts:['อะไหล่','Spare parts'], cr:['CR','CR'], tech:['Technical','Technical'], warranty:['Warranty','Warranty'] };
+const DEPT_L = { foreman:['ช่าง / Foreman','Technician'], wty:['Warranty','Warranty'], sa:['SA','SA'], parts:['อะไหล่','Spare parts'], cr:['CR','CR'], tech:['Technical','Technical'], warranty:['Warranty','Warranty'] };
 function deptOf(k){ const o=ST[k]&&ST[k].o; if(!o) return null; const d=DEPTS[o].find(x=>x[1].includes(k)); return d?{o,key:d[0]}:null; }
 const deptName = (o,key,side=true) => L(...DEPT_L[key])+(side?' ('+(o==='G'?'GWM':'PS')+')':'');
 const qtl = (arr,q) => { if(!arr.length) return 0; const a=[...arr].sort((x,y)=>x-y), i=(a.length-1)*q, lo=Math.floor(i), hi=Math.ceil(i); return Math.round(a[lo]+(a[hi]-a[lo])*(i-lo)); };
