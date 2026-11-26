@@ -272,9 +272,9 @@ const CONFIG = {
   SUPABASE_ANON_KEY: 'sb_publishable_RESqSgvp97Bh5thFluhs0w_M1LYS4dk'
 };
 // ===== เวอร์ชัน: อัปเกรดทุกครั้ง ให้เพิ่มเลข + เพิ่มรายการไว้บนสุดของ CHANGELOG =====
-const APP_VERSION = '1.8';
+const APP_VERSION = '1.8.1';
 const CHANGELOG = [
-  {v:'1.8', d:'2026-11-25', th:['↶ ย้อนขั้นล่าสุด (แท็บสถานะ): คนที่มีสิทธิ์ในขั้นนั้นย้อนได้ภายใน 7 วัน · เกิน 7 วัน SVM / RSM / Admin ย้อนได้','PO / BO มีช่องหมายเหตุ / รายการอะไหล่','เพิ่มรถ: ปุ่ม "บันทึก แล้วกรอกขั้นตอนต่อ" (SVM / SA / RSM / Admin) บันทึกแล้วเปิดแท็บขั้นตอนของคันนั้นทันที','หน้าภาพรวม: ตัวกรอง ยังไม่ส่งมอบ / ส่งมอบแล้ว / ทั้งหมด (เปิดเว็บใหม่กลับเป็น ยังไม่ส่งมอบ)','ผลงานพนักงาน: อันดับแยก 5 ตำแหน่ง (จำนวน job ต่อวัน / สัปดาห์ / เดือน · เวลาปิดงานเฉลี่ย) · radar ผลงานรวม + radar ความชำนาญ Foreman · พนักงานเห็นอันดับไม่เห็นชื่อ · SVM / RSM / Admin เห็นชื่อ','หน้าตามงาน: เลือกราย PS และกรอง จอด / ไม่จอด / ทั้งหมด','ขั้นสุดท้ายเปลี่ยนเป็น "SA แจ้งลูกค้า" (งานค้างขึ้นที่ SA)','Timeline แนวนอนรายคัน: ท่อนตามขั้นตอน ยาวตามจำนวนวัน แดง = รอ GWM น้ำเงิน = รอ PS · เรียงตามวันรวม / GWM / PS / ขั้นปัจจุบัน / รออะไหล่ ฯลฯ มาก↔น้อย · จอคอมดูแบบตามปฏิทินได้','หน้ารถแบ่งแท็บ: สถานะ · ข้อมูลรถ · ขั้นตอน · ส่งมอบ (จำแท็บล่าสุด) · เพิ่มรถใหม่กรอกเฉพาะข้อมูลรถเข้า','การชำระเริ่มเป็น "ยังไม่ทราบ" · ขึ้นเตือนถ้าถึงขั้นอะไหล่แล้วยังไม่ระบุ','หน้าภาพรวม: ทุกกล่องสลับ 📊 กราฟ / 📋 ตาราง (ตารางกดหัวคอลัมน์เรียงได้) · ตัวกรองเดือน','📄 รายงานรถเข้า – ออก: อัตราเคลียร์ แยกวัน / สัปดาห์ / เดือน / ปี · RSM / ศูนย์ · พิมพ์ PDF / Excel','ช่องเลขทะเบียน (ค้นหาได้) · ตัวหนังสือเข้มขึ้น'],
+  {v:'1.8', d:'2026-11-25', th:['ปุ่ม "บันทึก แล้วไปต่อ ›" ทุกแท็บของหน้ารถ (SVM / SA / RSM / Admin)','↶ ย้อนขั้นล่าสุด (แท็บสถานะ): คนที่มีสิทธิ์ในขั้นนั้นย้อนได้ภายใน 7 วัน · เกิน 7 วัน SVM / RSM / Admin ย้อนได้','PO / BO มีช่องหมายเหตุ / รายการอะไหล่','เพิ่มรถ: ปุ่ม "บันทึก แล้วกรอกขั้นตอนต่อ" (SVM / SA / RSM / Admin) บันทึกแล้วเปิดแท็บขั้นตอนของคันนั้นทันที','หน้าภาพรวม: ตัวกรอง ยังไม่ส่งมอบ / ส่งมอบแล้ว / ทั้งหมด (เปิดเว็บใหม่กลับเป็น ยังไม่ส่งมอบ)','ผลงานพนักงาน: อันดับแยก 5 ตำแหน่ง (จำนวน job ต่อวัน / สัปดาห์ / เดือน · เวลาปิดงานเฉลี่ย) · radar ผลงานรวม + radar ความชำนาญ Foreman · พนักงานเห็นอันดับไม่เห็นชื่อ · SVM / RSM / Admin เห็นชื่อ','หน้าตามงาน: เลือกราย PS และกรอง จอด / ไม่จอด / ทั้งหมด','ขั้นสุดท้ายเปลี่ยนเป็น "SA แจ้งลูกค้า" (งานค้างขึ้นที่ SA)','Timeline แนวนอนรายคัน: ท่อนตามขั้นตอน ยาวตามจำนวนวัน แดง = รอ GWM น้ำเงิน = รอ PS · เรียงตามวันรวม / GWM / PS / ขั้นปัจจุบัน / รออะไหล่ ฯลฯ มาก↔น้อย · จอคอมดูแบบตามปฏิทินได้','หน้ารถแบ่งแท็บ: สถานะ · ข้อมูลรถ · ขั้นตอน · ส่งมอบ (จำแท็บล่าสุด) · เพิ่มรถใหม่กรอกเฉพาะข้อมูลรถเข้า','การชำระเริ่มเป็น "ยังไม่ทราบ" · ขึ้นเตือนถ้าถึงขั้นอะไหล่แล้วยังไม่ระบุ','หน้าภาพรวม: ทุกกล่องสลับ 📊 กราฟ / 📋 ตาราง (ตารางกดหัวคอลัมน์เรียงได้) · ตัวกรองเดือน','📄 รายงานรถเข้า – ออก: อัตราเคลียร์ แยกวัน / สัปดาห์ / เดือน / ปี · RSM / ศูนย์ · พิมพ์ PDF / Excel','ช่องเลขทะเบียน (ค้นหาได้) · ตัวหนังสือเข้มขึ้น'],
    en:['Per-vehicle horizontal timeline by step, sortable; calendar view on desktop','Case page tabs: Status · Vehicle · Steps · Delivery; short new-vehicle form','Payment starts as "not known yet"','Overview panels switch chart / sortable table; month filter','📄 In/out report with clearance rate; print PDF / Excel','License plate field; darker text']},
   {v:'1.7.4', d:'2026-11-19', th:['สถานะรถอยู่บนสุดของหน้ารถ ต่อด้วยข้อมูลรถ → ปัญหา → ขั้นถัดไป → ขั้นตอน'], en:['Vehicle status at the top of the case page']},
   {v:'1.7.3', d:'2026-11-18', th:['หน้ารถเรียงตามลำดับการกรอก: ข้อมูลรถ → ปัญหา → สถานะ → ขั้นถัดไป → ขั้นตอน → ส่งมอบ'], en:['Case page follows filling order: vehicle → problem → status → next step → steps → delivery']},
@@ -347,8 +347,9 @@ const MODELS = ['Haval H6','Haval H6 HEV','Haval H6 PHEV','Haval Jolion','Haval 
 // o = เวลาในสถานะนี้นับเป็นของใคร: P = Partner (PS), G = GWM
 const ST = {
   diag:        {th:'ช่างวิเคราะห์',         en:'Diagnosis (foreman)',        o:'P'},
+  js_open:     {th:'รอ Foreman เปิด JS',    en:'Foreman to open JS',                o:'P'},
   js_wait:     {th:'รอ GWM Technical',      en:'Awaiting GWM Technical',     o:'G'},
-  js_close:    {th:'รอ Foreman (JS)',       en:'Awaiting foreman (JS)',      o:'P'},
+  js_close:    {th:'รอ Foreman ปิด JS',     en:'Foreman to close JS',        o:'P'},
   ys_open:     {th:'รอเปิด / แก้ YS',        en:'YS to submit / fix',         o:'P'},
   ys_wait:     {th:'รอ Warranty',           en:'Awaiting Warranty',          o:'G'},
   parts_order: {th:'รอสั่งอะไหล่',           en:'Awaiting parts order',       o:'P'},
@@ -359,7 +360,7 @@ const ST = {
   done:        {th:'ส่งมอบแล้ว',            en:'Delivered',                  o:null},
   cancel:      {th:'ยกเลิก SP',             en:'SP cancelled',               o:null}
 };
-const COL_ORDER = ['diag','js_wait','js_close','ys_open','ys_wait','parts_order','eta','test','follow','done'];
+const COL_ORDER = ['diag','js_open','js_wait','js_close','ys_open','ys_wait','parts_order','eta','test','follow','done'];
 const OWN = { P:{n:'Partner (PS)',c:'#2563eb'}, G:{n:'GWM',c:'#c8102e'} };
 const DONE_C = '#16a34a';
 
@@ -426,7 +427,7 @@ function timeline(c, steps){
   add(c.arrival_date,'arrival',0);
   add(c.analysis_date,'analysis',1);
   (steps||[]).forEach(s=>{ const R=(s.round||1)*10;
-    if(s.kind==='diag') add(s.d1,'diag_done',R+0.5,s);
+    if(s.kind==='diag') add(s.d1||(s.result&&(s.round||1)===1?c.analysis_date||c.arrival_date:null),'diag_done',R+0.5,s);
     if(s.kind==='js'){ add(s.d1,'js_req',R+1,s); stepEv(s).forEach((e,i)=>add(e.d, e.t==='send'?'js_send':'js_rep', R+1.1+i*0.001, s, e)); add(s.d3,'js_close',R+1.9,s); }
     if(s.kind==='ys'){ add(s.d1,'ys_req',R+2,s); stepEv(s).forEach((e,i)=>add(e.d, e.t==='resubmit'?'ys_resub':'ys_rej', R+2.1+i*0.001, s, e)); if(ysFinal(s)) add(s.d2||s.d1,'ys_fin',R+2.9,s); }
     if(s.kind==='parts'){ add(s.d1,'parts_order',R+3,s); add(s.d3,'parts_arr',R+3.1,s); }
@@ -439,7 +440,7 @@ function timeline(c, steps){
   ev.sort((a,b)=> a.d===b.d ? a.r-b.r : (a.d<b.d?-1:1));
 
   const jsG=new Set(), jsP=new Set(), ysG=new Set(), ysP=new Set(), parts=new Set(), RI={};
-  const ri=r=>RI[r]=RI[r]||{analysed:false,noparts:false,ordered:0,assembled:false,test:null};
+  const ri=r=>RI[r]=RI[r]||{analysed:false,noparts:false,needJs:false,jsOpened:false,ordered:0,assembled:false,test:null};
   let round=1, ysFinAny=false, ended=null;
   const mk=(k,detail)=>({k, o:ST[k].o, detail:detail||''});
   const states=ev.map(e=>{
@@ -448,8 +449,8 @@ function timeline(c, steps){
     if(s && e.k==='diag_done' && e.rd>round) round=e.rd;
     switch(e.k){
       case 'analysis': ri(1).analysed=true; break;
-      case 'diag_done': ri(e.rd).analysed=true; ri(e.rd).noparts = s.result==='noparts'; break;
-      case 'js_req': jsP.delete(s); jsG.add(s); break;
+      case 'diag_done': ri(e.rd).analysed=true; ri(e.rd).noparts = s.result==='noparts'; ri(e.rd).needJs = s.result==='js' && !ri(e.rd).jsOpened; break;
+      case 'js_req': jsP.delete(s); jsG.add(s); ri(e.rd||round).needJs=false; ri(e.rd||round).jsOpened=true; break;
       case 'js_rep': jsG.delete(s); jsP.add(s); break;
       case 'js_send': jsP.delete(s); jsG.add(s); break;
       case 'js_close': jsG.delete(s); jsP.delete(s); break;
@@ -473,7 +474,8 @@ function timeline(c, steps){
     if(jsP.size) return mk('js_close',ref(jsP));
     if(ysG.size) return mk('ys_wait',[...ysG][0].ref_no);
     if(ysP.size) return mk('ys_open','Reject · '+([...ysP][0].ref_no||''));
-    if(!cr.analysed) return mk('diag', round>1 ? L('รอเปิด JS ใหม่ (ซ่อมครั้งก่อนไม่ผ่าน)','Waiting new JS (previous repair failed)') : '');
+    if(!cr.analysed) return round>1 ? mk('js_open', L('ซ่อมครั้งก่อนไม่ผ่าน','previous repair failed')) : mk('diag');
+    if(cr.needJs) return mk('js_open', rTag);
     if(cr.test==='pass') return mk('follow');
     if(parts.size){ const ps=[...parts], x=ps.find(p=>p.parts_type==='BO')||ps[0];
       return mk('eta',(x.ref_no||'')+(ps.length>1?` +${ps.length-1}`:'')+(x.d2?' · ETA '+fmt(x.d2):'')); }
@@ -540,12 +542,12 @@ const PROBLEMS = {
   ac:{th:'แอร์',en:'A/C'}, software:{th:'ซอฟต์แวร์ / จอ / ADAS',en:'Software / display / ADAS'}, body:{th:'ตัวถัง / อุปกรณ์ภายใน',en:'Body / trim'}, other:{th:'อื่นๆ',en:'Other'}
 };
 const probName = k => PROBLEMS[k] ? PROBLEMS[k][S.lang] : (k||'');
-const FOLLOW_CATS = { diag:['foreman'], js_wait:['foreman'], js_close:['foreman'], ys_open:['warranty','owner_svm'], ys_wait:['warranty'], parts_order:['parts'], eta:['parts'], test:['foreman'], follow:['sa','owner_svm'], decide:['owner_svm','sa'], done:['sa'], cancel:['owner_svm'] };
+const FOLLOW_CATS = { diag:['foreman'], js_open:['foreman'], js_wait:['foreman'], js_close:['foreman'], ys_open:['warranty','owner_svm'], ys_wait:['warranty'], parts_order:['parts'], eta:['parts'], test:['foreman'], follow:['sa','owner_svm'], decide:['owner_svm','sa'], done:['sa'], cancel:['owner_svm'] };
 // งานของฉัน: สถานะที่แต่ละตำแหน่งต้องเคลียร์ (owner_svm / sa เห็นทุกงานฝั่ง PS)
-const MY_Q = { foreman:['diag','js_close','test'], warranty:['ys_open'], parts:['parts_order'], sa:['follow'] };
+const MY_Q = { foreman:['diag','js_open','js_close','test'], warranty:['ys_open'], parts:['parts_order'], sa:['follow'] };
 // รอ GWM: ศูนย์เป็นคนบันทึกวันที่ GWM ตอบ / อนุมัติ / อะไหล่มา
 const MY_WAIT = { foreman:['js_wait'], warranty:['ys_wait'], parts:['eta'], owner_svm:['js_wait','ys_wait','eta'], sa:['js_wait','ys_wait','eta'] };
-const PS_STAGES = ['diag','js_close','ys_open','parts_order','test','follow'], GWM_STAGES = ['js_wait','ys_wait','eta'];
+const PS_STAGES = ['diag','js_open','js_close','ys_open','parts_order','test','follow'], GWM_STAGES = ['js_wait','ys_wait','eta'];
 const catName = k => CATS[k] ? CATS[k][S.lang] : (k==='rsm'?'RSM':k==='admin'?'Admin':(k||''));
 const CASE_EDIT = { foreman:['analysis_date','parked','problem_cat','symptom','cause','cost_band'], warranty:['cost_band'], parts:[], cr:['parked','loaner','est_delivery','customer_contact_date','delivered_date'] };
 const STEP_EDIT = { foreman:['diag','js','assemble','test'], warranty:['ys'], parts:['parts'], cr:[] };
@@ -960,10 +962,10 @@ const oc = o => o ? OWN[o].c : DONE_C;
 function tlBar(t){ const s=t.segs.filter(x=>x.days>0); if(!s.length) return '<div class="tl"></div>';
   return `<div class="tl">${s.map(x=>`<i style="flex:${x.days};background:${oc(x.o)}" title="${esc(stName(x.k))} ${days(x.days)}"></i>`).join('')}</div>`; }
 /* ===== timeline แนวนอนรายคัน: ท่อนตามขั้นตอน ยาวตามจำนวนวัน ===== */
-const SEGC = { diag:'#bfdbfe', js_close:'#93c5fd', ys_open:'#7cb3f7', parts_order:'#60a5fa', test:'#3b82f6', follow:'#1d4ed8', decide:'#93c5fd',
+const SEGC = { diag:'#bfdbfe', js_open:'#a5c8fb', js_close:'#93c5fd', ys_open:'#7cb3f7', parts_order:'#60a5fa', test:'#3b82f6', follow:'#1d4ed8', decide:'#93c5fd',
                js_wait:'#f4a3a3', ys_wait:'#f7c1c1', eta:'#dc3c3c' };
 const segTxt = k => ['test','follow','eta'].includes(k)?'#fff':'#111827';
-const SEGS = { diag:['วิเคราะห์','Diag'], js_wait:['รอ GWM JS','GWM JS'], js_close:['Foreman','Foreman'], ys_open:['เปิด/แก้ YS','YS prep'], ys_wait:['Warranty','Warranty'],
+const SEGS = { diag:['วิเคราะห์','Diag'], js_open:['เปิด JS','Open JS'], js_wait:['รอ GWM JS','GWM JS'], js_close:['ปิด JS','Close JS'], ys_open:['เปิด/แก้ YS','YS prep'], ys_wait:['Warranty','Warranty'],
                parts_order:['สั่งอะไหล่','Order'], eta:['รออะไหล่','Parts ETA'], test:['ซ่อม/ทดสอบ','Repair/test'], follow:['SA แจ้งลูกค้า','SA informs'], decide:['ตัดสินใจ','Decide'] };
 function tlSegs(c,scale,big){ const t=c._t, segs=t.segs.filter(x=>x.days>0), tot=Math.max(1,t.total), w=Math.max(4,tot/Math.max(1,scale)*100);
   if(!segs.length) return `<div class="tlx empty2">${L('ยังไม่นับวัน','no days yet')}</div>`;
@@ -1352,7 +1354,7 @@ function viewMine(){
 const POS = ['foreman','warranty','parts','sa','owner_svm'];
 const POS_L = { foreman:['Foreman','Foreman'], warranty:['Warranty','Warranty'], parts:['Spare part','Spare part'], sa:['SA','SA'], owner_svm:['SVM','SVM'] };
 const posName = k => L(...(POS_L[k]||[k,k]));
-const STAGE_CAT = { diag:'foreman', js_close:'foreman', test:'foreman', ys_open:'warranty', parts_order:'parts', follow:'sa' };
+const STAGE_CAT = { diag:'foreman', js_open:'foreman', js_close:'foreman', test:'foreman', ys_open:'warranty', parts_order:'parts', follow:'sa' };
 S.pf = S.pf || { per:'m0', unit:'day', pos:'foreman', rank:'jobs', sel:null, dealer:'' };
 function perfRange(){ const T=new Date(), y=T.getFullYear(), m=T.getMonth(), f=x=>ymd(x), t=today(); let s0=f(new Date(y,m,1)), e0=t;
   if(S.pf.per==='w0'){ const a=new Date(T); a.setDate(a.getDate()-((a.getDay()+6)%7)); s0=f(a); }
@@ -1462,7 +1464,7 @@ function perfNote(){ return `<details class="mut sm" style="margin:4px 2px 16px"
      'Volume: 3 jobs/day = 100 · Speed: 0 days = 100, 10+ days = 0 · On-time entry: same day = 100, 5+ days late = 0 · Complete data: % of handled vehicles with no missing info · Quality depends on the position')}</details>`; }
 /* ===================== ภาพรวม (Dashboard) ===================== */
 // แผนกที่รับผิดชอบแต่ละสถานะ (แก้การจับคู่ได้ที่นี่)
-const DEPTS = { P:[['foreman',['diag','js_close','test']],['wty',['ys_open']],['parts',['parts_order']],['sa',['follow']]],
+const DEPTS = { P:[['foreman',['diag','js_open','js_close','test']],['wty',['ys_open']],['parts',['parts_order']],['sa',['follow']]],
                 G:[['tech',['js_wait']],['warranty',['ys_wait']],['parts',['eta']]] };
 const DEPT_L = { foreman:['ช่าง / Foreman','Technician'], wty:['Warranty','Warranty'], sa:['SA','SA'], parts:['อะไหล่','Spare parts'], cr:['CR','CR'], tech:['Technical','Technical'], warranty:['Warranty','Warranty'] };
 function deptOf(k){ const o=ST[k]&&ST[k].o; if(!o) return null; const d=DEPTS[o].find(x=>x[1].includes(k)); return d?{o,key:d[0]}:null; }
@@ -1969,6 +1971,7 @@ function openCase(id, dropCol){
     const T=today(), r=curRound(), st=k=>S.edit.steps.find(s=>s.kind===k&&s.round===r), ss=S.edit.steps;
     const closeReplied=()=>ss.filter(s=>s.kind==='js'&&s.d2&&!s.d3).forEach(s=>s.d3=T);
     switch(dropCol){
+      case 'js_open': { if(!c.analysis_date) c.analysis_date=T; const g=st('diag')||ss.find(s=>s.kind==='diag'); if(g){ g.d1=g.d1||T; g.result='js'; } break; }
       case 'js_wait': if(!ss.some(s=>s.kind==='js'&&s.d1&&!s.d3)) ss.push(newStep('js',r,{d1:T})); break;
       case 'js_close': { const w=ss.filter(s=>s.kind==='js'&&s.d1&&!s.d2&&!s.d3); w.forEach(s=>s.d2=T); break; }
       case 'ys_open': if(!c.analysis_date) c.analysis_date=T; closeReplied(); c.cost_band='gt10k'; break;
@@ -2042,6 +2045,14 @@ function renderModal(){
     if(it.t==='s'){ cnt[it.s.kind]++; flow+=stepBlock(it.s,idx(it.s),cnt[it.s.kind]); return; }
     if(it.t==='d'){ flow+=`<div class="srow diag"><div class="rt">${L('ช่างวิเคราะห์ (หลังซ่อมไม่ผ่าน)','Diagnosis (after failed repair)')}</div>${diagSel(it.s,idx(it.s))}</div>`; return; }
     const r=it.r, of=k=>E.steps.find(s=>s.kind===k&&s.round===r), asm=of('assemble'), tst=of('test'), ai=idx(asm), ti=idx(tst);
+    /* กล่องซ่อม/ทดสอบ ขึ้นเมื่อถึงคิวจริง: จบไม่ใช้อะไหล่ หรือ อะไหล่ของรอบนี้มาถึงครบ (หรือมีข้อมูลกรอกไว้แล้ว) */
+    const rdg=r===1?dg:E.steps.find(s=>s.kind==='diag'&&s.round===r), pr=E.steps.filter(s=>s.kind==='parts'&&(s.round||1)===r&&(s.d1||s.ref_no));
+    const ready=(asm&&asm.d1)||(tst&&(tst.d1||tst.result))||(rdg&&rdg.result==='noparts')||(pr.length&&pr.every(p=>p.d3));
+    if(!ready && E.id && ['done','cancel'].includes(S.cases.find(x=>x.id===E.id)?._t?.cur?.k)) return;
+    if(!ready){
+      const why=pr.length?L('ขึ้นเมื่ออะไหล่มาถึง (ใส่วันที่อะไหล่มาถึงใน PO / BO)','Shows when parts arrive (enter the arrival date in PO / BO)'):L('ขึ้นเมื่อจบแบบไม่ใช้อะไหล่ หรืออะไหล่มาถึง','Shows when done with no parts, or when parts arrive');
+      flow+=`<div class="srow test wait">${r>1&&r===R&&canStep('test')?`<button type="button" class="rm" data-rmround="${r}" title="${L('ยกเลิกรอบซ่อมนี้ (กดผิด)','Undo this repair round')}">↺ ${L('ยกเลิกรอบนี้','Undo round')}</button>`:''}<div class="rt" style="opacity:.6">${L('ซ่อม / ทดสอบ','Repair / test')}${R>1?` <small>· ${L('รอบซ่อมที่','repair round')} ${r}</small>`:''}</div><div class="mut sm" style="grid-column:1/-1">⏳ ${why}</div></div>`;
+      return; }
     flow+=`<div class="srow test">${r>1&&r===R&&canStep('test')?`<button type="button" class="rm" data-rmround="${r}" title="${L('ยกเลิกรอบซ่อมนี้ (กดผิด)','Undo this repair round')}">↺ ${L('ยกเลิกรอบนี้','Undo round')}</button>`:''}
       <div class="rt">${L('ซ่อม / ทดสอบ','Repair / test')}${R>1?` <small>· ${L('รอบซ่อมที่','repair round')} ${r}</small>`:''}</div>
       <label class="drow">${L('ช่างประกอบ','Assembly date')}${dateIn(`data-s="${ai}" data-sf="d1"`,asm.d1)}</label>
@@ -2103,7 +2114,7 @@ function renderModal(){
       <div id="hist"></div></div>
       <datalist id="models">${MODELS.map(x=>`<option value="${esc(x)}">`).join('')}</datalist>
     </div>
-    <div class="mf">${E.id&&staff?`<button class="btn danger" data-act="del">${L('ลบ','Delete')}</button>`:''}<span class="sp"></span><button class="btn" data-act="close">${L('ยกเลิก','Cancel')}</button>${!E.id&&FULL()?`<button class="btn" data-act="savenext">${L('บันทึก แล้วกรอกขั้นตอนต่อ ›','Save & fill steps ›')}</button>`:''}<button class="btn pri" data-act="save">${L('บันทึก','Save')}</button></div>
+    <div class="mf">${E.id&&staff?`<button class="btn danger" data-act="del">${L('ลบ','Delete')}</button>`:''}<span class="sp"></span><button class="btn" data-act="close">${L('ยกเลิก','Cancel')}</button>${FULL()?`<button class="btn" data-act="savenext" style="${E.id&&ctab==='del'?'display:none':''}">${!E.id?L('บันทึก แล้วกรอกขั้นตอนต่อ ›','Save & fill steps ›'):L('บันทึก แล้วไปต่อ ›','Save & next ›')}</button>`:''}<button class="btn pri" data-act="save">${L('บันทึก','Save')}</button></div>
   </div>`;
   m.classList.remove('hidden');
   m.querySelector('.mb').scrollTop=prevScroll;
@@ -2199,7 +2210,8 @@ function actionsFor(c,ss){
   const pay = canField('cost_band') ? ['pay'] : [];
   if(k==='diag'){ a('a_parts',L('✓ วิเคราะห์จบ – ต้องใช้อะไหล่','✓ Diagnosed – parts needed'),canStep('diag'),pay,'pri');
     a('a_noparts',L('✓ จบ – ไม่ใช้อะไหล่','✓ Diagnosed – no parts'),canStep('diag'),pay);
-    a('a_js',L('→ ไม่จบ เปิด JS','→ Not solved, open JS'),canStep('diag')&&canStep('js'),['ref']); }
+    a('a_jsneed',L('→ ไม่จบ ต้องเปิด JS','→ Not solved, JS needed'),canStep('diag')); }
+  if(k==='js_open') a('a_js',L('เปิด JS','Open JS'),canStep('js'),['ref'],'pri');
   if(k==='js_wait' && A.jsG) a('reply',L('GWM ตอบแล้ว','GWM replied'),canStep('js'),['note'],'pri');
   if(k==='js_close' && A.jsP){ a('send',L('↩ ส่งข้อมูลเพิ่มให้ GWM','↩ Send more info to GWM'),canStep('js'),['note']); a('close',L('✓ Foreman ปิด JS','✓ Foreman closes JS'),canStep('js'),pay,'pri'); }
   if(k==='ys_open'){ if(A.ysP){ a('resub',L('↩ ส่ง YS ใหม่ (เลขเดิม)','↩ Resubmit YS (same no.)'),canStep('ys'),['note'],'pri'); a('nocover',L('ไม่เคลม – ลูกค้าจ่ายเอง','Not covered – customer pays'),canStep('ys')); }
@@ -2281,6 +2293,7 @@ async function doAction(){
   switch(E.act){
     case 'a_parts': { const g=step('diag'); g.d1=v.d; g.result='parts'; break; }
     case 'a_noparts': { const g=step('diag'); g.d1=v.d; g.result='noparts'; break; }
+    case 'a_jsneed': { const g=step('diag'); g.d1=v.d; g.result='js'; break; }
     case 'a_js': { const g=step('diag'); g.d1=g.d1||v.d; g.result='js'; ss.push(newStep('js',r,{ref_no:v.ref,d1:v.d,ev:[]})); break; }
     case 'reply': ev(A.jsG,'reply'); break;
     case 'send': ev(A.jsP,'send'); break;
@@ -2360,11 +2373,11 @@ async function saveCase(noRead,next){
   const changed=ss.filter(s=>{ const o=E.origSteps[s.id]; return !o || STEP_FIELDS.some(k=>JSON.stringify(s[k]??null)!==JSON.stringify(o[k]??null)); });
   const keep=new Set(ss.map(s=>s.id));
   const removed=[...new Set([...E.removed, ...Object.keys(E.origSteps).filter(id=>!keep.has(id))])].filter(id=>!isNew(id));
-  if(E.id && Object.keys(payload).length===1 && !changed.length && !removed.length){ closeModal(); return; }
+  if(E.id && Object.keys(payload).length===1 && !changed.length && !removed.length){ if(typeof next==='string'){ S.ctabBy[E.id]=next; renderModal(); return; } closeModal(); return; }
   saving=true;
   const td=todoList(c,ss);
   try{ const saved=await api.saveCase(payload), nid=saved.id||E.id; await api.syncSteps(nid, changed, removed); closeModal(); await reload();
-    if(next&&nid){ S.ctabBy=S.ctabBy||{}; S.ctabBy[nid]='steps'; openCase(nid); toast(L('บันทึกรถแล้ว · กรอกขั้นตอนต่อได้เลย','Vehicle saved · continue with the steps')); return; }
+    if(next&&nid){ S.ctabBy=S.ctabBy||{}; S.ctabBy[nid]=typeof next==='string'?next:'steps'; openCase(nid); toast(L('บันทึกแล้ว · กรอกต่อได้เลย','Saved · carry on')); return; }
     toast(td.length?L('บันทึกแล้ว · ยังขาด '+td.length+' รายการ (ขึ้นที่การ์ด)','Saved · '+td.length+' item(s) still missing (shown on the card)'):L('บันทึกแล้ว','Saved')); }
   catch(e){ toast(errMsg(e)); } finally{ saving=false; }
 }
@@ -2597,7 +2610,7 @@ document.addEventListener('click', async e=>{
   if(d.seg){ const [nm,a,b,n]=d.seg.split('|'); toast(`${nm} · ${n} ${L('วัน','days')} (${fmt(a)} – ${fmt(b)})`); return; }
   if(d.tld){ S.tls[d.tld]={...(S.tls[d.tld]||{k:'total'}),d:d.v}; S.drill&&$('#modal .drl')?renderDrill():renderMain(); return; }
   if(d.tlv){ S.tlv=d.tlv; S.drill&&$('#modal .drl')?renderDrill():renderMain(); return; }
-  if(d.ctab){ const E=S.edit; if(!E) return; S.ctabBy[E.id]=d.ctab; document.querySelectorAll('#modal [data-ctab]').forEach(b=>b.classList.toggle('on',b.dataset.ctab===d.ctab)); document.querySelectorAll('#modal .cpane').forEach(p=>p.classList.toggle('on',p.dataset.pane===d.ctab)); $('#modal .mb').scrollTop=0; return; }
+  if(d.ctab){ const E=S.edit; if(!E) return; S.ctabBy[E.id]=d.ctab; const sn=$('#modal [data-act=savenext]'); if(sn) sn.style.display=d.ctab==='del'?'none':''; document.querySelectorAll('#modal [data-ctab]').forEach(b=>b.classList.toggle('on',b.dataset.ctab===d.ctab)); document.querySelectorAll('#modal .cpane').forEach(p=>p.classList.toggle('on',p.dataset.pane===d.ctab)); $('#modal .mb').scrollTop=0; return; }
   if(d.rpp){ const T=new Date(), y=T.getFullYear(), mo=T.getMonth(), f=x=>ymd(x); let s0,e0=today();
     if(d.rpp==='m0') s0=f(new Date(y,mo,1)); if(d.rpp==='m1'){ s0=f(new Date(y,mo-1,1)); e0=f(new Date(y,mo,0)); }
     if(d.rpp==='d30'){ const a=new Date(T); a.setDate(a.getDate()-29); s0=f(a); } if(d.rpp==='q') s0=f(new Date(y,Math.floor(mo/3)*3,1)); if(d.rpp==='y') s0=y+'-01-01';
@@ -2698,7 +2711,7 @@ document.addEventListener('click', async e=>{
     case 'repxls': await repExcel(); break;
     case 'close': closeModal(); break;
     case 'save': saveCase(); break;
-    case 'savenext': saveCase(false,true); break;
+    case 'savenext': { const E=S.edit, order=['st','info','steps','del'], cur=E&&E.id?((S.ctabBy||{})[E.id]||'st'):null; saveCase(false,E&&E.id?order[Math.min(order.length-1,order.indexOf(cur)+1)]:'steps'); break; }
     case 'newround': { readForm(); const r=curRound()+1; S.edit.steps.push(newStep('js',r,{d1:today()})); ensureRoundSteps(); renderModal();
       const mb=$('#modal .mb'); mb.scrollTop=mb.scrollHeight; break; }
     case 'del': if(confirmDel()){ try{ await api.deleteCase(S.edit.id); closeModal(); await reload(); toast(L('ลบแล้ว','Deleted')); }catch(err){ toast(errMsg(err)); } } break;
