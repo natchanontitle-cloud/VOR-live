@@ -168,7 +168,7 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 /* performance */
 .rads{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}.rad{border:1px solid var(--line);border-radius:10px;padding:8px}.radh{font-weight:700;font-size:13.5px}
 .tw.st tr.me td{background:#fdecef;font-weight:700}
-.radar{width:100%;max-width:380px;display:block;margin:auto}.pfh{font-size:15px}.hm{display:inline-block;min-width:34px;text-align:center;border-radius:5px;padding:1px 6px;font-weight:700;color:#111827}
+.hog{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-bottom:10px}.hoc{border:1px solid #e5e7eb;border-radius:10px;padding:8px 10px;background:#fff}.hoc b{font-size:14px}.hov{font-size:24px;font-weight:800;color:#111827;margin:2px 0}.hov small{font-size:12px;font-weight:600;color:#6b7280}.xs{font-size:11px;font-weight:500}.radar{width:100%;max-width:380px;display:block;margin:auto}.pfh{font-size:15px}.hm{display:inline-block;min-width:34px;text-align:center;border-radius:5px;padding:1px 6px;font-weight:700;color:#111827}
 /* undo */
 .undo{margin-top:10px;padding-top:8px;border-top:1px dashed var(--line);display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 /* combo in/out chart */
@@ -272,7 +272,7 @@ const CONFIG = {
   SUPABASE_ANON_KEY: 'sb_publishable_RESqSgvp97Bh5thFluhs0w_M1LYS4dk'
 };
 // ===== เวอร์ชัน: อัปเกรดทุกครั้ง ให้เพิ่มเลข + เพิ่มรายการไว้บนสุดของ CHANGELOG =====
-const APP_VERSION = '1.8.1';
+const APP_VERSION = '1.8.2';
 const CHANGELOG = [
   {v:'1.8', d:'2026-11-25', th:['ปุ่ม "บันทึก แล้วไปต่อ ›" ทุกแท็บของหน้ารถ (SVM / SA / RSM / Admin)','↶ ย้อนขั้นล่าสุด (แท็บสถานะ): คนที่มีสิทธิ์ในขั้นนั้นย้อนได้ภายใน 7 วัน · เกิน 7 วัน SVM / RSM / Admin ย้อนได้','PO / BO มีช่องหมายเหตุ / รายการอะไหล่','เพิ่มรถ: ปุ่ม "บันทึก แล้วกรอกขั้นตอนต่อ" (SVM / SA / RSM / Admin) บันทึกแล้วเปิดแท็บขั้นตอนของคันนั้นทันที','หน้าภาพรวม: ตัวกรอง ยังไม่ส่งมอบ / ส่งมอบแล้ว / ทั้งหมด (เปิดเว็บใหม่กลับเป็น ยังไม่ส่งมอบ)','ผลงานพนักงาน: อันดับแยก 5 ตำแหน่ง (จำนวน job ต่อวัน / สัปดาห์ / เดือน · เวลาปิดงานเฉลี่ย) · radar ผลงานรวม + radar ความชำนาญ Foreman · พนักงานเห็นอันดับไม่เห็นชื่อ · SVM / RSM / Admin เห็นชื่อ','หน้าตามงาน: เลือกราย PS และกรอง จอด / ไม่จอด / ทั้งหมด','ขั้นสุดท้ายเปลี่ยนเป็น "SA แจ้งลูกค้า" (งานค้างขึ้นที่ SA)','Timeline แนวนอนรายคัน: ท่อนตามขั้นตอน ยาวตามจำนวนวัน แดง = รอ GWM น้ำเงิน = รอ PS · เรียงตามวันรวม / GWM / PS / ขั้นปัจจุบัน / รออะไหล่ ฯลฯ มาก↔น้อย · จอคอมดูแบบตามปฏิทินได้','หน้ารถแบ่งแท็บ: สถานะ · ข้อมูลรถ · ขั้นตอน · ส่งมอบ (จำแท็บล่าสุด) · เพิ่มรถใหม่กรอกเฉพาะข้อมูลรถเข้า','การชำระเริ่มเป็น "ยังไม่ทราบ" · ขึ้นเตือนถ้าถึงขั้นอะไหล่แล้วยังไม่ระบุ','หน้าภาพรวม: ทุกกล่องสลับ 📊 กราฟ / 📋 ตาราง (ตารางกดหัวคอลัมน์เรียงได้) · ตัวกรองเดือน','📄 รายงานรถเข้า – ออก: อัตราเคลียร์ แยกวัน / สัปดาห์ / เดือน / ปี · RSM / ศูนย์ · พิมพ์ PDF / Excel','ช่องเลขทะเบียน (ค้นหาได้) · ตัวหนังสือเข้มขึ้น'],
    en:['Per-vehicle horizontal timeline by step, sortable; calendar view on desktop','Case page tabs: Status · Vehicle · Steps · Delivery; short new-vehicle form','Payment starts as "not known yet"','Overview panels switch chart / sortable table; month filter','📄 In/out report with clearance rate; print PDF / Excel','License plate field; darker text']},
@@ -1415,6 +1415,65 @@ function perfPanel(p,group,days,anon){ const sc=perfScores(p,days), peers=group.
     <div class="stats" style="margin:8px 0">${[[p.jobsN,L('job ทั้งหมด','Jobs')],[per.toFixed(1),L('job ต่อ','Jobs per ')+unitName()],[p.close==null?'–':p.close+L(' วัน',' d'),L('เวลาปิดงานเฉลี่ย','Avg close time')],[p.qual==null?'–':p.qual+'%',L(...QUAL_L[p.cat])],[p.lag==null?'–':p.lag+L(' วัน',' d'),L('บันทึกช้าเฉลี่ย','Avg entry delay')],[p.comp==null?'–':p.comp+'%',L('ข้อมูลครบ','Complete data')]].map(([v,l])=>`<div class="stat"><div class="v">${v}</div><div class="l">${l}</div></div>`).join('')}</div>
     <div class="rads"><div class="rad"><div class="radh">${L('ผลงานรวม','Overall')} <span class="mut sm">${avgSc?L('· เส้นประ = ค่าเฉลี่ย ','· dashed = average ')+esc(posName(p.cat)):''}</span></div>${r1}</div>${r2}</div></div>`; }
 const unitName = () => S.pf.unit==='day'?L('วัน','day'):S.pf.unit==='week'?L('สัปดาห์','week'):L('เดือน','month');
+/* ===== เวลาส่งต่องาน (handoff) — วัดจากวันที่ที่กรอกในขั้นตอน ไม่ต้องกรอกเพิ่ม ===== */
+const HO = [ // k, ตำแหน่ง, ชื่อ, จาก → ถึง
+  ['jsopen','foreman',['เปิด JS','Open JS'],['ช่างวิเคราะห์ว่าต้องเปิด JS → วันเปิด JS','JS needed → JS opened']],
+  ['gwmrep','foreman',['ตอบกลับ GWM','Reply to GWM'],['GWM ตอบ → ส่งข้อมูลเพิ่ม / ปิด JS','GWM replied → send more / close JS']],
+  ['ysopen','warranty',['เปิด YS','Open YS'],['ปิด JS / วิเคราะห์จบ → เปิด YS','JS closed / diagnosed → YS opened']],
+  ['ysfix','warranty',['แก้ YS','Fix YS'],['ถูก Reject → ส่งใหม่','Rejected → resubmitted']],
+  ['poopen','parts',['เปิด PO / BO','Open PO / BO'],['YS อนุมัติ / วิเคราะห์จบ → เปิด PO / BO','YS approved / diagnosed → PO / BO']],
+  ['asm','foreman',['เริ่มประกอบ','Start assembly'],['อะไหล่มาถึง (หรือจบไม่ใช้อะไหล่) → ประกอบ','Parts arrived (or no parts) → assembled']],
+  ['test','foreman',['ทดสอบเสร็จ','Test done'],['ประกอบ → ได้ผลทดสอบ','Assembled → test result']],
+  ['contact','sa',['แจ้งลูกค้า','Inform customer'],['ทดสอบผ่าน → SA แจ้งลูกค้า','Test passed → customer informed']] ];
+function handoffs(c,ss){ // คืน [{k,s,e}] e=null = ยังค้าง
+  const out=[], push=(k,s,e)=>{ if(s && (!e || e>=s)) out.push({k,s,e:e||null}); };
+  const maxD=a=>a.filter(Boolean).sort().pop()||null, R=Math.max(1,...ss.map(s=>s.round||1));
+  const rs=k=>r=>ss.filter(s=>s.kind===k&&(s.round||1)===r);
+  for(let r=1;r<=R;r++){
+    const dg=rs('diag')(r)[0], js=rs('js')(r).filter(s=>s.d1).sort((a,b)=>a.d1<b.d1?-1:1), ys=rs('ys')(r).filter(s=>s.d1), pt=rs('parts')(r).filter(s=>s.d1).sort((a,b)=>a.d1<b.d1?-1:1),
+          asm=rs('assemble')(r)[0], tst=rs('test')(r)[0], prevFail=r>1?(rs('test')(r-1)[0]||{}).d1:null;
+    const jsStart = dg&&dg.result==='js' ? (dg.d1||(r===1?c.analysis_date:null)) : prevFail;
+    if(jsStart) push('jsopen',jsStart,(js.find(j=>j.d1>=jsStart)||{}).d1);
+    js.forEach(j=>{ const ev=stepEv(j).filter(e=>e.d).sort((a,b)=>a.d<b.d?-1:1);
+      ev.forEach((e,i)=>{ if(e.t!=='reply') return; const nx=ev.slice(i+1).find(x=>x.t==='send'); push('gwmrep',e.d,nx?nx.d:j.d3); }); });
+    const dgD=dg&&dg.d1?dg.d1:(r===1&&(!dg||dg.result)?c.analysis_date:null);
+    ys.forEach(y=>{ const st=maxD([dgD,...js.map(j=>j.d3)].filter(x=>x&&x<=y.d1)); if(st) push('ysopen',st,y.d1);
+      const ev=stepEv(y).filter(e=>e.d).sort((a,b)=>a.d<b.d?-1:1);
+      ev.forEach((e,i)=>{ if(e.t!=='reject') return; const nx=ev.slice(i+1).find(x=>x.t==='resubmit'); push('ysfix',e.d,nx?nx.d:(ysFinal(y)?(y.d2||null):null)); }); });
+    const yOk=ys.filter(y=>ysFinal(y)&&(y.d2||y.d1)).map(y=>y.d2||y.d1);
+    const poStart = yOk.length ? maxD(yOk) : ((pt.length||(dg&&dg.result==='parts')) ? maxD([dgD,...js.map(j=>j.d3)]) : null);
+    if(poStart) push('poopen',poStart,(pt.find(p=>p.d1>=poStart)||pt[0]||{}).d1||null);
+    const asmStart = pt.length ? (pt.every(p=>p.d3)?maxD(pt.map(p=>p.d3)):null) : (dg&&dg.result==='noparts' ? maxD([dgD,...js.map(j=>j.d3)]) : null);
+    if(asmStart) push('asm',asmStart,asm&&asm.d1);
+    if(asm&&asm.d1) push('test',asm.d1,tst&&tst.result&&['pass','fail'].includes(tst.result)?tst.d1:null);
+    if(tst&&tst.result==='pass'&&tst.d1&&r===R) push('contact',tst.d1,c.customer_contact_date);
+  }
+  return out;
+}
+const medN = a => { if(!a.length) return null; const s=[...a].sort((x,y)=>x-y), m=s.length>>1; return s.length%2?s[m]:(s[m-1]+s[m])/2; };
+function handoffPanel(cases,R){
+  const T=today(), by={}, all={}; HO.forEach(([k])=>all[k]={v:[],p:[]});
+  cases.forEach(c=>{ const ended=c._t&&c._t.done; const d=String(c.dealer_id); by[d]=by[d]||Object.fromEntries(HO.map(([k])=>[k,{v:[],p:[]}]));
+    handoffs(c,S.stepsBy[c.id]||[]).forEach(h=>{
+      if(h.e){ if(h.e>=R.s&&h.e<=R.e){ const g=dd(h.s,h.e); by[d][h.k].v.push(g); all[h.k].v.push(g); } }
+      else if(!ended){ const g=dd(h.s,T); by[d][h.k].p.push(g); all[h.k].p.push(g); } }); });
+  const r1=x=>x==null?null:Math.round(x*10)/10, net=Object.fromEntries(HO.map(([k])=>[k,r1(avgN(all[k].v))]));
+  const staff=isStaff(), multi=staff&&Object.keys(by).length>1;
+  const tone=(v,n)=>v==null||n==null?'':v<=n*0.8||(n===0&&v===0)?'#dcfce7':v>=n*1.25&&v-n>=0.5?'#fecaca':'#f1f5f9';
+  const cards=HO.map(([k,pos,nm,ds])=>{ const a=all[k]; return `<div class="hoc"><div class="mut sm">${esc(posName(pos))}</div><b>${L(...nm)}</b>
+      <div class="hov">${a.v.length?r1(avgN(a.v)):'–'}<small> ${L('วัน','d')}</small></div>
+      <div class="mut sm">${L('ค่ากลาง','median')} ${a.v.length?r1(medN(a.v)):'–'} · ${a.v.length} ${L('ครั้ง','times')}</div>
+      ${a.p.length?`<div class="sm" style="color:#b45309">⏳ ${L('ค้างอยู่','pending')} ${a.p.length} · ${L('รอแล้ว','waiting')} ${r1(avgN(a.p))} ${L('วัน','d')}</div>`:''}
+      <div class="mut xs">${L(...ds)}</div></div>`; }).join('');
+  let tbl='';
+  if(multi){ const cols=[{k:'n',l:L('ศูนย์','Dealer')}].concat(HO.map(([k,pos,nm])=>({k,l:L(...nm)+`<br><span class="mut xs">${esc(posName(pos))} · ${L('เครือข่าย','net')} ${net[k]??'–'}</span>`,num:1,fmt:(v,r)=>v==null?'–':`<span class="hm" style="background:${tone(v,net[k])}" title="${r['_n_'+k]} ${L('ครั้ง','times')}">${v}</span>`})));
+    const rows=Object.entries(by).map(([id,m])=>{ const r={n:dName(id),_a:`data-pfdealer="${id}"`}; HO.forEach(([k])=>{ r[k]=r1(avgN(m[k].v)); r['_n_'+k]=m[k].v.length; }); return r; });
+    tbl=stbl('pho',cols,rows,{k:'n',d:'asc'})+`
+      <div class="mut sm" style="margin-top:6px">🟩 ${L('เร็วกว่าค่าเฉลี่ยเครือข่าย','faster than network avg')} · 🟥 ${L('ช้ากว่าค่าเฉลี่ยเครือข่าย','slower than network avg')} · ${L('แตะแถวเพื่อเลือกศูนย์','tap a row to pick that dealer')}</div>`; }
+  return `<div class="panel"><h3>⏱ ${L('เวลาส่งต่องาน (ได้งานแล้วกี่วันถึงทำต่อ)','Handoff time (days from receiving work to acting)')}</h3>
+    <div class="mut sm" style="margin:-4px 0 8px">${multi?L('ค่ารวมของศูนย์ที่เลือก','Totals for the selected dealers'):staff&&cases.length?dName(cases[0].dealer_id):L('ศูนย์ของคุณ','Your dealer')} · ${L('นับงานที่ทำเสร็จในช่วงที่เลือก · ยังไม่ตั้งเป้า (SLA)','counts handoffs completed in the period · no SLA set yet')}</div>
+    <div class="hog">${cards}</div>${tbl}</div>`;
+}
 function viewPerf(){
   const R=perfRange(), staff=isStaff(), svm=isSvm(), me=S.me, myCat=me.category;
   if(!staff && !POS.includes(myCat)) return `<div class="panel mut">${L('ตำแหน่งนี้ยังไม่มีการวัดผลงาน','No performance measures for this position yet')}</div>`;
@@ -1423,6 +1482,7 @@ function viewPerf(){
     return `<div class="panel mut">${L('กำลังโหลดข้อมูลผลงาน…','Loading performance data…')}</div>`; }
   let cases=S.cases; if(staff){ if(S.pf.rsm) cases=cases.filter(c=>dRsm(dealerById(c.dealer_id))===S.pf.rsm); if(S.pf.dealer) cases=cases.filter(c=>String(c.dealer_id)===String(S.pf.dealer)); }
   const ppl=perfCompute(cases,S.perfLogs.rows,R.s,R.e), days=R.days;
+  const hoP=handoffPanel(staff?cases:cases.filter(c=>String(c.dealer_id)===String(me.dealer_id)),R);
   const ctl=`<div class="panel" style="padding:10px 14px"><div class="ctl" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
     ${chips('per',[['w0',L('สัปดาห์นี้','This week')],['m0',L('เดือนนี้','This month')],['m1',L('เดือนก่อน','Last month')],['d30',L('30 วัน','30 days')],['q0',L('ไตรมาสนี้','This quarter')]],S.pf.per,'data-pf')}
     ${chips('unit',[['day',L('ต่อวัน','Per day')],['week',L('ต่อสัปดาห์','Per week')],['month',L('ต่อเดือน','Per month')]],S.pf.unit,'data-pf')}
@@ -1440,7 +1500,7 @@ function viewPerf(){
     const grp=ppl.filter(p=>p.cat===myCat&&String(p.dealer)===String(me.dealer_id)); if(!grp.includes(mine)) grp.push(mine);
     const anon=(p,r)=>p.uid===me.user_id?L('คุณ','You'):posName(p.cat)+' #'+r;
     const rj=[...grp].sort((a,b)=>b.jobsN-a.jobsN).indexOf(mine)+1, rc=[...grp].sort((a,b)=>(a.close??1e9)-(b.close??1e9)).indexOf(mine)+1;
-    return ctl+`<div class="panel"><h3>${L('ผลงานของฉัน','My performance')}</h3>
+    return ctl+hoP+`<div class="panel"><h3>${L('ผลงานของฉัน','My performance')}</h3>
       <div class="msg" style="margin:0 0 6px">🏅 ${L('อันดับจำนวน job','Jobs rank')} <b>${rj}</b> / ${grp.length} · ${L('อันดับเวลาปิดงาน','Close-time rank')} <b>${rc}</b> / ${grp.length} <span class="mut">(${esc(posName(myCat))} ${L('ในศูนย์','in your dealer')})</span></div>
       ${perfPanel(mine,grp,days,L('คุณ','You'))}</div>
       <div class="panel"><h3>${L('อันดับ','Ranking')} ${esc(posName(myCat))} ${L('ในศูนย์','in your dealer')}</h3>${rankTbl(grp,anon,'pfr')}
@@ -1454,7 +1514,7 @@ function viewPerf(){
     const cols=[{k:'n',l:L('ศูนย์','Dealer')}].concat(POS.map(k=>({k,l:posName(k)+L(' (วัน)',' (d)'),num:1,fmt:v=>v==null?'–':`<span class="hm" style="background:${v<=2?'#dcfce7':v<=5?'#fef9c3':v<=10?'#fed7aa':'#fecaca'}">${v}</span>`})));
     ov=`<div class="panel"><h3>${L('ภาพรวมตำแหน่ง · เวลาปิดงานเฉลี่ย (วัน)','Positions overview · avg close time (days)')}</h3>${stbl('pfo',cols,Object.entries(ds).map(([id,m])=>{ const r={n:dName(id),_a:`data-pfdealer="${id}"`}; POS.forEach(k=>{ const a=(m[k]||[]).flatMap(p=>p.segs); r[k]=a.length?Math.round(avgN(a)*10)/10:null; }); return r; }),{k:'n',d:'asc'})}
       <div class="mut sm" style="margin-top:6px">🟩 ≤2 · 🟨 3–5 · 🟧 6–10 · 🟥 >10 ${L('วัน','days')} · ${L('แตะแถวเพื่อเลือกศูนย์','tap a row to pick that dealer')}</div></div>`; }
-  return ctl+ov+`<div class="panel"><h3>${L('อันดับพนักงาน','Staff ranking')}</h3>
+  return ctl+hoP+ov+`<div class="panel"><h3>${L('อันดับพนักงาน','Staff ranking')}</h3>
     <div class="ctl" style="margin-bottom:4px">${chips('pos',POS.map(k=>[k,posName(k)+' '+cnt(k)]),pos,'data-pf')}</div>
     ${rankTbl(list,p=>p.name,'pfr')}<div class="mut sm" style="margin-top:6px">${L('แตะชื่อเพื่อดู radar','Tap a name to see the radar')}</div></div>
     ${sel?`<div class="panel">${perfPanel(sel,list,days)}</div>`:''}${perfNote()}`;
