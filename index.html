@@ -47,7 +47,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid #f3b6c1;border-color:v
 .col.over{background:#fde2e7;outline:2px dashed var(--red)}
 .col h3{margin:2px 4px 8px;font-size:13px;display:flex;align-items:center;gap:6px;position:sticky;top:-8px;background:inherit;padding:6px 0}
 .col h3 .n{margin-left:auto;background:#fff;border-radius:99px;padding:0 9px;font-size:12px;font-weight:700}
-.col h3 small{font-weight:400;color:var(--mut);font-size:11px}
+.col h3 .who{display:block;font-size:12px;font-weight:500;color:#374151;background:#fff;border:1px solid #e5e7eb;border-radius:99px;padding:1px 8px;margin-top:3px;width:max-content;max-width:100%}.col h3 .who b{font-weight:800;color:inherit}.col h3 .who.mine{box-shadow:0 0 0 2px #c8102e}.col h3 small{font-weight:400;color:var(--mut);font-size:11px}
 .empty{font-size:12px;color:var(--mut);text-align:center;padding:14px 0}
 .card{background:#fff;border-radius:10px;padding:10px 10px 9px;margin-bottom:8px;border-left:4px solid var(--oc,#999);box-shadow:0 1px 2px rgba(0,0,0,.06);cursor:pointer;user-select:none}
 .card:hover{box-shadow:0 3px 10px rgba(0,0,0,.1)}
@@ -272,7 +272,7 @@ const CONFIG = {
   SUPABASE_ANON_KEY: 'sb_publishable_RESqSgvp97Bh5thFluhs0w_M1LYS4dk'
 };
 // ===== เวอร์ชัน: อัปเกรดทุกครั้ง ให้เพิ่มเลข + เพิ่มรายการไว้บนสุดของ CHANGELOG =====
-const APP_VERSION = '1.8.2';
+const APP_VERSION = '1.8.3';
 const CHANGELOG = [
   {v:'1.8', d:'2026-11-25', th:['ปุ่ม "บันทึก แล้วไปต่อ ›" ทุกแท็บของหน้ารถ (SVM / SA / RSM / Admin)','↶ ย้อนขั้นล่าสุด (แท็บสถานะ): คนที่มีสิทธิ์ในขั้นนั้นย้อนได้ภายใน 7 วัน · เกิน 7 วัน SVM / RSM / Admin ย้อนได้','PO / BO มีช่องหมายเหตุ / รายการอะไหล่','เพิ่มรถ: ปุ่ม "บันทึก แล้วกรอกขั้นตอนต่อ" (SVM / SA / RSM / Admin) บันทึกแล้วเปิดแท็บขั้นตอนของคันนั้นทันที','หน้าภาพรวม: ตัวกรอง ยังไม่ส่งมอบ / ส่งมอบแล้ว / ทั้งหมด (เปิดเว็บใหม่กลับเป็น ยังไม่ส่งมอบ)','ผลงานพนักงาน: อันดับแยก 5 ตำแหน่ง (จำนวน job ต่อวัน / สัปดาห์ / เดือน · เวลาปิดงานเฉลี่ย) · radar ผลงานรวม + radar ความชำนาญ Foreman · พนักงานเห็นอันดับไม่เห็นชื่อ · SVM / RSM / Admin เห็นชื่อ','หน้าตามงาน: เลือกราย PS และกรอง จอด / ไม่จอด / ทั้งหมด','ขั้นสุดท้ายเปลี่ยนเป็น "SA แจ้งลูกค้า" (งานค้างขึ้นที่ SA)','Timeline แนวนอนรายคัน: ท่อนตามขั้นตอน ยาวตามจำนวนวัน แดง = รอ GWM น้ำเงิน = รอ PS · เรียงตามวันรวม / GWM / PS / ขั้นปัจจุบัน / รออะไหล่ ฯลฯ มาก↔น้อย · จอคอมดูแบบตามปฏิทินได้','หน้ารถแบ่งแท็บ: สถานะ · ข้อมูลรถ · ขั้นตอน · ส่งมอบ (จำแท็บล่าสุด) · เพิ่มรถใหม่กรอกเฉพาะข้อมูลรถเข้า','การชำระเริ่มเป็น "ยังไม่ทราบ" · ขึ้นเตือนถ้าถึงขั้นอะไหล่แล้วยังไม่ระบุ','หน้าภาพรวม: ทุกกล่องสลับ 📊 กราฟ / 📋 ตาราง (ตารางกดหัวคอลัมน์เรียงได้) · ตัวกรองเดือน','📄 รายงานรถเข้า – ออก: อัตราเคลียร์ แยกวัน / สัปดาห์ / เดือน / ปี · RSM / ศูนย์ · พิมพ์ PDF / Excel','ช่องเลขทะเบียน (ค้นหาได้) · ตัวหนังสือเข้มขึ้น'],
    en:['Per-vehicle horizontal timeline by step, sortable; calendar view on desktop','Case page tabs: Status · Vehicle · Steps · Delivery; short new-vehicle form','Payment starts as "not known yet"','Overview panels switch chart / sortable table; month filter','📄 In/out report with clearance rate; print PDF / Excel','License plate field; darker text']},
@@ -347,9 +347,9 @@ const MODELS = ['Haval H6','Haval H6 HEV','Haval H6 PHEV','Haval Jolion','Haval 
 // o = เวลาในสถานะนี้นับเป็นของใคร: P = Partner (PS), G = GWM
 const ST = {
   diag:        {th:'ช่างวิเคราะห์',         en:'Diagnosis (foreman)',        o:'P'},
-  js_open:     {th:'รอ Foreman เปิด JS',    en:'Foreman to open JS',                o:'P'},
+  js_open:     {th:'รอหัวหน้าช่างเปิด JS',    en:'Foreman to open JS',                o:'P'},
   js_wait:     {th:'รอ GWM Technical',      en:'Awaiting GWM Technical',     o:'G'},
-  js_close:    {th:'รอ Foreman ปิด JS',     en:'Foreman to close JS',        o:'P'},
+  js_close:    {th:'รอหัวหน้าช่างปิด JS',     en:'Foreman to close JS',        o:'P'},
   ys_open:     {th:'รอเปิด / แก้ YS',        en:'YS to submit / fix',         o:'P'},
   ys_wait:     {th:'รอ Warranty',           en:'Awaiting Warranty',          o:'G'},
   parts_order: {th:'รอสั่งอะไหล่',           en:'Awaiting parts order',       o:'P'},
@@ -558,9 +558,9 @@ const permRsm = d => !d ? '' : (d.rsm2||d.rsm||'');
 const rsmList = () => [...new Set(S.dealers.filter(d=>d.active!==false).map(dRsm).filter(Boolean))].sort();
 const rsmSetSel = () => `<select data-rsmset class="rsmset" title="${L('ชุด RSM','RSM set')}"><option value="rsm2" ${RSET()==='rsm2'?'selected':''}>RSM2</option><option value="rsm1" ${RSET()==='rsm1'?'selected':''}>RSM1</option></select>`;
 const FULL = () => isStaff() || ['owner_svm','sa'].includes(S.me && S.me.category);
-const canField = f => FULL() || f==='remark' || (CASE_EDIT[S.me.category]||[]).includes(f);
+const canField = f => FULL() || f==='remark' || (CASE_EDIT[S.me.category]||[]).includes(f) || (S.me.category==='cr' && S.edit && !S.edit.id);
 const canStep = k => FULL() || (STEP_EDIT[S.me.category]||[]).includes(k);
-const canCreate = () => FULL();
+const canCreate = () => FULL() || (S.me && S.me.category==='cr');
 const isSvm = () => S.me && S.me.role==='ps' && S.me.category==='owner_svm';
 const scopeText = () => ({
   foreman:L('ช่างวิเคราะห์, JS, ประกอบ, ทดสอบ, จอด/ไม่จอด','diagnosis, JS, assembly, test, parked'),
@@ -1021,6 +1021,14 @@ function svmBtns(c){ if(!isStaff()) return ''; // RSM / Admin: ทัก SVM ข
   const msg=caseMsg(c,(v.full_name||'').split(' ')[0]);
   return (v.phone?`<a class="tel" href="tel:${esc(v.phone.replace(/[^0-9+]/g,''))}" data-stop title="${L('โทร SVM','Call SVM')} ${esc(v.full_name||'')}">📞</a>`:'')
     +`<a class="fol ln" href="${v.line_id?lineChat(v.line_id):lineShare(msg)}" target="_blank" rel="noopener" data-copy="${esc(msg)}" title="${L('ทัก LINE SVM','LINE the SVM')} ${esc(v.full_name||'')}${v.line_id?' · '+L('ข้อความถูก copy ไว้แล้ว','message copied'):''}">💬 SVM</a>`; }
+const WHO_S = { foreman:['หัวหน้าช่าง','Foreman'], warranty:'Warranty', parts:['อะไหล่','Parts'], sa:'SA', owner_svm:'SVM', cr:'CR' };
+const whoName = k => { const v=WHO_S[k]; return Array.isArray(v)?L(...v):(v||k); };
+const WHO_C = { foreman:['#e0f2fe','#7dd3fc','#075985'], warranty:['#f3e8ff','#c4b5fd','#5b21b6'], parts:['#ffedd5','#fdba74','#9a3412'], sa:['#dcfce7','#86efac','#166534'], owner_svm:['#f1f5f9','#cbd5e1','#334155'], cr:['#fef9c3','#fde047','#854d0e'] };
+function colWho(k,o){ // ตำแหน่งที่รับผิดชอบคอลัมน์นี้ · ไฮไลต์ถ้าเป็นของคนที่ล็อกอิน
+  if(k==='done') return ''; const cats=(FOLLOW_CATS[k]||[]).slice(0,k==='decide'?2:1); if(!cats.length) return '';
+  const me=S.me&&S.me.category, mine=cats.includes(me);
+  const wc=WHO_C[cats[0]]||WHO_C.owner_svm;
+  return `<span class="who ${mine?'mine':''}" style="background:${wc[0]};border-color:${wc[1]};color:${wc[2]}" title="${L('ตำแหน่งที่รับผิดชอบ','Responsible position')}">${L('ผู้รับผิดชอบ','Owner')}: <b>${cats.map(whoName).join(' / ')}</b>${mine?` · <b style="color:#c8102e">${L('งานคุณ','yours')}</b>`:''}</span>`; }
 function viewBoard(){
   const list=filtered(), T=today(), open=list.filter(c=>!c._t.done);
   const avg=open.length?Math.round(open.reduce((s,c)=>s+c._t.total,0)/open.length):0;
@@ -1036,7 +1044,7 @@ function viewBoard(){
   <div class="legend">${['P','G'].map(k=>`<span><span class="dot" style="background:${OWN[k].c}"></span> ${OWN[k].n}</span>`).join('')}<span>· ${L('ลากการ์ดไปคอลัมน์ถัดไปเพื่ออัปเดตสถานะ (บนคอมพิวเตอร์) · แตะการ์ดเพื่อแก้ไข','Drag a card to another column to update it (desktop) · tap a card to edit')}</span></div>
   <div class="board">${cols.filter(k=>!hideEmpty(k)).map((k,i)=>{ const o=ST[k].o;
     return `<div class="col ${k==='decide'?'alert':''}" data-col="${k}">
-    <h3><span class="dot" style="background:${oc(o)}"></span><span>${k==='done'||k==='decide'?'':`<small class="step">${COL_ORDER.indexOf(k)+1}</small> `}${esc(stName(k))}<br><small>${o?esc(o==='G'?'GWM':'Partner (PS)'):(k==='done'?L('30 วันล่าสุด','last 30 days'):'')}${k==='decide'?' · '+L('Reject / ทดสอบไม่ผ่าน','Reject / test failed'):''}</small></span><span class="n">${g[k].length}</span></h3>
+    <h3><span class="dot" style="background:${oc(o)}"></span><span>${k==='done'||k==='decide'?'':`<small class="step">${COL_ORDER.indexOf(k)+1}</small> `}${esc(stName(k))}<br><small>${o?esc(o==='G'?'GWM':'Partner (PS)'):(k==='done'?L('30 วันล่าสุด','last 30 days'):'')}${k==='decide'?' · '+L('Reject / ทดสอบไม่ผ่าน','Reject / test failed'):''}</small>${colWho(k,o)}</span><span class="n">${g[k].length}</span></h3>
     ${g[k].map(card).join('')||'<div class="empty">—</div>'}</div>`; }).join('')}</div>`;
 }
 function bindDnD(){
@@ -2159,7 +2167,7 @@ function renderModal(){
       ${E.id&&(c.vin||c.model||c.plate)?`<div class="mhv">${c.vin?`<span class="mono">VIN ${esc(c.vin)}</span> <button type="button" class="btn xs" data-copytext="${esc(c.vin)}" title="${L('คัดลอก VIN','Copy VIN')}">📋</button> <button type="button" class="btn xs" data-vin="${esc(c.vin)}">🕘 ${L('ประวัติ VIN','VIN history')}</button>`:''}${c.plate?` <span class="plate">${esc(c.plate)}</span>`:''}${c.model?` <span class="mut sm">· ${esc(c.model)}</span>`:''}</div>`:''}</div>
       <button class="x" data-act="close" aria-label="close">✕</button></div>
     <div class="mb">
-      ${!FULL()?`<div class="msg" style="margin-top:12px">${L('ตำแหน่งของคุณ','Your position')} (<b>${esc(catName(S.me.category))}</b>) ${L('กรอกได้เฉพาะ','can edit')}: ${esc(scopeText())}</div>`:''}
+      ${!FULL()&&E.id?`<div class="msg" style="margin-top:12px">${L('ตำแหน่งของคุณ','Your position')} (<b>${esc(catName(S.me.category))}</b>) ${L('กรอกได้เฉพาะ','can edit')}: ${esc(scopeText())}</div>`:''}
       ${E.hint?`<div class="msg" style="margin-top:12px">${esc(E.hint)}</div>`:''}
       ${E.id?`<div class="ctabs">${CTABS.map(([k,th,en])=>`<button type="button" data-ctab="${k}" class="${ctab===k?'on':''}">${L(th,en)}</button>`).join('')}</div>`:`<div class="msg" style="margin-top:12px">${L('ขั้นที่ 1 · รถเข้า: กรอกเฉพาะที่รู้ตอนรับรถ แล้วกดบันทึก ขั้นตอนอื่นกรอกต่อหลังบันทึก','Step 1 · Vehicle in: fill what you know now and save; other steps come after saving')}</div>`}
       <div class="cpane ${E.id&&ctab==='st'?'on':''}" data-pane="st"><div id="pv"></div><div id="na"></div></div>
